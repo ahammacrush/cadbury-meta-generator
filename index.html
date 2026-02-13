@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadbury Meta Description Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #5e3a8e 0%, #2d1b4e 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #5e3a8e;
+            font-size: 1.1em;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #5e3a8e;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .generate-btn {
+            background: linear-gradient(135deg, #5e3a8e 0%, #7e4db8 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 15px rgba(94, 58, 142, 0.3);
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(94, 58, 142, 0.4);
+        }
+
+        .generate-btn:active {
+            transform: translateY(0);
+        }
+
+        .generate-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .results {
+            margin-top: 30px;
+        }
+
+        .result-item {
+            background: #f8f8f8;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            position: relative;
+            transition: border-color 0.3s;
+        }
+
+        .result-item.approved {
+            border-color: #4caf50;
+            background: #f1f8f1;
+        }
+
+        .result-text {
+            font-size: 1em;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .result-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .char-count {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .char-count.warning {
+            color: #ff9800;
+            font-weight: 600;
+        }
+
+        .char-count.error {
+            color: #f44336;
+            font-weight: 600;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .btn-approve {
+            background: #4caf50;
+            color: white;
+        }
+
+        .btn-approve:hover {
+            background: #45a049;
+        }
+
+        .btn-copy {
+            background: #2196f3;
+            color: white;
+        }
+
+        .btn-copy:hover {
+            background: #0b7dda;
+        }
+
+        .btn-copy.copied {
+            background: #4caf50;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #5e3a8e;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .stats {
+            background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+            color: white;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .stats h3 {
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .stat-item {
+            background: rgba(255,255,255,0.2);
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+
+        .history-section {
+            margin-top: 30px;
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .history-header h3 {
+            color: #5e3a8e;
+            font-size: 1.3em;
+        }
+
+        .btn-clear {
+            background: #f44336;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .btn-clear:hover {
+            background: #da190b;
+        }
+
+        .history-item {
+            background: #f8f8f8;
+            border-left: 4px solid #4caf50;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+
+        .history-product {
+            font-weight: 600;
+            color: #5e3a8e;
+            margin-bottom: 8px;
+        }
+
+        .history-text {
+            color: #333;
+            line-height: 1.5;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+
+        .tips {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        .tips h4 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+
+        .tips ul {
+            margin-left: 20px;
+            color: #856404;
+        }
+
+        .tips li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🍫 Cadbury Meta Description Generator</h1>
+            <p>AI-powered meta descriptions that get smarter over time</p>
+        </div>
+
+        <div class="stats" id="stats" style="display: none;">
+            <h3>📊 Performance Stats</h3>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="stat-number" id="totalGenerated">0</span>
+                    <span class="stat-label">Generated</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="totalApproved">0</span>
+                    <span class="stat-label">Approved</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="approvalRate">0%</span>
+                    <span class="stat-label">Approval Rate</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="tips">
+                <h4>💡 Tips for Best Results:</h4>
+                <ul>
+                    <li><strong>Product name:</strong> Include the full product name (e.g., "Best Grandad Dairy Milk Chocolate Bar with Envelope")</li>
+                    <li><strong>Details:</strong> Add weight, occasion, or special features (e.g., "110g, Father's Day gift")</li>
+                    <li><strong>Optimal length:</strong> 150-160 characters (Google's sweet spot)</li>
+                </ul>
+            </div>
+
+            <div class="input-group">
+                <label for="productName">Product Name *</label>
+                <input 
+                    type="text" 
+                    id="productName" 
+                    placeholder='e.g., Best Grandad Dairy Milk Chocolate Bar with Envelope'
+                    required
+                />
+            </div>
+
+            <div class="input-group">
+                <label for="productDetails">Product Details (optional)</label>
+                <textarea 
+                    id="productDetails" 
+                    placeholder="e.g., 110g, perfect for Father's Day, includes gift envelope"
+                ></textarea>
+            </div>
+
+            <button class="generate-btn" id="generateBtn" onclick="generateDescriptions()">
+                ✨ Generate Meta Descriptions
+            </button>
+
+            <div id="results" class="results" style="display: none;"></div>
+        </div>
+
+        <div class="card history-section" id="historySection" style="display: none;">
+            <div class="history-header">
+                <h3>✅ Approved Meta Descriptions</h3>
+                <button class="btn-clear" onclick="clearHistory()">Clear All</button>
+            </div>
+            <div id="historyList"></div>
+        </div>
+    </div>
+
+    <script>
+        // Meta description templates embedded from the file
+        const templates = [
+            {
+                id: 1,
+                pattern: "Send a Cadbury Dairy Milk Bar with '{name}' envelope - personalized chocolate gifts delivered next day from Cadbury Gifts.",
+                type: "name_focus"
+            },
+            {
+                id: 2,
+                pattern: "Perfect for birthdays, celebrations or just because - Cadbury '{name}' Chocolate Bar with Gift Envelope. Order today for next-day delivery.",
+                type: "occasion_angle"
+            },
+            {
+                id: 3,
+                pattern: "Show {recipient} they're special with personalized Cadbury chocolate. Dairy Milk bar with gift envelope from Cadbury Gifts.",
+                type: "emotional_benefit"
+            },
+            {
+                id: 4,
+                pattern: "Looking for a thoughtful chocolate gift? The Cadbury '{name}' Dairy Milk Bar with Envelope makes any occasion sweeter. Shop now.",
+                type: "gift_scenario"
+            },
+            {
+                id: 5,
+                pattern: "Cadbury Dairy Milk with '{name}' gift envelope - the perfect way to surprise someone special. Available for next-day delivery.",
+                type: "direct_benefit"
+            },
+            {
+                id: 6,
+                pattern: "No occasion needed! Send a Cadbury '{name}' Chocolate Bar with Gift Envelope and make their day. Order from Cadbury Gifts.",
+                type: "just_because"
+            },
+            {
+                id: 7,
+                pattern: "Premium Cadbury Dairy Milk chocolate in a '{name}' gift envelope. Thoughtful presents delivered next day from Cadbury Gifts.",
+                type: "quality_brand"
+            },
+            {
+                id: 8,
+                pattern: "Need a gift fast? Cadbury '{name}' Dairy Milk Bar with Envelope ships next day. Perfect for last-minute surprises from Cadbury Gifts.",
+                type: "urgency"
+            },
+            {
+                id: 9,
+                pattern: "Add a personal touch with Cadbury's '{name}' Dairy Milk Chocolate Bar and Gift Envelope - thoughtful gifts delivered to their door.",
+                type: "personal_touch"
+            },
+            {
+                id: 10,
+                pattern: "Celebrate {occasion} with iconic Cadbury Dairy Milk chocolate in a personalized gift envelope. Next-day delivery available.",
+                type: "celebration"
+            },
+            {
+                id: 11,
+                pattern: "Cadbury '{name}' Dairy Milk Bar with Gift Envelope. Personalized chocolate gifts from Cadbury Gifts with next-day delivery.",
+                type: "simple_statement"
+            },
+            {
+                id: 12,
+                pattern: "Make {recipient} smile with Cadbury Dairy Milk chocolate in a personalized gift envelope. Order today from Cadbury Gifts.",
+                type: "recipient_centric"
+            },
+            {
+                id: 13,
+                pattern: "The Cadbury '{name}' Gift Envelope pairs premium Dairy Milk chocolate with a personal message. Available for next-day delivery.",
+                type: "gift_solution"
+            },
+            {
+                id: 14,
+                pattern: "Send chocolate joy direct to {recipient}'s door - Cadbury Dairy Milk Bar with personalized envelope from Cadbury Gifts.",
+                type: "convenience"
+            },
+            {
+                id: 15,
+                pattern: "Iconic Cadbury Dairy Milk meets personal gifting: '{name}' chocolate bar with gift envelope delivered next day.",
+                type: "quality_personalization"
+            },
+            {
+                id: 16,
+                pattern: "Whether it's a birthday or just because, the Cadbury '{name}' Dairy Milk Envelope makes the perfect chocolate gift. Shop Cadbury Gifts.",
+                type: "occasion_flexibility"
+            },
+            {
+                id: 17,
+                pattern: "Treat {recipient} to their favourite: Cadbury Dairy Milk chocolate in a personalized gift envelope from Cadbury Gifts.",
+                type: "treat_focus"
+            },
+            {
+                id: 18,
+                pattern: "Cadbury '{name}' Dairy Milk with Gift Envelope - order today, delivered tomorrow. Personalized chocolate gifts from Cadbury Gifts.",
+                type: "fast_delivery"
+            },
+            {
+                id: 19,
+                pattern: "Show you care with a Cadbury '{name}' Dairy Milk Bar and Gift Envelope. Thoughtful chocolate gifts with next-day delivery.",
+                type: "thoughtful_gifting"
+            },
+            {
+                id: 20,
+                pattern: "Classic Cadbury Dairy Milk chocolate, personalized with '{name}' gift envelope. Order your chocolate gift from Cadbury Gifts today.",
+                type: "brand_heritage"
+            },
+            {
+                id: 21,
+                pattern: "Spoil {recipient} with a sweet treat and watch them enjoy one of our iconic Dairy Milk bars wrapped in a '{name}' envelope. Shop now!",
+                type: "seasonal_hero"
+            },
+            {
+                id: 22,
+                pattern: "Give the '{name}' the gift of sweetness with a 110g Cadbury Dairy Milk Bar with Gift Envelope, a perfect birthday treat. Order now at Cadbury Gifts.",
+                type: "gift_occasion"
+            },
+            {
+                id: 23,
+                pattern: "Give the '{name}' a sweet surprise with a 110g Cadbury Dairy Milk Bar & Gift Envelope, a perfect birthday gift. Order today at Cadbury Gifts.",
+                type: "sweet_surprise"
+            },
+            {
+                id: 24,
+                pattern: "Show them they are doing a '{message}' with the perfect sweet treat of a Cadbury Dairy Milk Chocolate Bar with Gift Envelope. Shop now at Cadbury Gifts.",
+                type: "recognition"
+            },
+            {
+                id: 25,
+                pattern: "Show your loved ones just how much they mean to you with our '{message}' Cadbury Dairy Milk Chocolate Bar with Gift Sleeve. Order now from Cadbury Gifts.",
+                type: "sentiment"
+            },
+            {
+                id: 26,
+                pattern: "Say thank you with Cadbury's '{name}' Dairy Milk Chocolate Bar and Gift Envelope - the sweetest way to show appreciation. Available from Cadbury Gifts.",
+                type: "gratitude"
+            }
+        ];
+
+        // Initialize storage
+        async function initStorage() {
+            try {
+                const stats = await window.storage.get('stats', false);
+                if (stats && stats.value) {
+                    updateStatsDisplay(JSON.parse(stats.value));
+                }
+                loadHistory();
+            } catch (error) {
+                console.log('Storage not yet initialized');
+            }
+        }
+
+        // Extract key information from product name
+        function extractProductInfo(productName, details) {
+            const info = {
+                name: productName,
+                recipient: null,
+                occasion: null,
+                message: null
+            };
+
+            // Extract common patterns
+            const patterns = {
+                recipient: /(?:Best |Dear |Special )?(?:Mum|Dad|Grandad|Grandma|Daughter|Son|Friend|Teacher|Boss|Hubby|Wife|Partner)/i,
+                occasion: /(?:Birthday|Christmas|Easter|Valentine|Mother's Day|Father's Day|Anniversary|Thank You|Congratulations)/i,
+                message: /(?:Great Job|You're Perfect|Thank You|Well Done|Love You|Miss You)/i
+            };
+
+            const fullText = `${productName} ${details || ''}`;
+
+            for (const [key, pattern] of Object.entries(patterns)) {
+                const match = fullText.match(pattern);
+                if (match) {
+                    info[key] = match[0];
+                }
+            }
+
+            return info;
+        }
+
+        // Generate meta descriptions
+        function generateDescriptions() {
+            const productName = document.getElementById('productName').value.trim();
+            const productDetails = document.getElementById('productDetails').value.trim();
+
+            if (!productName) {
+                alert('Please enter a product name');
+                return;
+            }
+
+            const btn = document.getElementById('generateBtn');
+            btn.disabled = true;
+            btn.textContent = 'Generating...';
+
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.style.display = 'block';
+            resultsDiv.innerHTML = '<div class="loading"><div class="spinner"></div><p>Creating unique meta descriptions...</p></div>';
+
+            // Simulate AI generation delay for better UX
+            setTimeout(() => {
+                const info = extractProductInfo(productName, productDetails);
+                const descriptions = generateVariations(info, productDetails);
+                
+                displayResults(descriptions, productName);
+                updateStats('generated', descriptions.length);
+                
+                btn.disabled = false;
+                btn.textContent = '✨ Generate Meta Descriptions';
+            }, 1500);
+        }
+
+        // Generate variations using templates
+        function generateVariations(info, details) {
+            // Select 3 diverse templates
+            const selectedTemplates = selectDiverseTemplates(3);
+            const variations = [];
+
+            for (const template of selectedTemplates) {
+                let description = template.pattern;
+
+                // Replace placeholders
+                description = description.replace(/{name}/g, info.name)
+                    .replace(/\{recipient\}/g, info.recipient || 'them')
+                    .replace(/\{occasion\}/g, info.occasion || info.name)
+                    .replace(/\{message\}/g, info.message || info.name)
+                    .replace(/'{name}'/g, `"${info.name}"`)
+                    .replace(/'{message}'/g, `"${info.message || info.name}"`);
+
+                // Add weight if mentioned in details
+                if (details && details.match(/\d+g/)) {
+                    const weight = details.match(/\d+g/)[0];
+                    if (!description.includes(weight)) {
+                        description = description.replace('Cadbury Dairy Milk', `Cadbury ${weight} Dairy Milk`);
+                    }
+                }
+
+                variations.push({
+                    text: description,
+                    templateType: template.type,
+                    charCount: description.length
+                });
+            }
+
+            return variations;
+        }
+
+        // Select diverse templates (avoid similar types)
+        function selectDiverseTemplates(count) {
+            const shuffled = [...templates].sort(() => Math.random() - 0.5);
+            const selected = [];
+            const usedTypes = new Set();
+
+            for (const template of shuffled) {
+                if (selected.length >= count) break;
+                
+                // Try to avoid similar template types
+                const baseType = template.type.split('_')[0];
+                if (!usedTypes.has(baseType)) {
+                    selected.push(template);
+                    usedTypes.add(baseType);
+                }
+            }
+
+            // If we don't have enough diverse types, add more
+            while (selected.length < count) {
+                const remaining = shuffled.filter(t => !selected.includes(t));
+                if (remaining.length > 0) {
+                    selected.push(remaining[0]);
+                }
+            }
+
+            return selected;
+        }
+
+        // Display results
+        function displayResults(descriptions, productName) {
+            const resultsDiv = document.getElementById('results');
+            
+            let html = '';
+            descriptions.forEach((desc, index) => {
+                const charStatus = desc.charCount < 140 ? 'warning' : desc.charCount > 160 ? 'error' : '';
+                const charMessage = desc.charCount < 140 ? '(too short)' : desc.charCount > 160 ? '(too long)' : '(optimal)';
+                
+                html += `
+                    <div class="result-item" id="result-${index}">
+                        <div class="result-text">${desc.text}</div>
+                        <div class="result-meta">
+                            <span class="char-count ${charStatus}">
+                                ${desc.charCount} characters ${charMessage}
+                            </span>
+                            <div class="actions">
+                                <button class="btn btn-approve" onclick="approveDescription(${index}, '${productName.replace(/'/g, "\\'")}', '${desc.text.replace(/'/g, "\\'")}')">
+                                    ✓ Approve
+                                </button>
+                                <button class="btn btn-copy" onclick="copyToClipboard(${index}, '${desc.text.replace(/'/g, "\\'")}')">
+                                    📋 Copy
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            resultsDiv.innerHTML = html;
+        }
+
+        // Approve description
+        async function approveDescription(index, productName, text) {
+            const resultItem = document.getElementById(`result-${index}`);
+            resultItem.classList.add('approved');
+
+            // Save to history
+            try {
+                const historyKey = `history:${Date.now()}`;
+                await window.storage.set(historyKey, JSON.stringify({
+                    product: productName,
+                    description: text,
+                    timestamp: new Date().toISOString()
+                }), true);
+
+                updateStats('approved', 1);
+                loadHistory();
+                
+                // Visual feedback
+                const btn = resultItem.querySelector('.btn-approve');
+                btn.textContent = '✓ Approved!';
+                btn.style.background = '#45a049';
+                setTimeout(() => {
+                    btn.textContent = '✓ Approve';
+                    btn.style.background = '';
+                }, 2000);
+            } catch (error) {
+                console.error('Error saving approval:', error);
+                alert('Could not save approval. Please try again.');
+            }
+        }
+
+        // Copy to clipboard
+        function copyToClipboard(index, text) {
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = document.querySelector(`#result-${index} .btn-copy`);
+                const originalText = btn.textContent;
+                btn.textContent = '✓ Copied!';
+                btn.classList.add('copied');
+                
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+
+        // Update stats
+        async function updateStats(type, count) {
+            try {
+                const statsData = await window.storage.get('stats', false);
+                let stats = statsData ? JSON.parse(statsData.value) : {
+                    totalGenerated: 0,
+                    totalApproved: 0
+                };
+
+                if (type === 'generated') {
+                    stats.totalGenerated += count;
+                } else if (type === 'approved') {
+                    stats.totalApproved += count;
+                }
+
+                await window.storage.set('stats', JSON.stringify(stats), false);
+                updateStatsDisplay(stats);
+            } catch (error) {
+                console.error('Error updating stats:', error);
+            }
+        }
+
+        // Update stats display
+        function updateStatsDisplay(stats) {
+            const statsDiv = document.getElementById('stats');
+            statsDiv.style.display = 'block';
+
+            document.getElementById('totalGenerated').textContent = stats.totalGenerated;
+            document.getElementById('totalApproved').textContent = stats.totalApproved;
+            
+            const rate = stats.totalGenerated > 0 
+                ? Math.round((stats.totalApproved / stats.totalGenerated) * 100)
+                : 0;
+            document.getElementById('approvalRate').textContent = rate + '%';
+        }
+
+        // Load history
+        async function loadHistory() {
+            try {
+                const keys = await window.storage.list('history:', true);
+                if (!keys || !keys.keys || keys.keys.length === 0) {
+                    document.getElementById('historySection').style.display = 'none';
+                    return;
+                }
+
+                const historyItems = [];
+                for (const key of keys.keys) {
+                    try {
+                        const item = await window.storage.get(key, true);
+                        if (item && item.value) {
+                            historyItems.push(JSON.parse(item.value));
+                        }
+                    } catch (e) {
+                        console.error('Error loading history item:', e);
+                    }
+                }
+
+                if (historyItems.length === 0) {
+                    document.getElementById('historySection').style.display = 'none';
+                    return;
+                }
+
+                // Sort by timestamp (newest first)
+                historyItems.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+                // Display history
+                const historyList = document.getElementById('historyList');
+                historyList.innerHTML = historyItems.map(item => `
+                    <div class="history-item">
+                        <div class="history-product">${item.product}</div>
+                        <div class="history-text">${item.description}</div>
+                    </div>
+                `).join('');
+
+                document.getElementById('historySection').style.display = 'block';
+            } catch (error) {
+                console.error('Error loading history:', error);
+                document.getElementById('historySection').style.display = 'none';
+            }
+        }
+
+        // Clear history
+        async function clearHistory() {
+            if (!confirm('Are you sure you want to clear all approved meta descriptions?')) {
+                return;
+            }
+
+            try {
+                const keys = await window.storage.list('history:', true);
+                if (keys && keys.keys) {
+                    for (const key of keys.keys) {
+                        await window.storage.delete(key, true);
+                    }
+                }
+                
+                document.getElementById('historySection').style.display = 'none';
+                alert('History cleared successfully!');
+            } catch (error) {
+                console.error('Error clearing history:', error);
+                alert('Error clearing history. Please try again.');
+            }
+        }
+
+        // Allow Enter key to generate
+        document.getElementById('productName').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                generateDescriptions();
+            }
+        });
+
+        // Initialize on load
+        initStorage();
+    </script>
+</body>
+</html>
