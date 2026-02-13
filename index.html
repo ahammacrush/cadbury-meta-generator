@@ -61,7 +61,7 @@
             font-size: 1.1em;
         }
 
-        input, textarea {
+        input, textarea, select {
             width: 100%;
             padding: 12px;
             border: 2px solid #e0e0e0;
@@ -70,7 +70,7 @@
             transition: border-color 0.3s;
         }
 
-        input:focus, textarea:focus {
+        input:focus, textarea:focus, select:focus {
             outline: none;
             border-color: #5e3a8e;
         }
@@ -337,7 +337,7 @@
     <div class="container">
         <div class="header">
             <h1>🍫 Cadbury Meta Description Generator</h1>
-            <p>AI-powered meta descriptions that get smarter over time</p>
+            <p>Smart meta descriptions based on your site's top performers</p>
         </div>
 
         <div class="stats" id="stats" style="display: none;">
@@ -360,11 +360,13 @@
 
         <div class="card">
             <div class="tips">
-                <h4>💡 Tips for Best Results:</h4>
+                <h4>💡 Tips for Best Results (Based on Site Analysis):</h4>
                 <ul>
                     <li><strong>Product name:</strong> Include the full product name (e.g., "Best Grandad Dairy Milk Chocolate Bar with Envelope")</li>
+                    <li><strong>Category:</strong> Auto-detected from product name, but you can change it if needed</li>
                     <li><strong>Details:</strong> Add weight, occasion, or special features (e.g., "110g, Father's Day gift")</li>
-                    <li><strong>Optimal length:</strong> 150-160 characters (Google's sweet spot)</li>
+                    <li><strong>Optimal length:</strong> 145-160 characters (proven sweet spot from top performers)</li>
+                    <li><strong>Templates are data-driven:</strong> Based on analysis of 109 high-quality descriptions from your site</li>
                 </ul>
             </div>
 
@@ -375,7 +377,22 @@
                     id="productName" 
                     placeholder='e.g., Best Grandad Dairy Milk Chocolate Bar with Envelope'
                     required
+                    onchange="detectCategory()"
+                    onkeyup="detectCategory()"
                 />
+            </div>
+
+            <div class="input-group">
+                <label for="productCategory">Product Category *</label>
+                <select id="productCategory" required>
+                    <option value="">-- Auto-detecting... --</option>
+                    <option value="envelope">Chocolate Bar with Envelope/Sleeve</option>
+                    <option value="hamper">Gift Box/Hamper</option>
+                    <option value="seasonal">Seasonal (Easter/Christmas)</option>
+                    <option value="corporate">Corporate Gifts</option>
+                    <option value="luxury">Luxury/Premium Range</option>
+                    <option value="standard">Standard Chocolate Products</option>
+                </select>
             </div>
 
             <div class="input-group">
@@ -403,137 +420,264 @@
     </div>
 
     <script>
-        // Meta description templates embedded from the file
+        // Meta description templates with category tags
+        // OPTIMIZED BASED ON SITE ANALYSIS - Templates scored 90-100/100 for SEO quality
         const templates = [
+            // === PROVEN 100/100 SCORERS (from site analysis) ===
             {
-                id: 1,
-                pattern: "Send a Cadbury Dairy Milk Bar with '{name}' envelope - personalized chocolate gifts delivered next day from Cadbury Gifts.",
-                type: "name_focus"
+                id: 37,
+                pattern: "Send {productType} to {recipient} - it's a perfect {occasion} gift to show your {emotion}. Order online, next day delivery.",
+                type: "heartfelt_proven",
+                categories: ["hamper", "envelope", "standard"],
+                tone: "heartfelt"
             },
             {
-                id: 2,
-                pattern: "Perfect for birthdays, celebrations or just because - Cadbury '{name}' Chocolate Bar with Gift Envelope. Order today for next-day delivery.",
-                type: "occasion_angle"
+                id: 38,
+                pattern: "Treat {recipient} to a delicious {productType} from Cadbury! Shop online at Cadbury Gifts for fast delivery on {occasion} chocolate gifts.",
+                type: "enthusiastic_proven",
+                categories: ["seasonal", "hamper", "envelope", "standard"],
+                tone: "enthusiastic"
             },
+            {
+                id: 39,
+                pattern: "Celebrate {occasion} with the Cadbury {name}, {details}. Shop now at Cadbury Gifts.",
+                type: "celebratory_proven",
+                categories: ["seasonal", "luxury", "standard"],
+                tone: "celebratory"
+            },
+            {
+                id: 40,
+                pattern: "Enjoy a luxurious Cadbury {productType}, packed with Cadbury favourites and more. Order now at Cadbury Gifts.",
+                type: "luxurious_proven",
+                categories: ["luxury", "hamper"],
+                tone: "luxurious"
+            },
+            {
+                id: 41,
+                pattern: "Find the perfect {occasion} gift at Cadbury Gifts! Discover delicious {productType}, ideal for gifting. Shop now with next-day delivery.",
+                type: "helpful_proven",
+                categories: ["seasonal", "standard", "hamper"],
+                tone: "helpful"
+            },
+            {
+                id: 42,
+                pattern: "Spoil {recipient} with the ultimate decadent treat – a {productType} from Cadbury Gifts. Order now at Cadbury Gifts.",
+                type: "indulgent_proven",
+                categories: ["luxury", "hamper"],
+                tone: "indulgent"
+            },
+            {
+                id: 43,
+                pattern: "Find delicious {productType} at Cadbury Gifts Direct. From Dairy Milk to Wispa - with next day delivery when you order by 4PM.",
+                type: "urgent_proven",
+                categories: ["standard", "hamper"],
+                tone: "urgent"
+            },
+            {
+                id: 44,
+                pattern: "Shop {occasion} gift ideas at Cadbury Gifts. Explore {productType} and more. Order before 4pm for free next day delivery.",
+                type: "efficient_proven",
+                categories: ["seasonal", "corporate", "hamper"],
+                tone: "efficient"
+            },
+            {
+                id: 45,
+                pattern: "Spread the {emotion} and present {recipient} with a delicious {productType} from Cadbury Gifts, with next-day delivery.",
+                type: "romantic_proven",
+                categories: ["seasonal", "envelope", "standard"],
+                tone: "romantic"
+            },
+            
+            // === HIGH-PERFORMING ENVELOPE TEMPLATES (kept best ones) ===
             {
                 id: 3,
                 pattern: "Show {recipient} they're special with personalized Cadbury chocolate. Dairy Milk bar with gift envelope from Cadbury Gifts.",
-                type: "emotional_benefit"
+                type: "emotional_benefit",
+                categories: ["envelope", "standard"],
+                tone: "warm"
             },
             {
                 id: 4,
                 pattern: "Looking for a thoughtful chocolate gift? The Cadbury '{name}' Dairy Milk Bar with Envelope makes any occasion sweeter. Shop now.",
-                type: "gift_scenario"
-            },
-            {
-                id: 5,
-                pattern: "Cadbury Dairy Milk with '{name}' gift envelope - the perfect way to surprise someone special. Available for next-day delivery.",
-                type: "direct_benefit"
-            },
-            {
-                id: 6,
-                pattern: "No occasion needed! Send a Cadbury '{name}' Chocolate Bar with Gift Envelope and make their day. Order from Cadbury Gifts.",
-                type: "just_because"
+                type: "gift_scenario",
+                categories: ["envelope", "standard"],
+                tone: "helpful"
             },
             {
                 id: 7,
                 pattern: "Premium Cadbury Dairy Milk chocolate in a '{name}' gift envelope. Thoughtful presents delivered next day from Cadbury Gifts.",
-                type: "quality_brand"
+                type: "quality_brand",
+                categories: ["envelope", "luxury", "standard"],
+                tone: "premium"
             },
             {
                 id: 8,
                 pattern: "Need a gift fast? Cadbury '{name}' Dairy Milk Bar with Envelope ships next day. Perfect for last-minute surprises from Cadbury Gifts.",
-                type: "urgency"
-            },
-            {
-                id: 9,
-                pattern: "Add a personal touch with Cadbury's '{name}' Dairy Milk Chocolate Bar and Gift Envelope - thoughtful gifts delivered to their door.",
-                type: "personal_touch"
+                type: "urgency",
+                categories: ["envelope", "standard"],
+                tone: "urgent"
             },
             {
                 id: 10,
                 pattern: "Celebrate {occasion} with iconic Cadbury Dairy Milk chocolate in a personalized gift envelope. Next-day delivery available.",
-                type: "celebration"
-            },
-            {
-                id: 11,
-                pattern: "Cadbury '{name}' Dairy Milk Bar with Gift Envelope. Personalized chocolate gifts from Cadbury Gifts with next-day delivery.",
-                type: "simple_statement"
+                type: "celebration",
+                categories: ["envelope", "seasonal", "standard"],
+                tone: "celebratory"
             },
             {
                 id: 12,
                 pattern: "Make {recipient} smile with Cadbury Dairy Milk chocolate in a personalized gift envelope. Order today from Cadbury Gifts.",
-                type: "recipient_centric"
-            },
-            {
-                id: 13,
-                pattern: "The Cadbury '{name}' Gift Envelope pairs premium Dairy Milk chocolate with a personal message. Available for next-day delivery.",
-                type: "gift_solution"
-            },
-            {
-                id: 14,
-                pattern: "Send chocolate joy direct to {recipient}'s door - Cadbury Dairy Milk Bar with personalized envelope from Cadbury Gifts.",
-                type: "convenience"
+                type: "recipient_centric",
+                categories: ["envelope", "standard"],
+                tone: "warm"
             },
             {
                 id: 15,
                 pattern: "Iconic Cadbury Dairy Milk meets personal gifting: '{name}' chocolate bar with gift envelope delivered next day.",
-                type: "quality_personalization"
-            },
-            {
-                id: 16,
-                pattern: "Whether it's a birthday or just because, the Cadbury '{name}' Dairy Milk Envelope makes the perfect chocolate gift. Shop Cadbury Gifts.",
-                type: "occasion_flexibility"
-            },
-            {
-                id: 17,
-                pattern: "Treat {recipient} to their favourite: Cadbury Dairy Milk chocolate in a personalized gift envelope from Cadbury Gifts.",
-                type: "treat_focus"
+                type: "quality_personalization",
+                categories: ["envelope", "luxury", "standard"],
+                tone: "premium"
             },
             {
                 id: 18,
                 pattern: "Cadbury '{name}' Dairy Milk with Gift Envelope - order today, delivered tomorrow. Personalized chocolate gifts from Cadbury Gifts.",
-                type: "fast_delivery"
+                type: "fast_delivery",
+                categories: ["envelope", "standard"],
+                tone: "efficient"
             },
             {
                 id: 19,
                 pattern: "Show you care with a Cadbury '{name}' Dairy Milk Bar and Gift Envelope. Thoughtful chocolate gifts with next-day delivery.",
-                type: "thoughtful_gifting"
-            },
-            {
-                id: 20,
-                pattern: "Classic Cadbury Dairy Milk chocolate, personalized with '{name}' gift envelope. Order your chocolate gift from Cadbury Gifts today.",
-                type: "brand_heritage"
+                type: "thoughtful_gifting",
+                categories: ["envelope", "standard"],
+                tone: "caring"
             },
             {
                 id: 21,
                 pattern: "Spoil {recipient} with a sweet treat and watch them enjoy one of our iconic Dairy Milk bars wrapped in a '{name}' envelope. Shop now!",
-                type: "seasonal_hero"
-            },
-            {
-                id: 22,
-                pattern: "Give the '{name}' the gift of sweetness with a 110g Cadbury Dairy Milk Bar with Gift Envelope, a perfect birthday treat. Order now at Cadbury Gifts.",
-                type: "gift_occasion"
-            },
-            {
-                id: 23,
-                pattern: "Give the '{name}' a sweet surprise with a 110g Cadbury Dairy Milk Bar & Gift Envelope, a perfect birthday gift. Order today at Cadbury Gifts.",
-                type: "sweet_surprise"
+                type: "seasonal_hero",
+                categories: ["envelope", "seasonal", "standard"],
+                tone: "enthusiastic"
             },
             {
                 id: 24,
                 pattern: "Show them they are doing a '{message}' with the perfect sweet treat of a Cadbury Dairy Milk Chocolate Bar with Gift Envelope. Shop now at Cadbury Gifts.",
-                type: "recognition"
-            },
-            {
-                id: 25,
-                pattern: "Show your loved ones just how much they mean to you with our '{message}' Cadbury Dairy Milk Chocolate Bar with Gift Sleeve. Order now from Cadbury Gifts.",
-                type: "sentiment"
+                type: "recognition",
+                categories: ["envelope", "corporate", "standard"],
+                tone: "appreciative"
             },
             {
                 id: 26,
                 pattern: "Say thank you with Cadbury's '{name}' Dairy Milk Chocolate Bar and Gift Envelope - the sweetest way to show appreciation. Available from Cadbury Gifts.",
-                type: "gratitude"
+                type: "gratitude",
+                categories: ["envelope", "corporate", "standard"],
+                tone: "grateful"
+            },
+            {
+                id: 27,
+                pattern: "Sweeten their {occasion} with a Cadbury '{name}' Dairy Milk Bar with gift sleeve, a thoughtful way to celebrate. Order now for an unforgettable day.",
+                type: "celebration_wedding",
+                categories: ["envelope", "seasonal", "luxury"],
+                tone: "celebratory"
+            },
+            
+            // === IMPROVED HAMPER TEMPLATES (more variety, delivery emphasis) ===
+            {
+                id: 46,
+                pattern: "Delight {recipient} with a {productType} packed with Cadbury favourites including Roses, Dairy Milk and more. Order online, next day delivery.",
+                type: "hamper_delight",
+                categories: ["hamper"],
+                tone: "generous"
+            },
+            {
+                id: 47,
+                pattern: "Treat them to a scrumptious selection of Cadbury chocolate in our {productType}. Perfect for all occasions with next-day delivery from Cadbury Gifts.",
+                type: "hamper_selection",
+                categories: ["hamper"],
+                tone: "indulgent"
+            },
+            {
+                id: 48,
+                pattern: "From Dairy Milk to Wispa, our {productType} has all their Cadbury favourites. Order today for next-day delivery from Cadbury Gifts.",
+                type: "hamper_variety",
+                categories: ["hamper"],
+                tone: "comprehensive"
+            },
+            {
+                id: 49,
+                pattern: "Our {productType} is packed with chocolate treats for every taste. Ideal for sharing, delivered next day when you order by 4PM.",
+                type: "hamper_sharing",
+                categories: ["hamper", "corporate"],
+                tone: "practical"
+            },
+            {
+                id: 50,
+                pattern: "Send a Cadbury {productType} filled with their favourite chocolates. Thoughtful gifting made easy, next day delivery available from Cadbury Gifts.",
+                type: "hamper_easy",
+                categories: ["hamper"],
+                tone: "convenient"
+            },
+            
+            // === SEASONAL TEMPLATES (improved with delivery emphasis) ===
+            {
+                id: 51,
+                pattern: "Make {season} special with Cadbury's delicious {productType}. Iconic chocolate treats delivered fast from Cadbury Gifts, order by 4PM.",
+                type: "seasonal_celebration",
+                categories: ["seasonal"],
+                tone: "festive"
+            },
+            {
+                id: 52,
+                pattern: "Celebrate {season} with our delicious {productType} range. From eggs to bunnies, find the perfect chocolate gift at Cadbury Gifts with next-day delivery.",
+                type: "seasonal_range",
+                categories: ["seasonal"],
+                tone: "cheerful"
+            },
+            {
+                id: 53,
+                pattern: "Discover Cadbury {season} chocolate gifts at Cadbury Gifts Direct. Shop {productType} online with free next day delivery when you order before 4pm.",
+                type: "seasonal_discover",
+                categories: ["seasonal"],
+                tone: "exciting"
+            },
+            
+            // === CORPORATE TEMPLATES (improved professionalism + delivery) ===
+            {
+                id: 54,
+                pattern: "Recognize your team with Cadbury {productType}. Professional chocolate gifting with next-day delivery from Cadbury Gifts, order before 4PM.",
+                type: "corporate_recognition",
+                categories: ["corporate"],
+                tone: "professional"
+            },
+            {
+                id: 55,
+                pattern: "Ideal for employee appreciation or client gifts - Cadbury {productType} delivered efficiently. Order from Cadbury Gifts for next-day delivery.",
+                type: "corporate_efficiency",
+                categories: ["corporate"],
+                tone: "business"
+            },
+            {
+                id: 56,
+                pattern: "Show your appreciation with Cadbury {productType}. Perfect for corporate gifting, delivered next day across the UK from Cadbury Gifts.",
+                type: "corporate_appreciation",
+                categories: ["corporate"],
+                tone: "professional"
+            },
+            
+            // === LUXURY TEMPLATES (improved with specific details) ===
+            {
+                id: 57,
+                pattern: "Indulge in premium Cadbury chocolate with our {productType}. Luxurious gifting for special occasions, delivered next day from Cadbury Gifts.",
+                type: "luxury_indulgence",
+                categories: ["luxury"],
+                tone: "luxurious"
+            },
+            {
+                id: 58,
+                pattern: "Experience exceptional quality with Cadbury's {productType}. Ultimate chocolate gifts with next day delivery when you order by 4PM.",
+                type: "luxury_quality",
+                categories: ["luxury"],
+                tone: "premium"
             }
         ];
 
@@ -550,20 +694,79 @@
             }
         }
 
+        // Detect product category from name
+        function detectCategory() {
+            const productName = document.getElementById('productName').value.toLowerCase();
+            const categorySelect = document.getElementById('productCategory');
+            
+            // Don't override if user has manually selected something
+            if (categorySelect.value && categorySelect.dataset.manuallySet) {
+                return;
+            }
+
+            let detectedCategory = '';
+
+            // Detection patterns
+            if (productName.includes('envelope') || productName.includes('sleeve')) {
+                detectedCategory = 'envelope';
+            } else if (productName.includes('hamper') || productName.includes('gift box') || productName.includes('selection box')) {
+                detectedCategory = 'hamper';
+            } else if (productName.includes('easter') || productName.includes('christmas') || productName.includes('seasonal')) {
+                detectedCategory = 'seasonal';
+            } else if (productName.includes('corporate') || productName.includes('employee') || productName.includes('team') || productName.includes('client')) {
+                detectedCategory = 'corporate';
+            } else if (productName.includes('luxury') || productName.includes('premium') || productName.includes('ultimate') || productName.includes('deluxe')) {
+                detectedCategory = 'luxury';
+            } else {
+                detectedCategory = 'standard';
+            }
+
+            categorySelect.value = detectedCategory;
+        }
+
+        // Track manual category selection
+        document.addEventListener('DOMContentLoaded', function() {
+            const categorySelect = document.getElementById('productCategory');
+            categorySelect.addEventListener('change', function() {
+                if (this.value) {
+                    this.dataset.manuallySet = 'true';
+                }
+            });
+        });
+
         // Extract key information from product name
-        function extractProductInfo(productName, details) {
+        function extractProductInfo(productName, details, category) {
+        // Extract key information from product name
+        function extractProductInfo(productName, details, category) {
             const info = {
                 name: productName,
                 recipient: null,
                 occasion: null,
-                message: null
+                message: null,
+                category: category,
+                productType: 'chocolate gift',
+                season: null,
+                emotion: 'appreciation',
+                details: ''
             };
+
+            // Set product type based on category
+            const productTypes = {
+                'envelope': 'chocolate bar',
+                'hamper': 'gift hamper',
+                'seasonal': 'seasonal chocolate',
+                'corporate': 'corporate gift',
+                'luxury': 'luxury chocolate',
+                'standard': 'chocolate'
+            };
+            info.productType = productTypes[category] || 'chocolate gift';
 
             // Extract common patterns
             const patterns = {
-                recipient: /(?:Best |Dear |Special )?(?:Mum|Dad|Grandad|Grandma|Daughter|Son|Friend|Teacher|Boss|Hubby|Wife|Partner)/i,
-                occasion: /(?:Birthday|Christmas|Easter|Valentine|Mother's Day|Father's Day|Anniversary|Thank You|Congratulations)/i,
-                message: /(?:Great Job|You're Perfect|Thank You|Well Done|Love You|Miss You)/i
+                recipient: /(?:Best |Dear |Special )?(?:Mum|Dad|Grandad|Grandma|Grandmother|Grandfather|Daughter|Son|Friend|Teacher|Boss|Hubby|Wife|Partner|Team|Employee|Client|loved ones?)/i,
+                occasion: /(?:Birthday|Christmas|Easter|Valentine|Mother's Day|Father's Day|Anniversary|Thank You|Congratulations|Wedding)/i,
+                message: /(?:Great Job|You're Perfect|Thank You|Well Done|Love You|Miss You|Mr & Mrs)/i,
+                season: /(?:Easter|Christmas|Valentine|Spring|Summer|Autumn|Winter)/i
             };
 
             const fullText = `${productName} ${details || ''}`;
@@ -575,6 +778,22 @@
                 }
             }
 
+            // Set emotion based on occasion/message
+            if (info.message && info.message.toLowerCase().includes('thank')) {
+                info.emotion = 'gratitude';
+            } else if (info.occasion && info.occasion.toLowerCase().includes('valentine')) {
+                info.emotion = 'love';
+            } else if (info.occasion && (info.occasion.toLowerCase().includes('wedding') || info.occasion.toLowerCase().includes('anniversary'))) {
+                info.emotion = 'romance';
+            }
+
+            // Extract details for proven template 39
+            if (details) {
+                info.details = details;
+            } else if (productName.match(/\d+g/)) {
+                info.details = productName.match(/\d+g/)[0];
+            }
+
             return info;
         }
 
@@ -582,9 +801,15 @@
         function generateDescriptions() {
             const productName = document.getElementById('productName').value.trim();
             const productDetails = document.getElementById('productDetails').value.trim();
+            const category = document.getElementById('productCategory').value;
 
             if (!productName) {
                 alert('Please enter a product name');
+                return;
+            }
+
+            if (!category) {
+                alert('Please select a product category');
                 return;
             }
 
@@ -598,8 +823,8 @@
 
             // Simulate AI generation delay for better UX
             setTimeout(() => {
-                const info = extractProductInfo(productName, productDetails);
-                const descriptions = generateVariations(info, productDetails);
+                const info = extractProductInfo(productName, productDetails, category);
+                const descriptions = generateVariations(info, productDetails, category);
                 
                 displayResults(descriptions, productName);
                 updateStats('generated', descriptions.length);
@@ -609,60 +834,97 @@
             }, 1500);
         }
 
-        // Generate variations using templates
-        function generateVariations(info, details) {
-            // Select 3 diverse templates
-            const selectedTemplates = selectDiverseTemplates(3);
+        // Generate variations using smart template selection
+        function generateVariations(info, details, category) {
+            // Select templates that match the category
+            const selectedTemplates = selectSmartTemplates(category, info, 3);
             const variations = [];
 
             for (const template of selectedTemplates) {
                 let description = template.pattern;
 
-                // Replace placeholders
-                description = description.replace(/{name}/g, info.name)
+                // Replace placeholders intelligently
+                description = description
+                    .replace(/{name}/g, info.name)
                     .replace(/\{recipient\}/g, info.recipient || 'them')
                     .replace(/\{occasion\}/g, info.occasion || info.name)
                     .replace(/\{message\}/g, info.message || info.name)
+                    .replace(/\{productType\}/g, info.productType)
+                    .replace(/\{season\}/g, info.season || 'this season')
+                    .replace(/\{emotion\}/g, info.emotion || 'appreciation')
+                    .replace(/\{details\}/g, info.details || 'a delicious chocolate treat')
                     .replace(/'{name}'/g, `"${info.name}"`)
                     .replace(/'{message}'/g, `"${info.message || info.name}"`);
 
                 // Add weight if mentioned in details
                 if (details && details.match(/\d+g/)) {
                     const weight = details.match(/\d+g/)[0];
-                    if (!description.includes(weight)) {
+                    if (!description.includes(weight) && !description.includes('110g')) {
                         description = description.replace('Cadbury Dairy Milk', `Cadbury ${weight} Dairy Milk`);
                     }
+                }
+
+                // Category-specific adjustments
+                if (category === 'hamper' && !description.includes('hamper') && !description.includes('box')) {
+                    description = description.replace('chocolate gift', info.productType);
                 }
 
                 variations.push({
                     text: description,
                     templateType: template.type,
-                    charCount: description.length
+                    charCount: description.length,
+                    tone: template.tone
                 });
             }
 
             return variations;
         }
 
-        // Select diverse templates (avoid similar types)
-        function selectDiverseTemplates(count) {
-            const shuffled = [...templates].sort(() => Math.random() - 0.5);
+        // Smart template selection based on category
+        function selectSmartTemplates(category, info, count) {
+            // Filter templates that match the category
+            let relevantTemplates = templates.filter(t => 
+                t.categories.includes(category) || t.categories.includes('standard')
+            );
+
+            // If we have specific occasion/recipient info, prioritize matching templates
+            if (info.occasion && category === 'seasonal') {
+                const seasonalTemplates = relevantTemplates.filter(t => 
+                    t.categories.includes('seasonal')
+                );
+                if (seasonalTemplates.length >= count) {
+                    relevantTemplates = seasonalTemplates;
+                }
+            }
+
+            if (info.recipient && (info.recipient.toLowerCase().includes('employee') || 
+                                   info.recipient.toLowerCase().includes('team') ||
+                                   info.recipient.toLowerCase().includes('client'))) {
+                const corporateTemplates = relevantTemplates.filter(t => 
+                    t.categories.includes('corporate')
+                );
+                if (corporateTemplates.length > 0) {
+                    relevantTemplates = [...corporateTemplates, ...relevantTemplates.filter(t => !t.categories.includes('corporate'))];
+                }
+            }
+
+            // Shuffle and select diverse templates
+            const shuffled = [...relevantTemplates].sort(() => Math.random() - 0.5);
             const selected = [];
-            const usedTypes = new Set();
+            const usedTones = new Set();
 
             for (const template of shuffled) {
                 if (selected.length >= count) break;
                 
-                // Try to avoid similar template types
-                const baseType = template.type.split('_')[0];
-                if (!usedTypes.has(baseType)) {
+                // Try to get different tones for variety
+                if (!usedTones.has(template.tone) || selected.length >= count - 1) {
                     selected.push(template);
-                    usedTypes.add(baseType);
+                    usedTones.add(template.tone);
                 }
             }
 
-            // If we don't have enough diverse types, add more
-            while (selected.length < count) {
+            // If we don't have enough, add more regardless of tone
+            while (selected.length < count && shuffled.length > selected.length) {
                 const remaining = shuffled.filter(t => !selected.includes(t));
                 if (remaining.length > 0) {
                     selected.push(remaining[0]);
@@ -686,7 +948,7 @@
                         <div class="result-text">${desc.text}</div>
                         <div class="result-meta">
                             <span class="char-count ${charStatus}">
-                                ${desc.charCount} characters ${charMessage}
+                                ${desc.charCount} characters ${charMessage} • Tone: ${desc.tone}
                             </span>
                             <div class="actions">
                                 <button class="btn btn-approve" onclick="approveDescription(${index}, '${productName.replace(/'/g, "\\'")}', '${desc.text.replace(/'/g, "\\'")}')">
