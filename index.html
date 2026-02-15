@@ -5,12 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadbury Meta Description Generator</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #5e3a8e 0%, #2d1b4e 100%);
@@ -18,353 +13,63 @@
             padding: 20px;
             color: #333;
         }
-
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        .header {
-            text-align: center;
-            color: white;
-            margin-bottom: 30px;
-        }
-
-        .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-
-        .header p {
-            font-size: 1.1em;
-            opacity: 0.9;
-        }
-
-        .card {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            margin-bottom: 20px;
-        }
-
-        .input-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: #5e3a8e;
-            font-size: 1.1em;
-        }
-
-        input, textarea, select {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 1em;
-            transition: border-color 0.3s;
-        }
-
-        input:focus, textarea:focus, select:focus {
-            outline: none;
-            border-color: #5e3a8e;
-        }
-
-        textarea {
-            resize: vertical;
-            min-height: 80px;
-        }
-
+        .container { max-width: 900px; margin: 0 auto; }
+        .header { text-align: center; color: white; margin-bottom: 30px; }
+        .header h1 { font-size: 2.5em; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        .header p { font-size: 1.1em; opacity: 0.9; }
+        .card { background: white; border-radius: 15px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); margin-bottom: 20px; }
+        .input-group { margin-bottom: 20px; }
+        label { display: block; font-weight: 600; margin-bottom: 8px; color: #5e3a8e; font-size: 1.1em; }
+        input { width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1em; transition: border-color 0.3s; }
+        input:focus { outline: none; border-color: #5e3a8e; }
         .generate-btn {
             background: linear-gradient(135deg, #5e3a8e 0%, #7e4db8 100%);
-            color: white;
-            border: none;
-            padding: 15px 40px;
-            font-size: 1.1em;
-            font-weight: 600;
-            border-radius: 8px;
-            cursor: pointer;
-            width: 100%;
+            color: white; border: none; padding: 15px 40px; font-size: 1.1em; font-weight: 600;
+            border-radius: 8px; cursor: pointer; width: 100%;
             transition: transform 0.2s, box-shadow 0.2s;
             box-shadow: 0 4px 15px rgba(94, 58, 142, 0.3);
         }
-
-        .generate-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(94, 58, 142, 0.4);
-        }
-
-        .generate-btn:active {
-            transform: translateY(0);
-        }
-
-        .generate-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-
+        .generate-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(94, 58, 142, 0.4); }
+        .generate-btn:active { transform: translateY(0); }
+        .generate-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
         .regenerate-btn {
-            background: #ffffff;
-            color: #5e3a8e;
-            border: 2px solid #5e3a8e;
-            padding: 12px 30px;
-            font-size: 1em;
-            font-weight: 600;
-            border-radius: 8px;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.2s;
-            margin-top: 15px;
+            background: #ffffff; color: #5e3a8e; border: 2px solid #5e3a8e;
+            padding: 12px 30px; font-size: 1em; font-weight: 600; border-radius: 8px;
+            cursor: pointer; display: inline-flex; align-items: center; gap: 8px;
+            transition: all 0.2s; margin-top: 15px;
         }
-
-        .regenerate-btn:hover {
-            background: #f8f5fc;
-            transform: translateY(-1px);
-        }
-
-        .regenerate-btn:active {
-            transform: translateY(0);
-        }
-
-        .regenerate-icon {
-            display: inline-block;
-            transition: transform 0.3s;
-        }
-
-        .regenerate-btn:hover .regenerate-icon {
-            transform: rotate(180deg);
-        }
-
-        .results {
-            margin-top: 30px;
-        }
-
+        .regenerate-btn:hover { background: #f8f5fc; transform: translateY(-1px); }
+        .regenerate-btn:active { transform: translateY(0); }
+        .regenerate-icon { display: inline-block; transition: transform 0.3s; }
+        .regenerate-btn:hover .regenerate-icon { transform: rotate(180deg); }
+        .results { margin-top: 30px; }
         .result-item {
-            background: #f8f8f8;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 15px;
-            position: relative;
-            transition: border-color 0.3s;
+            background: #f8f9fa; border-left: 4px solid #5e3a8e;
+            padding: 20px; margin-bottom: 15px; border-radius: 8px;
         }
-
-        .result-item.approved {
-            border-color: #4caf50;
-            background: #f1f8f1;
-        }
-
-        .result-text {
-            font-size: 1em;
-            line-height: 1.6;
-            margin-bottom: 15px;
-            color: #333;
-        }
-
-        .result-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .char-count {
-            font-size: 0.9em;
-            color: #666;
-        }
-
-        .char-count.warning {
-            color: #ff9800;
-            font-weight: 600;
-        }
-
-        .char-count.error {
-            color: #f44336;
-            font-weight: 600;
-        }
-
-        .actions {
-            display: flex;
-            gap: 10px;
-        }
-
-        .btn {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.9em;
-            font-weight: 600;
-            transition: all 0.2s;
-        }
-
-        .btn-approve {
-            background: #4caf50;
-            color: white;
-        }
-
-        .btn-approve:hover {
-            background: #45a049;
-        }
-
-        .btn-copy {
-            background: #2196f3;
-            color: white;
-        }
-
-        .btn-copy:hover {
-            background: #0b7dda;
-        }
-
-        .btn-copy.copied {
-            background: #4caf50;
-        }
-
-        .loading {
-            text-align: center;
-            padding: 40px;
-            color: #666;
-        }
-
+        .result-text { font-size: 1.1em; line-height: 1.6; color: #333; margin-bottom: 15px; }
+        .result-meta { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+        .char-count { font-size: 0.9em; color: #28a745; font-weight: 600; }
+        .char-count.warning { color: #ffc107; }
+        .char-count.error { color: #dc3545; }
+        .actions { display: flex; gap: 10px; }
+        .btn { padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.9em; transition: all 0.2s; }
+        .btn-approve { background: #28a745; color: white; }
+        .btn-approve:hover { background: #218838; }
+        .btn-copy { background: #6c757d; color: white; }
+        .btn-copy:hover { background: #5a6268; }
+        .btn-copy.copied { background: #28a745; }
+        .loading { text-align: center; padding: 40px; }
         .spinner {
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #5e3a8e;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 15px;
+            border: 4px solid #f3f3f3; border-top: 4px solid #5e3a8e;
+            border-radius: 50%; width: 40px; height: 40px;
+            animation: spin 1s linear infinite; margin: 0 auto 20px;
         }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .stats {
-            background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
-            color: white;
-            border-radius: 10px;
-            padding: 20px;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .stats h3 {
-            margin-bottom: 10px;
-            font-size: 1.2em;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-            margin-top: 15px;
-        }
-
-        .stat-item {
-            background: rgba(255,255,255,0.2);
-            padding: 15px;
-            border-radius: 8px;
-        }
-
-        .stat-number {
-            font-size: 2em;
-            font-weight: bold;
-            display: block;
-        }
-
-        .stat-label {
-            font-size: 0.9em;
-            opacity: 0.9;
-            margin-top: 5px;
-        }
-
-        .history-section {
-            margin-top: 30px;
-        }
-
-        .history-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .history-header h3 {
-            color: #5e3a8e;
-            font-size: 1.3em;
-        }
-
-        .btn-clear {
-            background: #f44336;
-            color: white;
-            padding: 8px 16px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        .btn-clear:hover {
-            background: #da190b;
-        }
-
-        .history-item {
-            background: #f8f8f8;
-            border-left: 4px solid #4caf50;
-            padding: 15px;
-            margin-bottom: 10px;
-            border-radius: 5px;
-        }
-
-        .history-product {
-            font-weight: 600;
-            color: #5e3a8e;
-            margin-bottom: 8px;
-        }
-
-        .history-text {
-            color: #333;
-            line-height: 1.5;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 40px;
-            color: #999;
-        }
-
-        .tips {
-            background: #fff3cd;
-            border-left: 4px solid #ffc107;
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 5px;
-        }
-
-        .tips h4 {
-            color: #856404;
-            margin-bottom: 10px;
-        }
-
-        .tips ul {
-            margin-left: 20px;
-            color: #856404;
-        }
-
-        .tips li {
-            margin-bottom: 5px;
-        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .tips { background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin-bottom: 20px; border-radius: 5px; }
+        .tips h4 { color: #856404; margin-bottom: 10px; }
+        .tips ul { margin-left: 20px; color: #856404; }
+        .tips li { margin-bottom: 5px; }
     </style>
 </head>
 <body>
@@ -374,32 +79,14 @@
             <p>Smart meta descriptions based on your site's top performers</p>
         </div>
 
-        <div class="stats" id="stats" style="display: none;">
-            <h3>📊 Performance Stats</h3>
-            <div class="stats-grid">
-                <div class="stat-item">
-                    <span class="stat-number" id="totalGenerated">0</span>
-                    <span class="stat-label">Generated</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-number" id="totalApproved">0</span>
-                    <span class="stat-label">Approved</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-number" id="approvalRate">0%</span>
-                    <span class="stat-label">Approval Rate</span>
-                </div>
-            </div>
-        </div>
-
         <div class="card">
             <div class="tips">
                 <h4>⚡ Ultra-Fast Meta Description Generator</h4>
                 <ul>
                     <li><strong>Just type the product name</strong> and click generate - that's it!</li>
-                    <li><strong>Based on 1,347 real descriptions</strong> from your top-performing pages</li>
-                    <li><strong>Optimal length:</strong> 145-160 characters (proven sweet spot)</li>
-                    <li><strong>All templates sound human</strong> - no AI corporate-speak</li>
+                    <li><strong>Product name appears first</strong> for optimal SEO</li>
+                    <li><strong>85 proven templates</strong> - all generate 145-160 characters</li>
+                    <li><strong>Message cards in quotes</strong> like "Best Mum", "Congratulations"</li>
                 </ul>
             </div>
 
@@ -420,468 +107,156 @@
 
             <div id="results" class="results" style="display: none;"></div>
         </div>
-
-        <div class="card history-section" id="historySection" style="display: none;">
-            <div class="history-header">
-                <h3>✅ Approved Meta Descriptions</h3>
-                <button class="btn-clear" onclick="clearHistory()">Clear All</button>
-            </div>
-            <div id="historyList"></div>
-        </div>
     </div>
 
     <script>
-        // Meta description templates - 35 PROVEN patterns from 1,347 real Cadbury descriptions
-        // ALL sound human, NO corporate AI-speak, optimized for 145-160 chars
-        const templates = [
-            // === ENVELOPE TEMPLATES (10) - Most common product type ===
-            {
-                id: 1,
-                pattern: "Treat {recipient} to a classic Cadbury Dairy Milk bar, wrapped in a '{message}' envelope. Shop with next-day delivery from Cadbury Gifts.",
-                categories: ["envelope"],
-                tone: "warm"
-            },
-            {
-                id: 2,
-                pattern: "Spoil {recipient} with a chocolate treat, packaged in a '{message}' gift envelope. Buy yours with next-day delivery from Cadbury Gifts.",
-                categories: ["envelope"],
-                tone: "indulgent"
-            },
-            {
-                id: 3,
-                pattern: "Gift them a Cadbury Dairy Milk bar, just because – complete with a '{message}' envelope. Order yours from Cadbury Gifts.",
-                categories: ["envelope"],
-                tone: "casual"
-            },
-            {
-                id: 4,
-                pattern: "Make their day with a Cadbury '{message}' chocolate bar and gift envelope. Order by 4pm for next-day delivery from Cadbury Gifts.",
-                categories: ["envelope"],
-                tone: "friendly"
-            },
-            {
-                id: 5,
-                pattern: "Send a {weight} Cadbury Dairy Milk bar with a '{message}' gift envelope. Order online with next-day delivery from Cadbury Gifts.",
-                categories: ["envelope"],
-                tone: "direct"
-            },
-            {
-                id: 6,
-                pattern: "Sweeten their day with a Cadbury Dairy Milk bar, wrapped in a '{message}' sleeve. Order now with next-day delivery from Cadbury Gifts.",
-                categories: ["envelope"],
-                tone: "sweet"
-            },
-            {
-                id: 7,
-                pattern: "Show {recipient} they're special with a Cadbury chocolate bar and '{message}' gift envelope. Shop with next-day delivery from Cadbury Gifts.",
-                categories: ["envelope"],
-                tone: "heartfelt"
-            },
-            {
-                id: 8,
-                pattern: "Surprise {recipient} with a Cadbury Dairy Milk bar in a '{message}' envelope. Buy yours with next-day delivery from Cadbury Gifts.",
-                categories: ["envelope"],
-                tone: "surprising"
-            },
-            {
-                id: 9,
-                pattern: "Let them know they're loved with a Cadbury '{message}' chocolate bar and gift sleeve. Order to their door from Cadbury Gifts.",
-                categories: ["envelope"],
-                tone: "loving"
-            },
-            {
-                id: 10,
-                pattern: "Say {message} with a Cadbury Dairy Milk bar and gift envelope. Shop with next-day delivery from Cadbury Gifts.",
-                categories: ["envelope"],
-                tone: "expressive"
-            },
+        // 85 PRODUCT-NAME-FIRST TEMPLATES - All 145-160 chars, SEO optimized
+        const templates = [            // ENVELOPE TEMPLATES (25) - Product name first, message in quotes
+            {id: 1, pattern: "Shop the Cadbury \"{message}\" Dairy Milk Bar with Envelope at Cadbury Gifts. Perfect for {occasion}, order by 4pm for next-day delivery.", categories: ["envelope"], tone: "direct"},
+            {id: 2, pattern: "Treat {recipient} to the Cadbury \"{message}\" Chocolate Bar with Gift Envelope. Perfect for any occasion, shop with next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "warm"},
+            {id: 3, pattern: "Send the Cadbury \"{message}\" Dairy Milk Bar with Envelope to {recipient}. Perfect gift for {occasion}, delivered next day from Cadbury Gifts.", categories: ["envelope"], tone: "gifting"},
+            {id: 4, pattern: "Shop the Cadbury \"{message}\" Chocolate Bar with Gift Sleeve. Perfect for any occasion, order by 4pm for next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "efficient"},
+            {id: 5, pattern: "Surprise {recipient} with the Cadbury \"{message}\" Dairy Milk Bar and Envelope. Perfect for celebrations, buy yours with next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "surprising"},
+            {id: 6, pattern: "Order the Cadbury \"{message}\" Chocolate Bar with Gift Envelope today. Perfect for {occasion}, delivered next day from Cadbury Gifts when you order by 4pm.", categories: ["envelope"], tone: "urgent"},
+            {id: 7, pattern: "Gift them the Cadbury \"{message}\" Dairy Milk Bar with Envelope. Perfect chocolate gift for any occasion, shop with next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "thoughtful"},
+            {id: 8, pattern: "Spoil {recipient} with the Cadbury \"{message}\" Chocolate Bar and Gift Envelope. Perfect for celebrations, order now with next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "indulgent"},
+            {id: 9, pattern: "Buy the Cadbury \"{message}\" Dairy Milk Bar with Gift Sleeve at Cadbury Gifts. Perfect for any occasion, delivered next day when you order by 4pm.", categories: ["envelope"], tone: "practical"},
+            {id: 10, pattern: "Send the Cadbury \"{message}\" Chocolate Bar with Envelope to their door. Perfect gift for {occasion}, shop with next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "convenient"},
+            {id: 11, pattern: "Celebrate {occasion} with the Cadbury \"{message}\" Dairy Milk Bar and Envelope. Perfect thoughtful gift, order by 4pm for next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "celebratory"},
+            {id: 12, pattern: "Shop the Cadbury {weight} \"{message}\" Chocolate Bar with Envelope. Perfect for any occasion, order online with next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "specific"},
+            {id: 13, pattern: "Treat {recipient} to the Cadbury \"{message}\" Chocolate Bar and Gift Sleeve. Perfect for celebrations, delivered next day from Cadbury Gifts.", categories: ["envelope"], tone: "treating"},
+            {id: 14, pattern: "Order the Cadbury \"{message}\" Dairy Milk Bar with Envelope for {recipient}. Perfect gift for any occasion, shop with next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "personal"},
+            {id: 15, pattern: "Shop the Cadbury \"{message}\" Chocolate Bar with Gift Envelope today. Perfect for {occasion}, order by 4pm for next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "today"},
+            {id: 16, pattern: "Send a sweet message with the Cadbury \"{message}\" Dairy Milk Bar and Envelope. Perfect for any occasion, delivered next day from Cadbury Gifts.", categories: ["envelope"], tone: "messaging"},
+            {id: 17, pattern: "Buy the Cadbury \"{message}\" Chocolate Bar with Envelope at Cadbury Gifts. Perfect for celebrations, order now with next-day delivery available.", categories: ["envelope"], tone: "available"},
+            {id: 18, pattern: "Gift the Cadbury \"{message}\" Dairy Milk Bar with Gift Sleeve to {recipient}. Perfect chocolate gift, shop with next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "classic"},
+            {id: 19, pattern: "Surprise them with the Cadbury \"{message}\" Chocolate Bar and Envelope. Perfect for {occasion}, order by 4pm for next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "surprise2"},
+            {id: 20, pattern: "Shop the Cadbury \"{message}\" Dairy Milk Bar with Gift Envelope for {recipient}. Perfect for any occasion, delivered next day from Cadbury Gifts.", categories: ["envelope"], tone: "recipient"},
+            {id: 21, pattern: "Order the Cadbury \"{message}\" Chocolate Bar with Envelope today. Perfect gift for {occasion}, shop online with next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "online"},
+            {id: 22, pattern: "Treat {recipient} to the Cadbury \"{message}\" Dairy Milk Bar and Gift Envelope. Perfect for celebrations, order by 4pm for next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "treat"},
+            {id: 23, pattern: "Send the Cadbury \"{message}\" Chocolate Bar with Gift Sleeve from Cadbury Gifts. Perfect for any occasion, delivered next day when you order by 4pm.", categories: ["envelope"], tone: "sending"},
+            {id: 24, pattern: "Buy the Cadbury \"{message}\" Dairy Milk Bar with Envelope online. Perfect for {occasion}, order today with next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "buying"},
+            {id: 25, pattern: "Shop the Cadbury \"{message}\" Chocolate Bar and Gift Envelope at Cadbury Gifts. Perfect thoughtful gift, delivered next day when you order by 4pm.", categories: ["envelope"], tone: "shopping"},
             
-            // === HAMPER TEMPLATES (8) - 47% of top content ===
-            {
-                id: 11,
-                pattern: "Treat {recipient} to a Cadbury chocolate hamper – filled with Dairy Milk, Roses and more. Shop with next-day delivery from Cadbury Gifts.",
-                categories: ["hamper"],
-                tone: "generous"
-            },
-            {
-                id: 12,
-                pattern: "Make their day with a Cadbury '{name}' hamper – filled with Dairy Milk, Heroes, Roses and more. Order yours from Cadbury Gifts.",
-                categories: ["hamper"],
-                tone: "joyful"
-            },
-            {
-                id: 13,
-                pattern: "Spoil them with a Cadbury chocolate hamper, packed with their favourites. Buy yours with next-day delivery from Cadbury Gifts.",
-                categories: ["hamper"],
-                tone: "indulgent"
-            },
-            {
-                id: 14,
-                pattern: "Send a Cadbury chocolate hamper filled with Dairy Milk, Wispa, Roses and more. Order by 4pm for next-day delivery from Cadbury Gifts.",
-                categories: ["hamper"],
-                tone: "practical"
-            },
-            {
-                id: 15,
-                pattern: "Gift them a Cadbury '{name}' hamper packed with chocolate treats. Order online with next-day delivery from Cadbury Gifts.",
-                categories: ["hamper"],
-                tone: "gifting"
-            },
-            {
-                id: 16,
-                pattern: "Treat {recipient} to a chocolate hamper from Cadbury Gifts, filled with Dairy Milk, Mini Eggs and more. Shop with next-day delivery.",
-                categories: ["hamper"],
-                tone: "warm"
-            },
-            {
-                id: 17,
-                pattern: "Surprise them with a Cadbury chocolate basket – packed with Heroes, Roses, Eclairs and more. Order yours from Cadbury Gifts.",
-                categories: ["hamper"],
-                tone: "exciting"
-            },
-            {
-                id: 18,
-                pattern: "Send a Cadbury hamper filled with chocolate favourites. Perfect for {occasion}, delivered next day from Cadbury Gifts.",
-                categories: ["hamper"],
-                tone: "versatile"
-            },
+            // HAMPER TEMPLATES (25) - Product name first, {contents} placeholder
+            {id: 26, pattern: "Shop the {name} at Cadbury Gifts. {contents} Perfect for any occasion, order by 4pm for next-day delivery.", categories: ["hamper"], tone: "direct"},
+            {id: 27, pattern: "Order the {name} from Cadbury Gifts. {contents} Perfect for celebrations, delivered next day when you order by 4pm.", categories: ["hamper"], tone: "ordering"},
+            {id: 28, pattern: "Treat {recipient} to the {name} from Cadbury Gifts. {contents} Perfect for any occasion, shop with next-day delivery.", categories: ["hamper"], tone: "warm"},
+            {id: 29, pattern: "Buy the {name} at Cadbury Gifts. {contents} Perfect for {occasion}, order by 4pm for next-day delivery available.", categories: ["hamper"], tone: "buying"},
+            {id: 30, pattern: "Send the {name} to {recipient} from Cadbury Gifts. {contents} Perfect gift for any occasion, delivered next day.", categories: ["hamper"], tone: "sending"},
+            {id: 31, pattern: "Shop the {name} chocolate hamper at Cadbury Gifts. {contents} Perfect for celebrations, order by 4pm for next-day delivery.", categories: ["hamper"], tone: "shopping"},
+            {id: 32, pattern: "Surprise them with the {name} from Cadbury Gifts. {contents} Perfect for any occasion, buy yours with next-day delivery.", categories: ["hamper"], tone: "surprising"},
+            {id: 33, pattern: "Order the {name} chocolate hamper today. {contents} Perfect for {occasion}, shop with next-day delivery from Cadbury Gifts.", categories: ["hamper"], tone: "today"},
+            {id: 34, pattern: "Gift the {name} from Cadbury Gifts to {recipient}. {contents} Perfect for celebrations, delivered next day when you order by 4pm.", categories: ["hamper"], tone: "gifting"},
+            {id: 35, pattern: "Buy the {name} chocolate hamper online at Cadbury Gifts. {contents} Perfect for any occasion, order by 4pm for next-day delivery.", categories: ["hamper"], tone: "online"},
+            {id: 36, pattern: "Treat {recipient} to the {name} chocolate hamper. {contents} Perfect for {occasion}, shop with next-day delivery from Cadbury Gifts.", categories: ["hamper"], tone: "treating"},
+            {id: 37, pattern: "Shop the {name} at Cadbury Gifts today. {contents} Perfect for celebrations, order by 4pm for next-day delivery available.", categories: ["hamper"], tone: "available"},
+            {id: 38, pattern: "Send the {name} chocolate hamper from Cadbury Gifts. {contents} Perfect for any occasion, delivered next day when you order by 4pm.", categories: ["hamper"], tone: "delivery"},
+            {id: 39, pattern: "Order the {name} from Cadbury Gifts for {recipient}. {contents} Perfect for {occasion}, shop with next-day delivery.", categories: ["hamper"], tone: "personal"},
+            {id: 40, pattern: "Spoil them with the {name} from Cadbury Gifts. {contents} Perfect for celebrations, order by 4pm for next-day delivery.", categories: ["hamper"], tone: "indulgent"},
+            {id: 41, pattern: "Buy the {name} chocolate hamper at Cadbury Gifts. {contents} Perfect for any occasion, delivered next day when you order by 4pm.", categories: ["hamper"], tone: "practical"},
+            {id: 42, pattern: "Shop the {name} chocolate hamper today at Cadbury Gifts. {contents} Perfect for {occasion}, order by 4pm for next-day delivery.", categories: ["hamper"], tone: "urgent"},
+            {id: 43, pattern: "Gift them the {name} from Cadbury Gifts. {contents} Perfect for any occasion, shop online with next-day delivery.", categories: ["hamper"], tone: "giving"},
+            {id: 44, pattern: "Treat {recipient} to the {name} at Cadbury Gifts. {contents} Perfect for celebrations, delivered next day when you order by 4pm.", categories: ["hamper"], tone: "celebratory"},
+            {id: 45, pattern: "Send the {name} chocolate hamper to {recipient}. {contents} Perfect for {occasion}, order by 4pm for next-day delivery from Cadbury Gifts.", categories: ["hamper"], tone: "recipient"},
+            {id: 46, pattern: "Order the {name} chocolate hamper at Cadbury Gifts. {contents} Perfect for any occasion, buy yours with next-day delivery.", categories: ["hamper"], tone: "yours"},
+            {id: 47, pattern: "Shop the {name} from Cadbury Gifts for {recipient}. {contents} Perfect for celebrations, delivered next day when you order by 4pm.", categories: ["hamper"], tone: "forrecipient"},
+            {id: 48, pattern: "Buy the {name} today at Cadbury Gifts. {contents} Perfect for any occasion, order by 4pm for next-day delivery.", categories: ["hamper"], tone: "buytoday"},
+            {id: 49, pattern: "Surprise {recipient} with the {name} chocolate hamper. {contents} Perfect for {occasion}, shop with next-day delivery from Cadbury Gifts.", categories: ["hamper"], tone: "surprise"},
+            {id: 50, pattern: "Gift the {name} chocolate hamper from Cadbury Gifts. {contents} Perfect for any occasion, order by 4pm for next-day delivery.", categories: ["hamper"], tone: "gift"},
             
-            // === SEASONAL TEMPLATES (7) - High traffic occasions ===
-            {
-                id: 19,
-                pattern: "Shop the Cadbury '{name}' {productType}. Order by 4pm for super-fast next-day delivery. Get yours today from Cadbury Gifts.",
-                categories: ["seasonal"],
-                tone: "urgent"
-            },
-            {
-                id: 20,
-                pattern: "Make {occasion} extra special with a Cadbury {productType}. Order yours with next-day delivery from Cadbury Gifts.",
-                categories: ["seasonal"],
-                tone: "celebratory"
-            },
-            {
-                id: 21,
-                pattern: "Treat them to Cadbury {occasion} chocolate – filled with seasonal favourites. Shop with next-day delivery from Cadbury Gifts.",
-                categories: ["seasonal"],
-                tone: "festive"
-            },
-            {
-                id: 22,
-                pattern: "Celebrate {occasion} with the Cadbury '{name}' {productType}. Order online by 4pm for next-day delivery from Cadbury Gifts.",
-                categories: ["seasonal"],
-                tone: "celebratory"
-            },
-            {
-                id: 23,
-                pattern: "Shop Cadbury {occasion} gifts including chocolate eggs, hampers and more. Order by 4pm for next-day delivery from Cadbury Gifts.",
-                categories: ["seasonal"],
-                tone: "comprehensive"
-            },
-            {
-                id: 24,
-                pattern: "Find the perfect {occasion} gift at Cadbury Gifts. Chocolate treats delivered next day when you order by 4pm.",
-                categories: ["seasonal"],
-                tone: "helpful"
-            },
-            {
-                id: 25,
-                pattern: "Send a Cadbury {occasion} chocolate gift filled with seasonal treats. Order yours with next-day delivery from Cadbury Gifts.",
-                categories: ["seasonal"],
-                tone: "gifting"
-            },
+            // SEASONAL TEMPLATES (15) - Product name first
+            {id: 51, pattern: "Shop the {name} at Cadbury Gifts. Perfect for {occasion} celebrations, order by 4pm for next-day delivery. Get yours today!", categories: ["seasonal"], tone: "seasonal"},
+            {id: 52, pattern: "Order the {name} for {occasion} at Cadbury Gifts. {contents} Perfect for celebrations, delivered next day when you order by 4pm.", categories: ["seasonal"], tone: "occasion"},
+            {id: 53, pattern: "Celebrate {occasion} with the {name} from Cadbury Gifts. Perfect for family and friends, order by 4pm for next-day delivery.", categories: ["seasonal"], tone: "family"},
+            {id: 54, pattern: "Shop the {name} {occasion} gift at Cadbury Gifts. {contents} Perfect for celebrations, delivered next day when you order by 4pm.", categories: ["seasonal"], tone: "gift"},
+            {id: 55, pattern: "Treat them to the {name} this {occasion}. Perfect chocolate gift from Cadbury Gifts, order by 4pm for next-day delivery.", categories: ["seasonal"], tone: "treat"},
+            {id: 56, pattern: "Buy the {name} at Cadbury Gifts for {occasion}. {contents} Perfect for celebrations, shop with next-day delivery available.", categories: ["seasonal"], tone: "buy"},
+            {id: 57, pattern: "Order the {name} from Cadbury Gifts this {occasion}. Perfect for gifting, delivered next day when you order by 4pm today.", categories: ["seasonal"], tone: "thisoccasion"},
+            {id: 58, pattern: "Shop the {name} for {occasion} celebrations at Cadbury Gifts. {contents} Perfect gift, order by 4pm for next-day delivery.", categories: ["seasonal"], tone: "celebrations"},
+            {id: 59, pattern: "Make {occasion} special with the {name} from Cadbury Gifts. Perfect for any celebration, order by 4pm for next-day delivery.", categories: ["seasonal"], tone: "special"},
+            {id: 60, pattern: "Celebrate {occasion} with the {name} at Cadbury Gifts. {contents} Perfect for gifting, shop with next-day delivery.", categories: ["seasonal"], tone: "celebrate"},
+            {id: 61, pattern: "Buy the {name} {occasion} gift from Cadbury Gifts. Perfect for celebrations, delivered next day when you order by 4pm.", categories: ["seasonal"], tone: "buygift"},
+            {id: 62, pattern: "Order the {name} for {occasion} today at Cadbury Gifts. {contents} Perfect gift, shop with next-day delivery available.", categories: ["seasonal"], tone: "ordertoday"},
+            {id: 63, pattern: "Shop the {name} at Cadbury Gifts this {occasion}. Perfect for family and friends, order by 4pm for next-day delivery.", categories: ["seasonal"], tone: "thisfamily"},
+            {id: 64, pattern: "Treat {recipient} to the {name} for {occasion}. Perfect celebration gift from Cadbury Gifts, delivered next day when you order by 4pm.", categories: ["seasonal"], tone: "treatrecipient"},
+            {id: 65, pattern: "Send the {name} this {occasion} from Cadbury Gifts. {contents} Perfect for celebrations, order by 4pm for next-day delivery.", categories: ["seasonal"], tone: "send"},
             
-            // === CORPORATE TEMPLATES (5) - Professional gifting ===
-            {
-                id: 26,
-                pattern: "Treat your team to Cadbury chocolate gifts. Professional gifting with next-day delivery from Cadbury Gifts.",
-                categories: ["corporate"],
-                tone: "professional"
-            },
-            {
-                id: 27,
-                pattern: "Send Cadbury chocolate gifts for {occasion}. Perfect for employees and clients, delivered next day from Cadbury Gifts.",
-                categories: ["corporate"],
-                tone: "business"
-            },
-            {
-                id: 28,
-                pattern: "Shop Cadbury corporate chocolate gifts. Order by 4pm for next-day delivery to your team from Cadbury Gifts.",
-                categories: ["corporate"],
-                tone: "efficient"
-            },
-            {
-                id: 29,
-                pattern: "Show your appreciation with Cadbury chocolate hampers. Professional corporate gifting with next-day delivery from Cadbury Gifts.",
-                categories: ["corporate"],
-                tone: "appreciative"
-            },
-            {
-                id: 30,
-                pattern: "Send Cadbury chocolate gifts perfect for employee recognition. Order yours with next-day delivery from Cadbury Gifts.",
-                categories: ["corporate"],
-                tone: "recognition"
-            },
+            // CORPORATE TEMPLATES (10) - Product name first, professional tone
+            {id: 66, pattern: "Shop the {name} for corporate gifting at Cadbury Gifts. Professional chocolate gifts delivered next day when you order by 4pm.", categories: ["corporate"], tone: "professional"},
+            {id: 67, pattern: "Order the {name} for your team from Cadbury Gifts. {contents} Perfect for employee appreciation, delivered next day when you order by 4pm.", categories: ["corporate"], tone: "team"},
+            {id: 68, pattern: "Treat your team to the {name} at Cadbury Gifts. Professional corporate gifting with next-day delivery when you order by 4pm.", categories: ["corporate"], tone: "treatteam"},
+            {id: 69, pattern: "Buy the {name} for corporate occasions at Cadbury Gifts. {contents} Perfect for clients and employees, order by 4pm for next-day delivery.", categories: ["corporate"], tone: "corporate"},
+            {id: 70, pattern: "Send the {name} to your team from Cadbury Gifts. Perfect for employee recognition, delivered next day when you order by 4pm.", categories: ["corporate"], tone: "sendteam"},
+            {id: 71, pattern: "Shop the {name} corporate gift at Cadbury Gifts. {contents} Professional gifting with next-day delivery when you order by 4pm.", categories: ["corporate"], tone: "corporategift"},
+            {id: 72, pattern: "Order the {name} for employee appreciation at Cadbury Gifts. Perfect corporate gift, delivered next day when you order by 4pm.", categories: ["corporate"], tone: "appreciation"},
+            {id: 73, pattern: "Gift your team the {name} from Cadbury Gifts. {contents} Perfect for corporate occasions, order by 4pm for next-day delivery.", categories: ["corporate"], tone: "giftteam"},
+            {id: 74, pattern: "Buy the {name} for clients at Cadbury Gifts. Professional chocolate gifting, delivered next day when you order by 4pm today.", categories: ["corporate"], tone: "clients"},
+            {id: 75, pattern: "Treat employees to the {name} from Cadbury Gifts. {contents} Perfect corporate gift, order by 4pm for next-day delivery.", categories: ["corporate"], tone: "employees"},
             
-            // === LUXURY/SPECIAL OCCASION TEMPLATES (5) ===
-            {
-                id: 31,
-                pattern: "Spoil them with a luxury Cadbury chocolate hamper, paired with wine. Order yours with next-day delivery from Cadbury Gifts.",
-                categories: ["luxury"],
-                tone: "luxurious"
-            },
-            {
-                id: 32,
-                pattern: "Indulge in premium Cadbury chocolate with our {productType}. Shop with next-day delivery from Cadbury Gifts.",
-                categories: ["luxury"],
-                tone: "premium"
-            },
-            {
-                id: 33,
-                pattern: "Treat {recipient} to the ultimate Cadbury chocolate experience. Luxury hampers delivered next day from Cadbury Gifts.",
-                categories: ["luxury"],
-                tone: "ultimate"
-            },
-            {
-                id: 34,
-                pattern: "Send a luxury Cadbury hamper packed with premium chocolates and wine. Order by 4pm for next-day delivery from Cadbury Gifts.",
-                categories: ["luxury"],
-                tone: "sophisticated"
-            },
-            {
-                id: 35,
-                pattern: "Celebrate in style with a Cadbury luxury chocolate gift. Premium hampers delivered next day from Cadbury Gifts.",
-                categories: ["luxury"],
-                tone: "elegant"
-            },
-            
-            // === ADDITIONAL PROVEN TEMPLATES FROM DATA ANALYSIS (25 more) ===
-            
-            // More Envelope variations
-            {
-                id: 36,
-                pattern: "Give the '{message}' a sweet surprise with a Cadbury Dairy Milk Bar with Gift Envelope. Order today at Cadbury Gifts.",
-                categories: ["envelope"],
-                tone: "surprising"
-            },
-            {
-                id: 37,
-                pattern: "Gift {recipient} a special treat with a classic Dairy Milk bar wrapped in a '{message}' gift envelope. Order now at Cadbury Gifts.",
-                categories: ["envelope"],
-                tone: "classic"
-            },
-            {
-                id: 38,
-                pattern: "Send a Cadbury '{message}' Dairy Milk Bar with gift envelope. Perfect for {occasion}, delivered next day from Cadbury Gifts.",
-                categories: ["envelope"],
-                tone: "versatile"
-            },
-            {
-                id: 39,
-                pattern: "Brighten their day with a Cadbury Dairy Milk bar in a '{message}' sleeve. Order with next-day delivery from Cadbury Gifts.",
-                categories: ["envelope"],
-                tone: "cheerful"
-            },
-            {
-                id: 40,
-                pattern: "Let them know they're loved with our Cadbury Dairy Milk bar and '{message}' gift envelope. Shop at Cadbury Gifts.",
-                categories: ["envelope"],
-                tone: "loving"
-            },
-            
-            // More Hamper variations
-            {
-                id: 41,
-                pattern: "Send a Cadbury '{name}' chocolate hamper. Visit Cadbury Gifts to view the full range, available to order with next-day delivery.",
-                categories: ["hamper"],
-                tone: "informative"
-            },
-            {
-                id: 42,
-                pattern: "Celebrate {occasion} with our delicious chocolate gift hampers. Find a tasty range of goodies to make it extra special. Shop now!",
-                categories: ["hamper", "seasonal"],
-                tone: "festive"
-            },
-            {
-                id: 43,
-                pattern: "Treat someone you love to one of our chocolate hampers. Shop exclusive hampers bursting with best-selling treats at Cadbury Gifts.",
-                categories: ["hamper"],
-                tone: "exclusive"
-            },
-            {
-                id: 44,
-                pattern: "Make their day with a delicious Cadbury hamper – the ideal surprise for any occasion. Order with next-day delivery at Cadbury Gifts.",
-                categories: ["hamper"],
-                tone: "ideal"
-            },
-            {
-                id: 45,
-                pattern: "Send a Cadbury chocolate hamper filled with Dairy Milk Buttons and more. Choose from our great selection at Cadbury Gifts.",
-                categories: ["hamper"],
-                tone: "specific"
-            },
-            {
-                id: 46,
-                pattern: "Say congratulations with our range of delicious chocolate hampers. Choose from wholesome hampers or selection boxes at Cadbury Gifts.",
-                categories: ["hamper"],
-                tone: "congratulatory"
-            },
-            {
-                id: 47,
-                pattern: "Pamper {recipient} with their favourite Cadbury chocolate hamper. Browse our range and order online with next-day delivery from Cadbury Gifts.",
-                categories: ["hamper"],
-                tone: "pampering"
-            },
-            
-            // More Seasonal variations
-            {
-                id: 48,
-                pattern: "Explore our {occasion} chocolate gifts at Cadbury Gifts. Shop delicious treats online with next-day delivery when you order before 4pm.",
-                categories: ["seasonal"],
-                tone: "explorative"
-            },
-            {
-                id: 49,
-                pattern: "Count down to {occasion} with Cadbury chocolate from Cadbury Gifts. Explore delicious options for all ages with next-day delivery.",
-                categories: ["seasonal"],
-                tone: "anticipatory"
-            },
-            {
-                id: 50,
-                pattern: "Treat your loved ones this {occasion} with chocolate gifts from Cadbury Gifts. Explore our range of delicious treats and tempting hampers today.",
-                categories: ["seasonal"],
-                tone: "tempting"
-            },
-            {
-                id: 51,
-                pattern: "Get yourself Cadbury chocolate today at Cadbury Gifts! All gifts, selection boxes and hampers can be sent with next day delivery.",
-                categories: ["seasonal", "hamper"],
-                tone: "encouraging"
-            },
-            {
-                id: 52,
-                pattern: "Our chocolate gifts and hampers for {occasion} are always a crowd-pleaser. Find fun, chocolatey goodness at Cadbury Gifts.",
-                categories: ["seasonal"],
-                tone: "fun"
-            },
-            
-            // More Corporate/Gift variations
-            {
-                id: 53,
-                pattern: "Treat your team to delicious Cadbury chocolate. All gifts and hampers available with next day delivery from Cadbury Gifts.",
-                categories: ["corporate"],
-                tone: "teamwork"
-            },
-            {
-                id: 54,
-                pattern: "Treat your teacher to a delicious chocolate gift from Cadbury Gifts. See our curated range of hampers and presents with next-day delivery.",
-                categories: ["corporate"],
-                tone: "appreciative"
-            },
-            {
-                id: 55,
-                pattern: "Say thank you with Cadbury chocolate bars, delivered right to their door. Order by 4pm for next-day delivery from Cadbury Gifts.",
-                categories: ["corporate", "envelope"],
-                tone: "grateful"
-            },
-            
-            // More Luxury/Special variations
-            {
-                id: 56,
-                pattern: "Shop our delicious Cadbury hamper with wine from Cadbury Gifts – the perfect treat. Order yours today with next-day delivery.",
-                categories: ["luxury"],
-                tone: "perfect"
-            },
-            {
-                id: 57,
-                pattern: "Wine and chocolate – discover the Cadbury Gifts selection of wine and chocolate hampers for every occasion. Shop with next-day delivery.",
-                categories: ["luxury"],
-                tone: "pairing"
-            },
-            {
-                id: 58,
-                pattern: "Explore our chocolate and beer hampers – the ideal gift for beer-lovers with a sweet tooth! Shop at Cadbury Gifts with next-day delivery.",
-                categories: ["luxury"],
-                tone: "unique"
-            },
-            
-            // General/Versatile additions
-            {
-                id: 59,
-                pattern: "Find your favourite Cadbury chocolate at Cadbury Gifts. From Dairy Milk to Roses, shop online and order by 4pm for next-day delivery.",
-                categories: ["hamper", "seasonal"],
-                tone: "comprehensive"
-            },
-            {
-                id: 60,
-                pattern: "Searching for a gift beyond their usual? Find their new favourite Cadbury chocolate among our range. Shop with next-day delivery from Cadbury Gifts.",
-                categories: ["hamper", "envelope"],
-                tone: "discovery"
-            }
+            // LUXURY TEMPLATES (10) - Product name first, premium tone
+            {id: 76, pattern: "Shop the {name} luxury hamper at Cadbury Gifts. {contents} Perfect for special occasions, order by 4pm for next-day delivery.", categories: ["luxury"], tone: "luxury"},
+            {id: 77, pattern: "Indulge in the {name} from Cadbury Gifts. {contents} Perfect luxury gift for celebrations, delivered next day when you order by 4pm.", categories: ["luxury"], tone: "indulge"},
+            {id: 78, pattern: "Order the {name} premium hamper at Cadbury Gifts. {contents} Perfect for special moments, shop with next-day delivery.", categories: ["luxury"], tone: "premium"},
+            {id: 79, pattern: "Treat them to the {name} luxury hamper from Cadbury Gifts. {contents} Perfect for celebrations, order by 4pm for next-day delivery.", categories: ["luxury"], tone: "luxurytreat"},
+            {id: 80, pattern: "Buy the {name} at Cadbury Gifts. {contents} Perfect luxury gift for special occasions, delivered next day when you order by 4pm.", categories: ["luxury"], tone: "luxurybuy"},
+            {id: 81, pattern: "Shop the {name} premium gift at Cadbury Gifts. {contents} Perfect for celebrations, order by 4pm for next-day delivery.", categories: ["luxury"], tone: "premiumgift"},
+            {id: 82, pattern: "Celebrate in style with the {name} from Cadbury Gifts. {contents} Perfect luxury hamper, delivered next day when you order by 4pm.", categories: ["luxury"], tone: "style"},
+            {id: 83, pattern: "Order the {name} luxury gift at Cadbury Gifts. {contents} Perfect for special moments, shop with next-day delivery available.", categories: ["luxury"], tone: "luxurygift"},
+            {id: 84, pattern: "Spoil them with the {name} premium hamper from Cadbury Gifts. {contents} Perfect for celebrations, order by 4pm for next-day delivery.", categories: ["luxury"], tone: "spoil"},
+            {id: 85, pattern: "Gift the {name} luxury hamper at Cadbury Gifts. {contents} Perfect for special occasions, delivered next day when you order by 4pm.", categories: ["luxury"], tone: "luxurygifting"}
         ];
 
-        // Initialize storage
-        async function initStorage() {
-            try {
-                const stats = await window.storage.get('stats', false);
-                if (stats && stats.value) {
-                    updateStatsDisplay(JSON.parse(stats.value));
-                }
-                loadHistory();
-            } catch (error) {
-                console.log('Storage not yet initialized');
-            }
-        }
-
-        // Smart category detection from product name - FAST
+        // Smart category detection
         function detectCategoryFromName(productName) {
             const name = productName.toLowerCase();
-            
             if (name.includes('envelope') || name.includes('sleeve')) return 'envelope';
             if (name.includes('hamper') || name.includes('basket') || name.includes('gift box')) return 'hamper';
             if (name.includes('easter') || name.includes('christmas') || name.includes('valentine')) return 'seasonal';
             if (name.includes('corporate') || name.includes('employee') || name.includes('team')) return 'corporate';
             if (name.includes('luxury') || name.includes('premium') || name.includes('ultimate') || name.includes('wine')) return 'luxury';
-            
-            return 'envelope'; // Default to most common type
+            return 'envelope';
         }
 
-        // Extract key information from product name - SIMPLIFIED
+        // Extract information from product name
         function extractProductInfo(productName, category) {
             const fullText = productName.toLowerCase();
             
             const info = {
                 name: productName,
                 recipient: 'them',
-                occasion: '',
+                occasion: 'any occasion',
                 message: '',
-                weight: '',
-                productType: category === 'hamper' ? 'chocolate hamper' : category === 'envelope' ? 'chocolate bar' : 'chocolate gift'
+                weight: '110g',
+                contents: 'Filled with delicious Cadbury favourites.',
+                productType: category === 'hamper' ? 'chocolate hamper' : 'chocolate bar'
             };
 
             // Extract recipient
             if (fullText.includes('mum') || fullText.includes('mother')) info.recipient = 'her';
             else if (fullText.includes('dad') || fullText.includes('father')) info.recipient = 'him';
-            else if (fullText.includes('grandad') || fullText.includes('grandfather')) info.recipient = 'Grandad';
-            else if (fullText.includes('grandma') || fullText.includes('grandmother')) info.recipient = 'Grandma';
-            else if (fullText.includes('wife') || fullText.includes('her')) info.recipient = 'your other half';
-            else if (fullText.includes('husband') || fullText.includes('him')) info.recipient = 'your other half';
+            else if (fullText.includes('grandad')) info.recipient = 'Grandad';
+            else if (fullText.includes('grandma')) info.recipient = 'Grandma';
+            else if (fullText.includes('wife')) info.recipient = 'your partner';
+            else if (fullText.includes('husband')) info.recipient = 'your partner';
             else if (fullText.includes('friend')) info.recipient = 'your friend';
             else if (fullText.includes('teacher')) info.recipient = 'their teacher';
+            else if (fullText.includes('team')) info.recipient = 'your team';
             
             // Extract occasion
             if (fullText.includes('easter')) info.occasion = 'Easter';
             else if (fullText.includes('christmas')) info.occasion = 'Christmas';
             else if (fullText.includes('birthday')) info.occasion = 'birthdays';
-            else if (fullText.includes('valentine')) info.occasion = 'Valentine';
+            else if (fullText.includes('valentine')) info.occasion = "Valentine's Day";
             else if (fullText.includes('mother') && fullText.includes('day')) info.occasion = "Mother's Day";
             else if (fullText.includes('father') && fullText.includes('day')) info.occasion = "Father's Day";
             
-            // Extract message from name (what's in quotes or special phrases)
+            // Extract message - look for common phrases
             const messagePatterns = [
-                'best mum', 'best dad', 'best grandad', 'best grandma',
-                'i love you', 'love you', 'thank you', 'well done', 
-                'great job', 'happy birthday', 'congratulations',
-                'special wife', 'special husband', 'you\'re amazing'
+                'best mum', 'best dad', 'best grandad', 'best grandma', 'best friend',
+                'i love you', 'love you', 'thank you', 'well done', 'congratulations',
+                'great job', 'happy birthday', 'special wife', 'special husband', 
+                "you're amazing", 'happy easter', 'merry christmas'
             ];
             
             for (const pattern of messagePatterns) {
@@ -891,7 +266,12 @@
                 }
             }
             
-            // Extract weight if mentioned
+            // If no message found, use product name
+            if (!info.message) {
+                info.message = productName;
+            }
+            
+            // Extract weight
             const weightMatch = productName.match(/(\d+)g/i);
             if (weightMatch) {
                 info.weight = weightMatch[0];
@@ -900,7 +280,38 @@
             return info;
         }
 
-        // Generate meta descriptions - FAST MODE
+        // Generate variations
+        function generateVariations(info, category) {
+            const relevantTemplates = templates.filter(t => t.categories.includes(category));
+            const shuffled = [...relevantTemplates].sort(() => Math.random() - 0.5);
+            const selected = shuffled.slice(0, 1);
+            
+            const variations = [];
+
+            for (const template of selected) {
+                let description = template.pattern;
+
+                // Replace placeholders
+                description = description
+                    .replace(/\{name\}/g, info.name)
+                    .replace(/\{recipient\}/g, info.recipient)
+                    .replace(/\{message\}/g, info.message)
+                    .replace(/\{occasion\}/g, info.occasion)
+                    .replace(/\{weight\}/g, info.weight)
+                    .replace(/\{contents\}/g, info.contents)
+                    .replace(/\{productType\}/g, info.productType);
+
+                variations.push({
+                    text: description,
+                    charCount: description.length,
+                    tone: template.tone
+                });
+            }
+
+            return variations;
+        }
+
+        // Generate descriptions
         function generateDescriptions() {
             const productName = document.getElementById('productName').value.trim();
 
@@ -917,59 +328,21 @@
             resultsDiv.style.display = 'block';
             resultsDiv.innerHTML = '<div class="loading"><div class="spinner"></div><p>Creating your meta description...</p></div>';
 
-            // Simulate brief delay for UX
             setTimeout(() => {
                 const category = detectCategoryFromName(productName);
                 const info = extractProductInfo(productName, category);
                 const descriptions = generateVariations(info, category);
                 
                 displayResults(descriptions, productName);
-                updateStats('generated', 1);
                 
                 btn.disabled = false;
                 btn.textContent = '✨ Generate Meta Description';
-            }, 600);
+            }, 400);
         }
 
-        // Generate variations - FAST AND SMART
-        function generateVariations(info, category) {
-            // Select 3 templates that match the category
-            const relevantTemplates = templates.filter(t => t.categories.includes(category));
-            
-            // Shuffle and pick 3
-            const shuffled = [...relevantTemplates].sort(() => Math.random() - 0.5);
-            const selected = shuffled.slice(0, 3);
-            
-            const variations = [];
-
-            for (const template of selected) {
-                let description = template.pattern;
-
-                // Replace placeholders
-                description = description
-                    .replace(/\{recipient\}/g, info.recipient)
-                    .replace(/\{message\}/g, info.message || info.name)
-                    .replace(/\{name\}/g, info.name)
-                    .replace(/\{occasion\}/g, info.occasion || 'any occasion')
-                    .replace(/\{productType\}/g, info.productType)
-                    .replace(/\{weight\}/g, info.weight || '110g')
-                    .replace(/'{message}'/g, info.message ? `"${info.message}"` : `"${info.name}"`);
-
-                variations.push({
-                    text: description,
-                    charCount: description.length,
-                    tone: template.tone
-                });
-            }
-
-            return variations;
-        }
-
-        // Display single result with regenerate option
+        // Display results
         function displayResults(descriptions, productName) {
             const resultsDiv = document.getElementById('results');
-            
-            // Show only the first description
             const desc = descriptions[0];
             const charStatus = desc.charCount < 145 ? 'warning' : desc.charCount > 160 ? 'error' : '';
             const charMessage = desc.charCount < 145 ? '(a bit short)' : desc.charCount > 160 ? '(a bit long)' : '(perfect length)';
@@ -982,10 +355,7 @@
                             ${desc.charCount} characters ${charMessage} • ${desc.tone} tone
                         </span>
                         <div class="actions">
-                            <button class="btn btn-approve" onclick="approveDescription(0, '${productName.replace(/'/g, "\\'")}', '${desc.text.replace(/'/g, "\\'")}')">
-                                ✓ Approve
-                            </button>
-                            <button class="btn btn-copy" onclick="copyToClipboard(0, '${desc.text.replace(/'/g, "\\'")}')">
+                            <button class="btn btn-copy" onclick="copyToClipboard('${desc.text.replace(/'/g, "\\'")}')">
                                 📋 Copy
                             </button>
                         </div>
@@ -1001,175 +371,28 @@
             resultsDiv.innerHTML = html;
         }
 
-        // Regenerate with a different template - INSTANT
+        // Regenerate
         function regenerateDescription() {
             const productName = document.getElementById('productName').value.trim();
             const category = detectCategoryFromName(productName);
             const info = extractProductInfo(productName, category);
             const descriptions = generateVariations(info, category);
-            
             displayResults(descriptions, productName);
-            updateStats('generated', 1);
-        }
-
-        // Approve description
-        async function approveDescription(index, productName, text) {
-            const resultItem = document.getElementById(`result-${index}`);
-            resultItem.classList.add('approved');
-
-            // Save to history
-            try {
-                const historyKey = `history:${Date.now()}`;
-                await window.storage.set(historyKey, JSON.stringify({
-                    product: productName,
-                    description: text,
-                    timestamp: new Date().toISOString()
-                }), true);
-
-                updateStats('approved', 1);
-                loadHistory();
-                
-                // Visual feedback
-                const btn = resultItem.querySelector('.btn-approve');
-                btn.textContent = '✓ Approved!';
-                btn.style.background = '#45a049';
-                setTimeout(() => {
-                    btn.textContent = '✓ Approve';
-                    btn.style.background = '';
-                }, 2000);
-            } catch (error) {
-                console.error('Error saving approval:', error);
-                alert('Could not save approval. Please try again.');
-            }
         }
 
         // Copy to clipboard
-        function copyToClipboard(index, text) {
+        function copyToClipboard(text) {
             navigator.clipboard.writeText(text).then(() => {
-                const btn = document.querySelector(`#result-${index} .btn-copy`);
+                const btn = event.target;
                 const originalText = btn.textContent;
                 btn.textContent = '✓ Copied!';
                 btn.classList.add('copied');
-                
                 setTimeout(() => {
                     btn.textContent = originalText;
                     btn.classList.remove('copied');
                 }, 2000);
             });
         }
-
-        // Update stats
-        async function updateStats(type, count) {
-            try {
-                const statsData = await window.storage.get('stats', false);
-                let stats = statsData ? JSON.parse(statsData.value) : {
-                    totalGenerated: 0,
-                    totalApproved: 0
-                };
-
-                if (type === 'generated') {
-                    stats.totalGenerated += count;
-                } else if (type === 'approved') {
-                    stats.totalApproved += count;
-                }
-
-                await window.storage.set('stats', JSON.stringify(stats), false);
-                updateStatsDisplay(stats);
-            } catch (error) {
-                console.error('Error updating stats:', error);
-            }
-        }
-
-        // Update stats display
-        function updateStatsDisplay(stats) {
-            const statsDiv = document.getElementById('stats');
-            statsDiv.style.display = 'block';
-
-            document.getElementById('totalGenerated').textContent = stats.totalGenerated;
-            document.getElementById('totalApproved').textContent = stats.totalApproved;
-            
-            const rate = stats.totalGenerated > 0 
-                ? Math.round((stats.totalApproved / stats.totalGenerated) * 100)
-                : 0;
-            document.getElementById('approvalRate').textContent = rate + '%';
-        }
-
-        // Load history
-        async function loadHistory() {
-            try {
-                const keys = await window.storage.list('history:', true);
-                if (!keys || !keys.keys || keys.keys.length === 0) {
-                    document.getElementById('historySection').style.display = 'none';
-                    return;
-                }
-
-                const historyItems = [];
-                for (const key of keys.keys) {
-                    try {
-                        const item = await window.storage.get(key, true);
-                        if (item && item.value) {
-                            historyItems.push(JSON.parse(item.value));
-                        }
-                    } catch (e) {
-                        console.error('Error loading history item:', e);
-                    }
-                }
-
-                if (historyItems.length === 0) {
-                    document.getElementById('historySection').style.display = 'none';
-                    return;
-                }
-
-                // Sort by timestamp (newest first)
-                historyItems.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-
-                // Display history
-                const historyList = document.getElementById('historyList');
-                historyList.innerHTML = historyItems.map(item => `
-                    <div class="history-item">
-                        <div class="history-product">${item.product}</div>
-                        <div class="history-text">${item.description}</div>
-                    </div>
-                `).join('');
-
-                document.getElementById('historySection').style.display = 'block';
-            } catch (error) {
-                console.error('Error loading history:', error);
-                document.getElementById('historySection').style.display = 'none';
-            }
-        }
-
-        // Clear history
-        async function clearHistory() {
-            if (!confirm('Are you sure you want to clear all approved meta descriptions?')) {
-                return;
-            }
-
-            try {
-                const keys = await window.storage.list('history:', true);
-                if (keys && keys.keys) {
-                    for (const key of keys.keys) {
-                        await window.storage.delete(key, true);
-                    }
-                }
-                
-                document.getElementById('historySection').style.display = 'none';
-                alert('History cleared successfully!');
-            } catch (error) {
-                console.error('Error clearing history:', error);
-                alert('Error clearing history. Please try again.');
-            }
-        }
-
-        // Allow Enter key to generate
-        document.getElementById('productName').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                generateDescriptions();
-            }
-        });
-
-        // Initialize on load
-        initStorage();
     </script>
 </body>
 </html>
