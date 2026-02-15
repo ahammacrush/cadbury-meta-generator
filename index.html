@@ -109,6 +109,40 @@
             transform: none;
         }
 
+        .regenerate-btn {
+            background: #ffffff;
+            color: #5e3a8e;
+            border: 2px solid #5e3a8e;
+            padding: 12px 30px;
+            font-size: 1em;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+            margin-top: 15px;
+        }
+
+        .regenerate-btn:hover {
+            background: #f8f5fc;
+            transform: translateY(-1px);
+        }
+
+        .regenerate-btn:active {
+            transform: translateY(0);
+        }
+
+        .regenerate-icon {
+            display: inline-block;
+            transition: transform 0.3s;
+        }
+
+        .regenerate-btn:hover .regenerate-icon {
+            transform: rotate(180deg);
+        }
+
         .results {
             margin-top: 30px;
         }
@@ -618,6 +652,170 @@
                 pattern: "Celebrate in style with a Cadbury luxury chocolate gift. Premium hampers delivered next day from Cadbury Gifts.",
                 categories: ["luxury"],
                 tone: "elegant"
+            },
+            
+            // === ADDITIONAL PROVEN TEMPLATES FROM DATA ANALYSIS (25 more) ===
+            
+            // More Envelope variations
+            {
+                id: 36,
+                pattern: "Give the '{message}' a sweet surprise with a Cadbury Dairy Milk Bar with Gift Envelope. Order today at Cadbury Gifts.",
+                categories: ["envelope"],
+                tone: "surprising"
+            },
+            {
+                id: 37,
+                pattern: "Gift {recipient} a special treat with a classic Dairy Milk bar wrapped in a '{message}' gift envelope. Order now at Cadbury Gifts.",
+                categories: ["envelope"],
+                tone: "classic"
+            },
+            {
+                id: 38,
+                pattern: "Send a Cadbury '{message}' Dairy Milk Bar with gift envelope. Perfect for {occasion}, delivered next day from Cadbury Gifts.",
+                categories: ["envelope"],
+                tone: "versatile"
+            },
+            {
+                id: 39,
+                pattern: "Brighten their day with a Cadbury Dairy Milk bar in a '{message}' sleeve. Order with next-day delivery from Cadbury Gifts.",
+                categories: ["envelope"],
+                tone: "cheerful"
+            },
+            {
+                id: 40,
+                pattern: "Let them know they're loved with our Cadbury Dairy Milk bar and '{message}' gift envelope. Shop at Cadbury Gifts.",
+                categories: ["envelope"],
+                tone: "loving"
+            },
+            
+            // More Hamper variations
+            {
+                id: 41,
+                pattern: "Send a Cadbury '{name}' chocolate hamper. Visit Cadbury Gifts to view the full range, available to order with next-day delivery.",
+                categories: ["hamper"],
+                tone: "informative"
+            },
+            {
+                id: 42,
+                pattern: "Celebrate {occasion} with our delicious chocolate gift hampers. Find a tasty range of goodies to make it extra special. Shop now!",
+                categories: ["hamper", "seasonal"],
+                tone: "festive"
+            },
+            {
+                id: 43,
+                pattern: "Treat someone you love to one of our chocolate hampers. Shop exclusive hampers bursting with best-selling treats at Cadbury Gifts.",
+                categories: ["hamper"],
+                tone: "exclusive"
+            },
+            {
+                id: 44,
+                pattern: "Make their day with a delicious Cadbury hamper – the ideal surprise for any occasion. Order with next-day delivery at Cadbury Gifts.",
+                categories: ["hamper"],
+                tone: "ideal"
+            },
+            {
+                id: 45,
+                pattern: "Send a Cadbury chocolate hamper filled with Dairy Milk Buttons and more. Choose from our great selection at Cadbury Gifts.",
+                categories: ["hamper"],
+                tone: "specific"
+            },
+            {
+                id: 46,
+                pattern: "Say congratulations with our range of delicious chocolate hampers. Choose from wholesome hampers or selection boxes at Cadbury Gifts.",
+                categories: ["hamper"],
+                tone: "congratulatory"
+            },
+            {
+                id: 47,
+                pattern: "Pamper {recipient} with their favourite Cadbury chocolate hamper. Browse our range and order online with next-day delivery from Cadbury Gifts.",
+                categories: ["hamper"],
+                tone: "pampering"
+            },
+            
+            // More Seasonal variations
+            {
+                id: 48,
+                pattern: "Explore our {occasion} chocolate gifts at Cadbury Gifts. Shop delicious treats online with next-day delivery when you order before 4pm.",
+                categories: ["seasonal"],
+                tone: "explorative"
+            },
+            {
+                id: 49,
+                pattern: "Count down to {occasion} with Cadbury chocolate from Cadbury Gifts. Explore delicious options for all ages with next-day delivery.",
+                categories: ["seasonal"],
+                tone: "anticipatory"
+            },
+            {
+                id: 50,
+                pattern: "Treat your loved ones this {occasion} with chocolate gifts from Cadbury Gifts. Explore our range of delicious treats and tempting hampers today.",
+                categories: ["seasonal"],
+                tone: "tempting"
+            },
+            {
+                id: 51,
+                pattern: "Get yourself Cadbury chocolate today at Cadbury Gifts! All gifts, selection boxes and hampers can be sent with next day delivery.",
+                categories: ["seasonal", "hamper"],
+                tone: "encouraging"
+            },
+            {
+                id: 52,
+                pattern: "Our chocolate gifts and hampers for {occasion} are always a crowd-pleaser. Find fun, chocolatey goodness at Cadbury Gifts.",
+                categories: ["seasonal"],
+                tone: "fun"
+            },
+            
+            // More Corporate/Gift variations
+            {
+                id: 53,
+                pattern: "Treat your team to delicious Cadbury chocolate. All gifts and hampers available with next day delivery from Cadbury Gifts.",
+                categories: ["corporate"],
+                tone: "teamwork"
+            },
+            {
+                id: 54,
+                pattern: "Treat your teacher to a delicious chocolate gift from Cadbury Gifts. See our curated range of hampers and presents with next-day delivery.",
+                categories: ["corporate"],
+                tone: "appreciative"
+            },
+            {
+                id: 55,
+                pattern: "Say thank you with Cadbury chocolate bars, delivered right to their door. Order by 4pm for next-day delivery from Cadbury Gifts.",
+                categories: ["corporate", "envelope"],
+                tone: "grateful"
+            },
+            
+            // More Luxury/Special variations
+            {
+                id: 56,
+                pattern: "Shop our delicious Cadbury hamper with wine from Cadbury Gifts – the perfect treat. Order yours today with next-day delivery.",
+                categories: ["luxury"],
+                tone: "perfect"
+            },
+            {
+                id: 57,
+                pattern: "Wine and chocolate – discover the Cadbury Gifts selection of wine and chocolate hampers for every occasion. Shop with next-day delivery.",
+                categories: ["luxury"],
+                tone: "pairing"
+            },
+            {
+                id: 58,
+                pattern: "Explore our chocolate and beer hampers – the ideal gift for beer-lovers with a sweet tooth! Shop at Cadbury Gifts with next-day delivery.",
+                categories: ["luxury"],
+                tone: "unique"
+            },
+            
+            // General/Versatile additions
+            {
+                id: 59,
+                pattern: "Find your favourite Cadbury chocolate at Cadbury Gifts. From Dairy Milk to Roses, shop online and order by 4pm for next-day delivery.",
+                categories: ["hamper", "seasonal"],
+                tone: "comprehensive"
+            },
+            {
+                id: 60,
+                pattern: "Searching for a gift beyond their usual? Find their new favourite Cadbury chocolate among our range. Shop with next-day delivery from Cadbury Gifts.",
+                categories: ["hamper", "envelope"],
+                tone: "discovery"
             }
         ];
 
@@ -767,36 +965,51 @@
             return variations;
         }
 
-        // Display results
+        // Display single result with regenerate option
         function displayResults(descriptions, productName) {
             const resultsDiv = document.getElementById('results');
             
-            let html = '';
-            descriptions.forEach((desc, index) => {
-                const charStatus = desc.charCount < 140 ? 'warning' : desc.charCount > 160 ? 'error' : '';
-                const charMessage = desc.charCount < 140 ? '(too short)' : desc.charCount > 160 ? '(too long)' : '(optimal)';
-                
-                html += `
-                    <div class="result-item" id="result-${index}">
-                        <div class="result-text">${desc.text}</div>
-                        <div class="result-meta">
-                            <span class="char-count ${charStatus}">
-                                ${desc.charCount} characters ${charMessage} • Tone: ${desc.tone}
-                            </span>
-                            <div class="actions">
-                                <button class="btn btn-approve" onclick="approveDescription(${index}, '${productName.replace(/'/g, "\\'")}', '${desc.text.replace(/'/g, "\\'")}')">
-                                    ✓ Approve
-                                </button>
-                                <button class="btn btn-copy" onclick="copyToClipboard(${index}, '${desc.text.replace(/'/g, "\\'")}')">
-                                    📋 Copy
-                                </button>
-                            </div>
+            // Show only the first description
+            const desc = descriptions[0];
+            const charStatus = desc.charCount < 145 ? 'warning' : desc.charCount > 160 ? 'error' : '';
+            const charMessage = desc.charCount < 145 ? '(a bit short)' : desc.charCount > 160 ? '(a bit long)' : '(perfect length)';
+            
+            const html = `
+                <div class="result-item" id="result-0">
+                    <div class="result-text">${desc.text}</div>
+                    <div class="result-meta">
+                        <span class="char-count ${charStatus}">
+                            ${desc.charCount} characters ${charMessage} • ${desc.tone} tone
+                        </span>
+                        <div class="actions">
+                            <button class="btn btn-approve" onclick="approveDescription(0, '${productName.replace(/'/g, "\\'")}', '${desc.text.replace(/'/g, "\\'")}')">
+                                ✓ Approve
+                            </button>
+                            <button class="btn btn-copy" onclick="copyToClipboard(0, '${desc.text.replace(/'/g, "\\'")}')">
+                                📋 Copy
+                            </button>
                         </div>
                     </div>
-                `;
-            });
+                </div>
+                <div style="text-align: center;">
+                    <button class="regenerate-btn" onclick="regenerateDescription()">
+                        <span class="regenerate-icon">🔄</span> Generate Different Option
+                    </button>
+                </div>
+            `;
 
             resultsDiv.innerHTML = html;
+        }
+
+        // Regenerate with a different template - INSTANT
+        function regenerateDescription() {
+            const productName = document.getElementById('productName').value.trim();
+            const category = detectCategoryFromName(productName);
+            const info = extractProductInfo(productName, category);
+            const descriptions = generateVariations(info, category);
+            
+            displayResults(descriptions, productName);
+            updateStats('generated', 1);
         }
 
         // Approve description
