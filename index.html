@@ -415,7 +415,7 @@
             </div>
 
             <button class="generate-btn" id="generateBtn" onclick="generateDescriptions()">
-                ✨ Generate 3 Options
+                ✨ Generate Meta Description
             </button>
 
             <div id="results" class="results" style="display: none;"></div>
@@ -915,7 +915,7 @@
 
             const resultsDiv = document.getElementById('results');
             resultsDiv.style.display = 'block';
-            resultsDiv.innerHTML = '<div class="loading"><div class="spinner"></div><p>Creating 3 unique meta descriptions...</p></div>';
+            resultsDiv.innerHTML = '<div class="loading"><div class="spinner"></div><p>Creating your meta description...</p></div>';
 
             // Simulate brief delay for UX
             setTimeout(() => {
@@ -924,11 +924,11 @@
                 const descriptions = generateVariations(info, category);
                 
                 displayResults(descriptions, productName);
-                updateStats('generated', descriptions.length);
+                updateStats('generated', 1);
                 
                 btn.disabled = false;
-                btn.textContent = '✨ Generate 3 Options';
-            }, 800);
+                btn.textContent = '✨ Generate Meta Description';
+            }, 600);
         }
 
         // Generate variations - FAST AND SMART
