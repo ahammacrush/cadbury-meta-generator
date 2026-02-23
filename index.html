@@ -50,12 +50,9 @@
         .result-text { font-size: 1.1em; line-height: 1.6; color: #333; margin-bottom: 15px; }
         .result-meta { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
         .char-count { font-size: 0.9em; color: #28a745; font-weight: 600; }
-        .char-count.warning { color: #ffc107; }
         .char-count.error { color: #dc3545; }
         .actions { display: flex; gap: 10px; }
         .btn { padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.9em; transition: all 0.2s; }
-        .btn-approve { background: #28a745; color: white; }
-        .btn-approve:hover { background: #218838; }
         .btn-copy { background: #6c757d; color: white; }
         .btn-copy:hover { background: #5a6268; }
         .btn-copy.copied { background: #28a745; }
@@ -85,8 +82,9 @@
                 <ul>
                     <li><strong>Just type the product name</strong> and click generate - that's it!</li>
                     <li><strong>Product name appears first</strong> for optimal SEO</li>
-                    <li><strong>85 proven templates</strong> - all generate 145-160 characters</li>
-                    <li><strong>Message cards in quotes</strong> like "Best Mum", "Congratulations"</li>
+                    <li><strong>90 proven templates</strong> - all generate 145-150 characters (strict limit)</li>
+                    <li><strong>Natural language</strong> - no robotic "Shop/Buy" openings</li>
+                    <li><strong>Smart category detection</strong> - bags, envelopes, hampers all handled correctly</li>
                 </ul>
             </div>
 
@@ -95,7 +93,7 @@
                 <input 
                     type="text" 
                     id="productName" 
-                    placeholder='e.g., Best Mum Dairy Milk Chocolate Bar with Envelope'
+                    placeholder='e.g., Cadbury Creme Egg Minis Bag 223g'
                     required
                     onkeypress="if(event.key === 'Enter') generateDescriptions()"
                 />
@@ -110,112 +108,135 @@
     </div>
 
     <script>
-        // 85 PRODUCT-NAME-FIRST TEMPLATES - All 145-160 chars, SEO optimized
-        const templates = [            // ENVELOPE TEMPLATES (25) - Product name with message in quotes
-            {id: 1, pattern: "Shop the Cadbury \"{message}\" Dairy Milk Bar with Envelope at Cadbury Gifts. Perfect for {occasion}, order by 4pm for next-day delivery.", categories: ["envelope"], tone: "direct"},
-            {id: 2, pattern: "Treat {recipient} to the Cadbury \"{message}\" Chocolate Bar with Gift Envelope. Perfect for any occasion, shop with next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "warm"},
-            {id: 3, pattern: "Send the Cadbury \"{message}\" Dairy Milk Bar with Envelope to {recipient}. Perfect gift for {occasion}, delivered next day from Cadbury Gifts.", categories: ["envelope"], tone: "gifting"},
-            {id: 4, pattern: "Shop the Cadbury \"{message}\" Chocolate Bar with Gift Sleeve. Perfect for any occasion, order by 4pm for next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "efficient"},
-            {id: 5, pattern: "Surprise {recipient} with the Cadbury \"{message}\" Dairy Milk Bar and Envelope. Perfect for celebrations, buy yours with next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "surprising"},
-            {id: 6, pattern: "Order the Cadbury \"{message}\" Chocolate Bar with Gift Envelope today. Perfect for {occasion}, delivered next day from Cadbury Gifts when you order by 4pm.", categories: ["envelope"], tone: "urgent"},
-            {id: 7, pattern: "Gift them the Cadbury \"{message}\" Dairy Milk Bar with Envelope. Perfect chocolate gift for any occasion, shop with next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "thoughtful"},
-            {id: 8, pattern: "Spoil {recipient} with the Cadbury \"{message}\" Chocolate Bar and Gift Envelope. Perfect for celebrations, order now with next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "indulgent"},
-            {id: 9, pattern: "Buy the Cadbury \"{message}\" Dairy Milk Bar with Gift Sleeve at Cadbury Gifts. Perfect for any occasion, delivered next day when you order by 4pm.", categories: ["envelope"], tone: "practical"},
-            {id: 10, pattern: "Send the Cadbury \"{message}\" Chocolate Bar with Envelope to their door. Perfect gift for {occasion}, shop with next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "convenient"},
-            {id: 11, pattern: "Celebrate {occasion} with the Cadbury \"{message}\" Dairy Milk Bar and Envelope. Perfect thoughtful gift, order by 4pm for next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "celebratory"},
-            {id: 12, pattern: "Shop the Cadbury {weight} \"{message}\" Chocolate Bar with Envelope. Perfect for any occasion, order online with next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "specific"},
-            {id: 13, pattern: "Treat {recipient} to the Cadbury \"{message}\" Chocolate Bar and Gift Sleeve. Perfect for celebrations, delivered next day from Cadbury Gifts.", categories: ["envelope"], tone: "treating"},
-            {id: 14, pattern: "Order the Cadbury \"{message}\" Dairy Milk Bar with Envelope for {recipient}. Perfect gift for any occasion, shop with next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "personal"},
-            {id: 15, pattern: "Shop the Cadbury \"{message}\" Chocolate Bar with Gift Envelope today. Perfect for {occasion}, order by 4pm for next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "today"},
-            {id: 16, pattern: "Send a sweet message with the Cadbury \"{message}\" Dairy Milk Bar and Envelope. Perfect for any occasion, delivered next day from Cadbury Gifts.", categories: ["envelope"], tone: "messaging"},
-            {id: 17, pattern: "Buy the Cadbury \"{message}\" Chocolate Bar with Envelope at Cadbury Gifts. Perfect for celebrations, order now with next-day delivery available.", categories: ["envelope"], tone: "available"},
-            {id: 18, pattern: "Gift the Cadbury \"{message}\" Dairy Milk Bar with Gift Sleeve to {recipient}. Perfect chocolate gift, shop with next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "classic"},
-            {id: 19, pattern: "Surprise them with the Cadbury \"{message}\" Chocolate Bar and Envelope. Perfect for {occasion}, order by 4pm for next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "surprise2"},
-            {id: 20, pattern: "Shop the Cadbury \"{message}\" Dairy Milk Bar with Gift Envelope for {recipient}. Perfect for any occasion, delivered next day from Cadbury Gifts.", categories: ["envelope"], tone: "recipient"},
-            {id: 21, pattern: "Order the Cadbury \"{message}\" Chocolate Bar with Envelope today. Perfect gift for {occasion}, shop online with next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "online"},
-            {id: 22, pattern: "Treat {recipient} to the Cadbury \"{message}\" Dairy Milk Bar and Gift Envelope. Perfect for celebrations, order by 4pm for next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "treat"},
-            {id: 23, pattern: "Send the Cadbury \"{message}\" Chocolate Bar with Gift Sleeve from Cadbury Gifts. Perfect for any occasion, delivered next day when you order by 4pm.", categories: ["envelope"], tone: "sending"},
-            {id: 24, pattern: "Buy the Cadbury \"{message}\" Dairy Milk Bar with Envelope online. Perfect for {occasion}, order today with next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "buying"},
-            {id: 25, pattern: "Shop the Cadbury \"{message}\" Chocolate Bar and Gift Envelope at Cadbury Gifts. Perfect thoughtful gift, delivered next day when you order by 4pm.", categories: ["envelope"], tone: "shopping"},
+        // 90 NATURAL LANGUAGE TEMPLATES - Strict 145-150 chars, no "Shop/Buy/Order"
+        const templates = [
+            // ENVELOPE TEMPLATES (20) - Message in quotes only
+            {id: 1, pattern: "Treat {recipient} to the Cadbury \"{message}\" Dairy Milk Bar with Envelope. Perfect for {occasion}, delivered next day from Cadbury Gifts.", categories: ["envelope"], tone: "warm"},
+            {id: 2, pattern: "Send the Cadbury \"{message}\" Chocolate Bar with Gift Envelope to {recipient}. Perfect gift for {occasion}, next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "gifting"},
+            {id: 3, pattern: "Surprise {recipient} with the Cadbury \"{message}\" Dairy Milk Bar and Envelope. Perfect for celebrations, next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "surprising"},
+            {id: 4, pattern: "Gift them the Cadbury \"{message}\" Chocolate Bar with Envelope. Perfect for any occasion, delivered next day from Cadbury Gifts.", categories: ["envelope"], tone: "thoughtful"},
+            {id: 5, pattern: "Spoil {recipient} with the Cadbury \"{message}\" Dairy Milk Bar and Gift Envelope. Perfect for celebrations, next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "indulgent"},
+            {id: 6, pattern: "Celebrate {occasion} with the Cadbury \"{message}\" Chocolate Bar and Envelope. Perfect thoughtful gift, next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "celebratory"},
+            {id: 7, pattern: "Treat {recipient} to the Cadbury {weight} \"{message}\" Chocolate Bar with Envelope. Perfect for any occasion, next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "specific"},
+            {id: 8, pattern: "Send a sweet message with the Cadbury \"{message}\" Dairy Milk Bar and Envelope. Perfect for any occasion, delivered next day from Cadbury Gifts.", categories: ["envelope"], tone: "messaging"},
+            {id: 9, pattern: "Gift the Cadbury \"{message}\" Dairy Milk Bar with Gift Sleeve to {recipient}. Perfect chocolate gift, next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "classic"},
+            {id: 10, pattern: "Surprise them with the Cadbury \"{message}\" Chocolate Bar and Envelope. Perfect for {occasion}, next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "surprise"},
+            {id: 11, pattern: "Treat them to the Cadbury \"{message}\" Dairy Milk Bar and Gift Envelope. Perfect for celebrations, next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "treat"},
+            {id: 12, pattern: "Send the Cadbury \"{message}\" Chocolate Bar with Gift Sleeve to {recipient}. Perfect for any occasion, next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "sending"},
+            {id: 13, pattern: "Delight {recipient} with the Cadbury \"{message}\" Dairy Milk Bar and Envelope. Perfect for {occasion}, next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "delighting"},
+            {id: 14, pattern: "Present {recipient} with the Cadbury \"{message}\" Chocolate Bar and Envelope. Perfect gift for any occasion, delivered next day from Cadbury Gifts.", categories: ["envelope"], tone: "presenting"},
+            {id: 15, pattern: "Love the Cadbury \"{message}\" Dairy Milk Bar with Gift Envelope. Perfect for {occasion}, next-day delivery available from Cadbury Gifts.", categories: ["envelope"], tone: "loving"},
+            {id: 16, pattern: "Enjoy the Cadbury \"{message}\" Chocolate Bar with Envelope. Perfect thoughtful gift for any occasion, next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "enjoying"},
+            {id: 17, pattern: "Discover the Cadbury \"{message}\" Dairy Milk Bar and Gift Envelope. Perfect for celebrations, delivered next day from Cadbury Gifts.", categories: ["envelope"], tone: "discovering"},
+            {id: 18, pattern: "Get the Cadbury \"{message}\" Chocolate Bar with Gift Sleeve for {recipient}. Perfect for any occasion, next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "getting"},
+            {id: 19, pattern: "Indulge {recipient} with the Cadbury \"{message}\" Dairy Milk Bar and Envelope. Perfect for {occasion}, next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "indulging"},
+            {id: 20, pattern: "Make their day with the Cadbury \"{message}\" Chocolate Bar and Envelope. Perfect gift for any occasion, next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "making"},
             
-            // HAMPER TEMPLATES (25) - Product name first, {contents} placeholder
-            {id: 26, pattern: "Shop the {name} at Cadbury Gifts. {contents} Perfect for any occasion, order by 4pm for next-day delivery.", categories: ["hamper"], tone: "direct"},
-            {id: 27, pattern: "Order the {name} from Cadbury Gifts. {contents} Perfect for celebrations, delivered next day when you order by 4pm.", categories: ["hamper"], tone: "ordering"},
-            {id: 28, pattern: "Treat {recipient} to the {name} from Cadbury Gifts. {contents} Perfect for any occasion, shop with next-day delivery.", categories: ["hamper"], tone: "warm"},
-            {id: 29, pattern: "Buy the {name} at Cadbury Gifts. {contents} Perfect for {occasion}, order by 4pm for next-day delivery available.", categories: ["hamper"], tone: "buying"},
-            {id: 30, pattern: "Send the {name} to {recipient} from Cadbury Gifts. {contents} Perfect gift for any occasion, delivered next day.", categories: ["hamper"], tone: "sending"},
-            {id: 31, pattern: "Shop the {name} chocolate hamper at Cadbury Gifts. {contents} Perfect for celebrations, order by 4pm for next-day delivery.", categories: ["hamper"], tone: "shopping"},
-            {id: 32, pattern: "Surprise them with the {name} from Cadbury Gifts. {contents} Perfect for any occasion, buy yours with next-day delivery.", categories: ["hamper"], tone: "surprising"},
-            {id: 33, pattern: "Order the {name} chocolate hamper today. {contents} Perfect for {occasion}, shop with next-day delivery from Cadbury Gifts.", categories: ["hamper"], tone: "today"},
-            {id: 34, pattern: "Gift the {name} from Cadbury Gifts to {recipient}. {contents} Perfect for celebrations, delivered next day when you order by 4pm.", categories: ["hamper"], tone: "gifting"},
-            {id: 35, pattern: "Buy the {name} chocolate hamper online at Cadbury Gifts. {contents} Perfect for any occasion, order by 4pm for next-day delivery.", categories: ["hamper"], tone: "online"},
-            {id: 36, pattern: "Treat {recipient} to the {name} chocolate hamper. {contents} Perfect for {occasion}, shop with next-day delivery from Cadbury Gifts.", categories: ["hamper"], tone: "treating"},
-            {id: 37, pattern: "Shop the {name} at Cadbury Gifts today. {contents} Perfect for celebrations, order by 4pm for next-day delivery available.", categories: ["hamper"], tone: "available"},
-            {id: 38, pattern: "Send the {name} chocolate hamper from Cadbury Gifts. {contents} Perfect for any occasion, delivered next day when you order by 4pm.", categories: ["hamper"], tone: "delivery"},
-            {id: 39, pattern: "Order the {name} from Cadbury Gifts for {recipient}. {contents} Perfect for {occasion}, shop with next-day delivery.", categories: ["hamper"], tone: "personal"},
-            {id: 40, pattern: "Spoil them with the {name} from Cadbury Gifts. {contents} Perfect for celebrations, order by 4pm for next-day delivery.", categories: ["hamper"], tone: "indulgent"},
-            {id: 41, pattern: "Buy the {name} chocolate hamper at Cadbury Gifts. {contents} Perfect for any occasion, delivered next day when you order by 4pm.", categories: ["hamper"], tone: "practical"},
-            {id: 42, pattern: "Shop the {name} chocolate hamper today at Cadbury Gifts. {contents} Perfect for {occasion}, order by 4pm for next-day delivery.", categories: ["hamper"], tone: "urgent"},
-            {id: 43, pattern: "Gift them the {name} from Cadbury Gifts. {contents} Perfect for any occasion, shop online with next-day delivery.", categories: ["hamper"], tone: "giving"},
-            {id: 44, pattern: "Treat {recipient} to the {name} at Cadbury Gifts. {contents} Perfect for celebrations, delivered next day when you order by 4pm.", categories: ["hamper"], tone: "celebratory"},
-            {id: 45, pattern: "Send the {name} chocolate hamper to {recipient}. {contents} Perfect for {occasion}, order by 4pm for next-day delivery from Cadbury Gifts.", categories: ["hamper"], tone: "recipient"},
-            {id: 46, pattern: "Order the {name} chocolate hamper at Cadbury Gifts. {contents} Perfect for any occasion, buy yours with next-day delivery.", categories: ["hamper"], tone: "yours"},
-            {id: 47, pattern: "Shop the {name} from Cadbury Gifts for {recipient}. {contents} Perfect for celebrations, delivered next day when you order by 4pm.", categories: ["hamper"], tone: "forrecipient"},
-            {id: 48, pattern: "Buy the {name} today at Cadbury Gifts. {contents} Perfect for any occasion, order by 4pm for next-day delivery.", categories: ["hamper"], tone: "buytoday"},
-            {id: 49, pattern: "Surprise {recipient} with the {name} chocolate hamper. {contents} Perfect for {occasion}, shop with next-day delivery from Cadbury Gifts.", categories: ["hamper"], tone: "surprise"},
-            {id: 50, pattern: "Gift the {name} chocolate hamper from Cadbury Gifts. {contents} Perfect for any occasion, order by 4pm for next-day delivery.", categories: ["hamper"], tone: "gift"},
+            // BAG/STANDARD TEMPLATES (25) - Safe, no sharing assumptions
+            {id: 21, pattern: "Treat yourself to the {name}. Delicious Cadbury chocolate, delivered next day when you order by 4pm from Cadbury Gifts.", categories: ["standard"], tone: "self"},
+            {id: 22, pattern: "Enjoy the {name} from Cadbury Gifts. {contents} Perfect for any occasion, delivered next day when you order by 4pm.", categories: ["standard"], tone: "enjoying"},
+            {id: 23, pattern: "Discover the {name} at Cadbury Gifts. Delicious chocolate treats, delivered next day when you order by 4pm today.", categories: ["standard"], tone: "discovering"},
+            {id: 24, pattern: "Get the {name} delivered next day from Cadbury Gifts. {contents} Perfect for any occasion, order by 4pm.", categories: ["standard"], tone: "getting"},
+            {id: 25, pattern: "Love the {name}? Delicious Cadbury chocolate delivered next day when you order by 4pm from Cadbury Gifts.", categories: ["standard"], tone: "loving"},
+            {id: 26, pattern: "Indulge in the {name} from Cadbury Gifts. {contents} Perfect chocolate treat, next-day delivery when you order by 4pm.", categories: ["standard"], tone: "indulging"},
+            {id: 27, pattern: "Treat them to the {name}. Delicious Cadbury favourites, delivered next day when you order by 4pm from Cadbury Gifts.", categories: ["standard"], tone: "treating"},
+            {id: 28, pattern: "Gift the {name} from Cadbury Gifts. {contents} Perfect for any occasion, next-day delivery when you order by 4pm.", categories: ["standard"], tone: "gifting"},
+            {id: 29, pattern: "Send the {name} to {recipient}. Delicious chocolate from Cadbury Gifts, delivered next day when you order by 4pm.", categories: ["standard"], tone: "sending"},
+            {id: 30, pattern: "Enjoy the {name} - delicious Cadbury chocolate. Perfect for any occasion, next-day delivery from Cadbury Gifts when you order by 4pm.", categories: ["standard"], tone: "enjoy2"},
+            {id: 31, pattern: "Discover the {name} at Cadbury Gifts. {contents} Perfect chocolate treat, delivered next day when you order by 4pm.", categories: ["standard"], tone: "discover2"},
+            {id: 32, pattern: "Treat yourself to the {name} from Cadbury Gifts. Delicious chocolate, next-day delivery available when you order by 4pm.", categories: ["standard"], tone: "self2"},
+            {id: 33, pattern: "Get the {name} delivered to your door. {contents} Perfect from Cadbury Gifts, next-day delivery when you order by 4pm.", categories: ["standard"], tone: "door"},
+            {id: 34, pattern: "Love the {name} from Cadbury Gifts. Delicious Cadbury chocolate, delivered next day when you order by 4pm today.", categories: ["standard"], tone: "love2"},
+            {id: 35, pattern: "Delight in the {name}. {contents} Perfect for any occasion, next-day delivery from Cadbury Gifts when you order by 4pm.", categories: ["standard"], tone: "delight"},
+            {id: 36, pattern: "Savour the {name} from Cadbury Gifts. Delicious chocolate treats, delivered next day when you order by 4pm.", categories: ["standard"], tone: "savour"},
+            {id: 37, pattern: "Experience the {name}. {contents} Perfect from Cadbury Gifts, next-day delivery when you order by 4pm today.", categories: ["standard"], tone: "experience"},
+            {id: 38, pattern: "Gift them the {name} from Cadbury Gifts. Delicious Cadbury chocolate, next-day delivery when you order by 4pm.", categories: ["standard"], tone: "gift2"},
+            {id: 39, pattern: "Send the {name} from Cadbury Gifts. {contents} Perfect for any occasion, delivered next day when you order by 4pm.", categories: ["standard"], tone: "send2"},
+            {id: 40, pattern: "Treat {recipient} to the {name}. Delicious chocolate from Cadbury Gifts, next-day delivery when you order by 4pm.", categories: ["standard"], tone: "treat2"},
+            {id: 41, pattern: "Enjoy the delicious {name} from Cadbury Gifts. {contents} Next-day delivery when you order by 4pm today.", categories: ["standard"], tone: "enjoy3"},
+            {id: 42, pattern: "Discover the {name}. Delicious Cadbury chocolate treats, next-day delivery from Cadbury Gifts when you order by 4pm.", categories: ["standard"], tone: "discover3"},
+            {id: 43, pattern: "Get the {name} from Cadbury Gifts today. {contents} Perfect for any occasion, next-day delivery when you order by 4pm.", categories: ["standard"], tone: "today"},
+            {id: 44, pattern: "Indulge in the delicious {name}. {contents} Perfect from Cadbury Gifts, next-day delivery when you order by 4pm.", categories: ["standard"], tone: "indulge2"},
+            {id: 45, pattern: "Love the {name}? {contents} Perfect for any occasion, next-day delivery from Cadbury Gifts when you order by 4pm.", categories: ["standard"], tone: "love3"},
             
-            // SEASONAL TEMPLATES (15) - Product name first
-            {id: 51, pattern: "Shop the {name} at Cadbury Gifts. Perfect for {occasion} celebrations, order by 4pm for next-day delivery. Get yours today!", categories: ["seasonal"], tone: "seasonal"},
-            {id: 52, pattern: "Order the {name} for {occasion} at Cadbury Gifts. {contents} Perfect for celebrations, delivered next day when you order by 4pm.", categories: ["seasonal"], tone: "occasion"},
-            {id: 53, pattern: "Celebrate {occasion} with the {name} from Cadbury Gifts. Perfect for family and friends, order by 4pm for next-day delivery.", categories: ["seasonal"], tone: "family"},
-            {id: 54, pattern: "Shop the {name} {occasion} gift at Cadbury Gifts. {contents} Perfect for celebrations, delivered next day when you order by 4pm.", categories: ["seasonal"], tone: "gift"},
-            {id: 55, pattern: "Treat them to the {name} this {occasion}. Perfect chocolate gift from Cadbury Gifts, order by 4pm for next-day delivery.", categories: ["seasonal"], tone: "treat"},
-            {id: 56, pattern: "Buy the {name} at Cadbury Gifts for {occasion}. {contents} Perfect for celebrations, shop with next-day delivery available.", categories: ["seasonal"], tone: "buy"},
-            {id: 57, pattern: "Order the {name} from Cadbury Gifts this {occasion}. Perfect for gifting, delivered next day when you order by 4pm today.", categories: ["seasonal"], tone: "thisoccasion"},
-            {id: 58, pattern: "Shop the {name} for {occasion} celebrations at Cadbury Gifts. {contents} Perfect gift, order by 4pm for next-day delivery.", categories: ["seasonal"], tone: "celebrations"},
-            {id: 59, pattern: "Make {occasion} special with the {name} from Cadbury Gifts. Perfect for any celebration, order by 4pm for next-day delivery.", categories: ["seasonal"], tone: "special"},
-            {id: 60, pattern: "Celebrate {occasion} with the {name} at Cadbury Gifts. {contents} Perfect for gifting, shop with next-day delivery.", categories: ["seasonal"], tone: "celebrate"},
-            {id: 61, pattern: "Buy the {name} {occasion} gift from Cadbury Gifts. Perfect for celebrations, delivered next day when you order by 4pm.", categories: ["seasonal"], tone: "buygift"},
-            {id: 62, pattern: "Order the {name} for {occasion} today at Cadbury Gifts. {contents} Perfect gift, shop with next-day delivery available.", categories: ["seasonal"], tone: "ordertoday"},
-            {id: 63, pattern: "Shop the {name} at Cadbury Gifts this {occasion}. Perfect for family and friends, order by 4pm for next-day delivery.", categories: ["seasonal"], tone: "thisfamily"},
-            {id: 64, pattern: "Treat {recipient} to the {name} for {occasion}. Perfect celebration gift from Cadbury Gifts, delivered next day when you order by 4pm.", categories: ["seasonal"], tone: "treatrecipient"},
-            {id: 65, pattern: "Send the {name} this {occasion} from Cadbury Gifts. {contents} Perfect for celebrations, order by 4pm for next-day delivery.", categories: ["seasonal"], tone: "send"},
+            // HAMPER TEMPLATES (20) - {contents} placeholder
+            {id: 46, pattern: "Treat {recipient} to the {name}. {contents} Perfect for any occasion, next-day delivery from Cadbury Gifts when you order by 4pm.", categories: ["hamper"], tone: "warm"},
+            {id: 47, pattern: "Send the {name} to {recipient}. {contents} Perfect gift for any occasion, next-day delivery from Cadbury Gifts.", categories: ["hamper"], tone: "sending"},
+            {id: 48, pattern: "Surprise them with the {name}. {contents} Perfect for celebrations, next-day delivery from Cadbury Gifts when you order by 4pm.", categories: ["hamper"], tone: "surprising"},
+            {id: 49, pattern: "Gift the {name} from Cadbury Gifts. {contents} Perfect for any occasion, delivered next day when you order by 4pm.", categories: ["hamper"], tone: "gifting"},
+            {id: 50, pattern: "Treat {recipient} to the {name} chocolate hamper. {contents} Perfect for celebrations, next-day delivery from Cadbury Gifts.", categories: ["hamper"], tone: "treating"},
+            {id: 51, pattern: "Send the {name} from Cadbury Gifts. {contents} Perfect for any occasion, delivered next day when you order by 4pm.", categories: ["hamper"], tone: "delivery"},
+            {id: 52, pattern: "Spoil them with the {name}. {contents} Perfect for celebrations, next-day delivery from Cadbury Gifts when you order by 4pm.", categories: ["hamper"], tone: "indulgent"},
+            {id: 53, pattern: "Delight {recipient} with the {name}. {contents} Perfect for any occasion, next-day delivery from Cadbury Gifts.", categories: ["hamper"], tone: "delightful"},
+            {id: 54, pattern: "Surprise {recipient} with the {name} chocolate hamper. {contents} Perfect for {occasion}, next-day delivery from Cadbury Gifts.", categories: ["hamper"], tone: "surprise"},
+            {id: 55, pattern: "Gift them the {name} from Cadbury Gifts. {contents} Perfect for any occasion, delivered next day when you order by 4pm.", categories: ["hamper"], tone: "giving"},
+            {id: 56, pattern: "Treat {recipient} to the {name} at Cadbury Gifts. {contents} Perfect for celebrations, next-day delivery when you order by 4pm.", categories: ["hamper"], tone: "celebratory"},
+            {id: 57, pattern: "Send the {name} chocolate hamper to {recipient}. {contents} Perfect for {occasion}, next-day delivery from Cadbury Gifts.", categories: ["hamper"], tone: "recipient"},
+            {id: 58, pattern: "Enjoy the {name} from Cadbury Gifts. {contents} Perfect for any occasion, next-day delivery when you order by 4pm.", categories: ["hamper"], tone: "enjoying"},
+            {id: 59, pattern: "Discover the {name} at Cadbury Gifts. {contents} Perfect for celebrations, delivered next day when you order by 4pm.", categories: ["hamper"], tone: "discovering"},
+            {id: 60, pattern: "Get the {name} delivered next day. {contents} Perfect from Cadbury Gifts, order by 4pm today.", categories: ["hamper"], tone: "getting"},
+            {id: 61, pattern: "Love the {name}? {contents} Perfect for any occasion, next-day delivery from Cadbury Gifts when you order by 4pm.", categories: ["hamper"], tone: "loving"},
+            {id: 62, pattern: "Indulge in the {name} from Cadbury Gifts. {contents} Perfect for celebrations, next-day delivery when you order by 4pm.", categories: ["hamper"], tone: "indulging"},
+            {id: 63, pattern: "Present {recipient} with the {name}. {contents} Perfect gift for any occasion, next-day delivery from Cadbury Gifts.", categories: ["hamper"], tone: "presenting"},
+            {id: 64, pattern: "Make their day with the {name}. {contents} Perfect from Cadbury Gifts, next-day delivery when you order by 4pm.", categories: ["hamper"], tone: "making"},
+            {id: 65, pattern: "Celebrate with the {name} from Cadbury Gifts. {contents} Perfect for {occasion}, next-day delivery when you order by 4pm.", categories: ["hamper"], tone: "celebrate"},
             
-            // CORPORATE TEMPLATES (10) - Product name first, professional tone
-            {id: 66, pattern: "Shop the {name} for corporate gifting at Cadbury Gifts. Professional chocolate gifts delivered next day when you order by 4pm.", categories: ["corporate"], tone: "professional"},
-            {id: 67, pattern: "Order the {name} for your team from Cadbury Gifts. {contents} Perfect for employee appreciation, delivered next day when you order by 4pm.", categories: ["corporate"], tone: "team"},
-            {id: 68, pattern: "Treat your team to the {name} at Cadbury Gifts. Professional corporate gifting with next-day delivery when you order by 4pm.", categories: ["corporate"], tone: "treatteam"},
-            {id: 69, pattern: "Buy the {name} for corporate occasions at Cadbury Gifts. {contents} Perfect for clients and employees, order by 4pm for next-day delivery.", categories: ["corporate"], tone: "corporate"},
-            {id: 70, pattern: "Send the {name} to your team from Cadbury Gifts. Perfect for employee recognition, delivered next day when you order by 4pm.", categories: ["corporate"], tone: "sendteam"},
-            {id: 71, pattern: "Shop the {name} corporate gift at Cadbury Gifts. {contents} Professional gifting with next-day delivery when you order by 4pm.", categories: ["corporate"], tone: "corporategift"},
-            {id: 72, pattern: "Order the {name} for employee appreciation at Cadbury Gifts. Perfect corporate gift, delivered next day when you order by 4pm.", categories: ["corporate"], tone: "appreciation"},
-            {id: 73, pattern: "Gift your team the {name} from Cadbury Gifts. {contents} Perfect for corporate occasions, order by 4pm for next-day delivery.", categories: ["corporate"], tone: "giftteam"},
-            {id: 74, pattern: "Buy the {name} for clients at Cadbury Gifts. Professional chocolate gifting, delivered next day when you order by 4pm today.", categories: ["corporate"], tone: "clients"},
-            {id: 75, pattern: "Treat employees to the {name} from Cadbury Gifts. {contents} Perfect corporate gift, order by 4pm for next-day delivery.", categories: ["corporate"], tone: "employees"},
+            // SEASONAL TEMPLATES (15)
+            {id: 66, pattern: "Celebrate {occasion} with the {name}. {contents} Perfect for family and friends, next-day delivery from Cadbury Gifts.", categories: ["seasonal"], tone: "family"},
+            {id: 67, pattern: "Treat them to the {name} this {occasion}. Perfect chocolate gift from Cadbury Gifts, next-day delivery when you order by 4pm.", categories: ["seasonal"], tone: "treat"},
+            {id: 68, pattern: "Make {occasion} special with the {name}. {contents} Perfect from Cadbury Gifts, next-day delivery when you order by 4pm.", categories: ["seasonal"], tone: "special"},
+            {id: 69, pattern: "Enjoy the {name} for {occasion} at Cadbury Gifts. {contents} Perfect for celebrations, next-day delivery when you order by 4pm.", categories: ["seasonal"], tone: "celebrations"},
+            {id: 70, pattern: "Discover the {name} {occasion} gift. {contents} Perfect from Cadbury Gifts, next-day delivery when you order by 4pm.", categories: ["seasonal"], tone: "gift"},
+            {id: 71, pattern: "Get the {name} for {occasion}. {contents} Perfect from Cadbury Gifts, delivered next day when you order by 4pm.", categories: ["seasonal"], tone: "getting"},
+            {id: 72, pattern: "Treat {recipient} to the {name} for {occasion}. Perfect celebration gift from Cadbury Gifts, next-day delivery when you order by 4pm.", categories: ["seasonal"], tone: "treatrecipient"},
+            {id: 73, pattern: "Send the {name} this {occasion}. {contents} Perfect for celebrations, next-day delivery from Cadbury Gifts when you order by 4pm.", categories: ["seasonal"], tone: "send"},
+            {id: 74, pattern: "Love the {name} for {occasion}? {contents} Perfect from Cadbury Gifts, next-day delivery when you order by 4pm.", categories: ["seasonal"], tone: "love"},
+            {id: 75, pattern: "Celebrate {occasion} with the {name} from Cadbury Gifts. Perfect for gifting, delivered next day when you order by 4pm.", categories: ["seasonal"], tone: "celebrate2"},
+            {id: 76, pattern: "Delight them with the {name} for {occasion}. {contents} Perfect from Cadbury Gifts, next-day delivery when you order by 4pm.", categories: ["seasonal"], tone: "delight"},
+            {id: 77, pattern: "Enjoy the {name} this {occasion}. {contents} Perfect from Cadbury Gifts, next-day delivery when you order by 4pm today.", categories: ["seasonal"], tone: "enjoy"},
+            {id: 78, pattern: "Gift the {name} for {occasion}. {contents} Perfect from Cadbury Gifts, delivered next day when you order by 4pm.", categories: ["seasonal"], tone: "gifting"},
+            {id: 79, pattern: "Surprise them with the {name} for {occasion}. {contents} Perfect from Cadbury Gifts, next-day delivery when you order by 4pm.", categories: ["seasonal"], tone: "surprise"},
+            {id: 80, pattern: "Indulge in the {name} this {occasion}. {contents} Perfect from Cadbury Gifts, next-day delivery when you order by 4pm.", categories: ["seasonal"], tone: "indulge"},
             
-            // LUXURY TEMPLATES (10) - Product name first, premium tone
-            {id: 76, pattern: "Shop the {name} luxury hamper at Cadbury Gifts. {contents} Perfect for special occasions, order by 4pm for next-day delivery.", categories: ["luxury"], tone: "luxury"},
-            {id: 77, pattern: "Indulge in the {name} from Cadbury Gifts. {contents} Perfect luxury gift for celebrations, delivered next day when you order by 4pm.", categories: ["luxury"], tone: "indulge"},
-            {id: 78, pattern: "Order the {name} premium hamper at Cadbury Gifts. {contents} Perfect for special moments, shop with next-day delivery.", categories: ["luxury"], tone: "premium"},
-            {id: 79, pattern: "Treat them to the {name} luxury hamper from Cadbury Gifts. {contents} Perfect for celebrations, order by 4pm for next-day delivery.", categories: ["luxury"], tone: "luxurytreat"},
-            {id: 80, pattern: "Buy the {name} at Cadbury Gifts. {contents} Perfect luxury gift for special occasions, delivered next day when you order by 4pm.", categories: ["luxury"], tone: "luxurybuy"},
-            {id: 81, pattern: "Shop the {name} premium gift at Cadbury Gifts. {contents} Perfect for celebrations, order by 4pm for next-day delivery.", categories: ["luxury"], tone: "premiumgift"},
-            {id: 82, pattern: "Celebrate in style with the {name} from Cadbury Gifts. {contents} Perfect luxury hamper, delivered next day when you order by 4pm.", categories: ["luxury"], tone: "style"},
-            {id: 83, pattern: "Order the {name} luxury gift at Cadbury Gifts. {contents} Perfect for special moments, shop with next-day delivery available.", categories: ["luxury"], tone: "luxurygift"},
-            {id: 84, pattern: "Spoil them with the {name} premium hamper from Cadbury Gifts. {contents} Perfect for celebrations, order by 4pm for next-day delivery.", categories: ["luxury"], tone: "spoil"},
-            {id: 85, pattern: "Gift the {name} luxury hamper at Cadbury Gifts. {contents} Perfect for special occasions, delivered next day when you order by 4pm.", categories: ["luxury"], tone: "luxurygifting"}
+            // CORPORATE TEMPLATES (5)
+            {id: 81, pattern: "Treat your team to the {name}. {contents} Professional gifting with next-day delivery from Cadbury Gifts when you order by 4pm.", categories: ["corporate"], tone: "professional"},
+            {id: 82, pattern: "Present your team with the {name}. {contents} Perfect for employee appreciation, next-day delivery from Cadbury Gifts.", categories: ["corporate"], tone: "team"},
+            {id: 83, pattern: "Gift your team the {name} from Cadbury Gifts. {contents} Perfect for corporate occasions, next-day delivery when you order by 4pm.", categories: ["corporate"], tone: "giftteam"},
+            {id: 84, pattern: "Treat employees to the {name}. {contents} Perfect corporate gift from Cadbury Gifts, next-day delivery when you order by 4pm.", categories: ["corporate"], tone: "employees"},
+            {id: 85, pattern: "Send the {name} to your team. {contents} Perfect for employee recognition, next-day delivery from Cadbury Gifts when you order by 4pm.", categories: ["corporate"], tone: "sendteam"},
+            
+            // LUXURY TEMPLATES (5)
+            {id: 86, pattern: "Indulge in the {name} luxury hamper. {contents} Perfect for special occasions, next-day delivery from Cadbury Gifts when you order by 4pm.", categories: ["luxury"], tone: "luxury"},
+            {id: 87, pattern: "Treat them to the {name}. {contents} Perfect luxury gift for celebrations, next-day delivery from Cadbury Gifts when you order by 4pm.", categories: ["luxury"], tone: "luxurytreat"},
+            {id: 88, pattern: "Celebrate in style with the {name}. {contents} Perfect luxury hamper from Cadbury Gifts, next-day delivery when you order by 4pm.", categories: ["luxury"], tone: "style"},
+            {id: 89, pattern: "Spoil them with the {name} premium hamper. {contents} Perfect for celebrations, next-day delivery from Cadbury Gifts when you order by 4pm.", categories: ["luxury"], tone: "spoil"},
+            {id: 90, pattern: "Gift the {name} luxury hamper. {contents} Perfect for special occasions, next-day delivery from Cadbury Gifts when you order by 4pm.", categories: ["luxury"], tone: "luxurygifting"}
         ];
 
-        // Smart category detection
+        // IMPROVED category detection - includes "bag" as standard
         function detectCategoryFromName(productName) {
             const name = productName.toLowerCase();
+            
+            // Bags are standard products (single item type)
+            if (name.includes('bag') || name.includes(' bar') && !name.includes('envelope')) return 'standard';
+            
+            // Envelopes have message cards
             if (name.includes('envelope') || name.includes('sleeve')) return 'envelope';
+            
+            // Hampers are mixed collections
             if (name.includes('hamper') || name.includes('basket') || name.includes('gift box')) return 'hamper';
+            
+            // Seasonal keywords
             if (name.includes('easter') || name.includes('christmas') || name.includes('valentine')) return 'seasonal';
+            
+            // Corporate
             if (name.includes('corporate') || name.includes('employee') || name.includes('team')) return 'corporate';
+            
+            // Luxury
             if (name.includes('luxury') || name.includes('premium') || name.includes('ultimate') || name.includes('wine')) return 'luxury';
-            return 'envelope';
+            
+            // Default to standard for single products
+            return 'standard';
         }
 
         // Extract information from product name
@@ -228,8 +249,8 @@
                 occasion: 'any occasion',
                 message: '',
                 weight: '110g',
-                contents: 'Filled with delicious Cadbury favourites.',
-                productType: category === 'hamper' ? 'chocolate hamper' : 'chocolate bar'
+                contents: 'Delicious Cadbury chocolate.',
+                productType: category
             };
 
             // Extract recipient
@@ -251,24 +272,25 @@
             else if (fullText.includes('mother') && fullText.includes('day')) info.occasion = "Mother's Day";
             else if (fullText.includes('father') && fullText.includes('day')) info.occasion = "Father's Day";
             
-            // Extract message - look for common phrases
-            const messagePatterns = [
-                'best mum', 'best dad', 'best grandad', 'best grandma', 'best friend',
-                'i love you', 'love you', 'thank you', 'well done', 'congratulations',
-                'great job', 'happy birthday', 'special wife', 'special husband', 
-                "you're amazing", 'happy easter', 'merry christmas'
-            ];
-            
-            for (const pattern of messagePatterns) {
-                if (fullText.includes(pattern)) {
-                    info.message = pattern.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-                    break;
+            // Extract message for envelopes
+            if (category === 'envelope') {
+                const messagePatterns = [
+                    'best mum', 'best dad', 'best grandad', 'best grandma', 'best friend',
+                    'i love you', 'love you', 'thank you', 'well done', 'congratulations',
+                    'great job', 'happy birthday', 'special wife', 'special husband', 
+                    "you're amazing", 'happy easter', 'merry christmas'
+                ];
+                
+                for (const pattern of messagePatterns) {
+                    if (fullText.includes(pattern)) {
+                        info.message = pattern.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+                        break;
+                    }
                 }
-            }
-            
-            // If no message found, use product name
-            if (!info.message) {
-                info.message = productName;
+                
+                if (!info.message) {
+                    info.message = productName;
+                }
             }
             
             // Extract weight
@@ -277,18 +299,27 @@
                 info.weight = weightMatch[0];
             }
             
+            // Better contents for hampers
+            if (category === 'hamper' && fullText.includes('sharing')) {
+                info.contents = 'Filled with delicious Cadbury favourites.';
+            } else if (category === 'hamper') {
+                info.contents = 'Packed with Cadbury treats.';
+            }
+            
             return info;
         }
 
-        // Generate variations
+        // Generate variations - strict 145-150 char check
         function generateVariations(info, category) {
             const relevantTemplates = templates.filter(t => t.categories.includes(category));
             const shuffled = [...relevantTemplates].sort(() => Math.random() - 0.5);
-            const selected = shuffled.slice(0, 1);
             
-            const variations = [];
-
-            for (const template of selected) {
+            let attempts = 0;
+            let selected = null;
+            
+            // Try up to 10 templates to find one that's 145-150 chars
+            while (attempts < 10 && !selected) {
+                const template = shuffled[attempts];
                 let description = template.pattern;
 
                 // Replace placeholders
@@ -301,14 +332,40 @@
                     .replace(/\{contents\}/g, info.contents)
                     .replace(/\{productType\}/g, info.productType);
 
-                variations.push({
+                const length = description.length;
+                
+                // Only accept if 145-150 chars
+                if (length >= 145 && length <= 150) {
+                    selected = {
+                        text: description,
+                        charCount: length,
+                        tone: template.tone
+                    };
+                }
+                
+                attempts++;
+            }
+            
+            // Fallback if no perfect match found
+            if (!selected) {
+                const template = shuffled[0];
+                let description = template.pattern
+                    .replace(/\{name\}/g, info.name)
+                    .replace(/\{recipient\}/g, info.recipient)
+                    .replace(/\{message\}/g, info.message)
+                    .replace(/\{occasion\}/g, info.occasion)
+                    .replace(/\{weight\}/g, info.weight)
+                    .replace(/\{contents\}/g, info.contents)
+                    .replace(/\{productType\}/g, info.productType);
+                    
+                selected = {
                     text: description,
                     charCount: description.length,
                     tone: template.tone
-                });
+                };
             }
-
-            return variations;
+            
+            return [selected];
         }
 
         // Generate descriptions
@@ -340,12 +397,12 @@
             }, 400);
         }
 
-        // Display results
+        // Display results - only show error if over 150
         function displayResults(descriptions, productName) {
             const resultsDiv = document.getElementById('results');
             const desc = descriptions[0];
-            const charStatus = desc.charCount < 145 ? 'warning' : desc.charCount > 160 ? 'error' : '';
-            const charMessage = desc.charCount < 145 ? '(a bit short)' : desc.charCount > 160 ? '(a bit long)' : '(perfect length)';
+            const charStatus = desc.charCount > 150 ? 'error' : '';
+            const charMessage = desc.charCount > 150 ? '(TOO LONG - must be 150 max)' : '(perfect length)';
             
             const html = `
                 <div class="result-item" id="result-0">
