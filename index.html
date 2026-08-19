@@ -48,6 +48,13 @@
             padding: 20px; margin-bottom: 15px; border-radius: 8px;
         }
         .result-text { font-size: 1.1em; line-height: 1.6; color: #333; margin-bottom: 15px; }
+        .source-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            font-size: 0.8em; font-weight: 700; padding: 4px 10px;
+            border-radius: 20px; margin-bottom: 12px;
+        }
+        .source-badge.recommended { background: #d4edda; color: #155724; border: 1px solid #a3d9ae; }
+        .source-badge.legacy { background: #fff3cd; color: #856404; border: 1px solid #ffe08a; }
         .result-meta { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
         .char-count { font-size: 0.9em; color: #28a745; font-weight: 600; }
         .char-count.error { color: #dc3545; }
@@ -82,7 +89,8 @@
                 <ul>
                     <li><strong>Just type the product name</strong> and click generate - that's it!</li>
                     <li><strong>Product name appears first</strong> for optimal SEO</li>
-                    <li><strong>90 proven templates</strong> - all generate 145-150 characters (strict limit)</li>
+                    <li><strong>Christmas products</strong> are matched against the <strong>current recommended Christmas template list</strong> first (marked <span style="color:#155724;">🎄 Recommended</span>) - these are used whenever a good topic/season match is found</li>
+                    <li>If nothing in that list fits the product, it falls back to the <strong>classic 90-template library</strong> (marked <span style="color:#856404;">📋 Classic template</span>) so you always get a result</li>
                     <li><strong>Natural language</strong> - no robotic "Shop/Buy" openings</li>
                     <li><strong>Smart category detection</strong> - bags, envelopes, hampers all handled correctly</li>
                 </ul>
@@ -213,6 +221,104 @@
             {id: 90, pattern: "Gift the {name} luxury hamper. {contents} Perfect for special occasions, next-day delivery from Cadbury Gifts when you order by 4pm.", categories: ["luxury"], tone: "luxurygifting"}
         ];
 
+        // CURRENT RECOMMENDED CHRISTMAS TEMPLATES (30)
+        // Supplied as the officially recommended set for Christmas category pages.
+        // These are complete, final descriptions (not filled with {name}) - matched
+        // by topic/recipient/season, ordered most-specific first so a narrow match
+        // (e.g. "brother") is picked before a broader one (e.g. "hamper").
+        const christmasTemplates = [
+            { id: 'c23', topic: 'Secret Santa', text: "Surprise them this festive season with our Secret Santa chocolates from Cadbury Gifts. Delight your recipient with a delectable Secret Santa chocolate gift.",
+              test: (t) => t.includes('secret santa') },
+            { id: 'c19', topic: 'Santa chocolates', text: "Shop an ultimate festive favourite with our Santa chocolates from Cadbury Gifts. Find hollow chocolate Santas, ideal stocking fillers for kids and adults alike.",
+              test: (t) => t.includes('santa') && !t.includes('secret santa') },
+            { id: 'c26', topic: 'Christmas Eve boxes', text: "Discover delicious chocolate Christmas Eve boxes from Cadbury Gifts. Delight kids and adults with Christmas Eve chocolates to enjoy before the big day.",
+              test: (t) => t.includes('christmas eve') },
+            { id: 'c28', topic: 'Chocolate coins', text: "Shop delicious stocking fillers in our range of Christmas chocolate coins. Explore Dairy Milk chocolate coins to delight friends and family at Cadbury Gifts.",
+              test: (t) => t.includes('coin') },
+            { id: 'c25', topic: 'Christmas biscuits', text: "Explore festive treats among our Christmas biscuits range at Cadbury Gifts. Shop delicious chocolate Christmas biscuits to share with friends and family here.",
+              test: (t) => t.includes('biscuit') },
+            { id: 'c18', topic: 'Chocolate tins', text: "Shop retro-inspired gifts from our range of Christmas chocolate tins. Explore Cadbury Christmas tins of Roses, Heroes and Dairy Milk at Cadbury Gifts.",
+              test: (t) => t.includes('tin') },
+            { id: 'c21', topic: 'Named chocolate boxes', text: "Shop mouth-watering boxes of Christmas chocolate at Cadbury Gifts. Choose from Milk Tray, Heroes, Roses and many more festive favourites here.",
+              test: (t) => t.includes('milk tray') || t.includes('heroes') || t.includes('roses') },
+            { id: 'c29', topic: 'Alcohol gifts', text: "Discover Christmas chocolate and alcohol gifts at Cadbury Gifts. Explore chocolate and wine hampers, beer and sweet boxes and other festive treats for adults.",
+              test: (t) => t.includes('wine') || t.includes('alcohol') || t.includes('beer') || t.includes('prosecco') || t.includes('gin') || t.includes('spirit') },
+            { id: 'c20', topic: 'Gift baskets', text: "Our Christmas chocolate gift baskets get everyone in the festive mood. Shop luxury treats including Christmas wine and chocolate gift baskets at Cadbury Gifts.",
+              test: (t) => t.includes('basket') },
+            { id: 'c30', topic: 'Family hampers', text: "Spoil them this festive season with our family Christmas hampers from Cadbury Gifts, filled with all their favourite chocolates. Shop large luxury hampers here.",
+              test: (t) => t.includes('family') && t.includes('hamper') },
+            { id: 'c16', topic: 'Large selection boxes', text: "Discover large Christmas selection boxes from Cadbury Gifts this festive season. Shop extra-large chocolate selection boxes filled with all their favourites.",
+              test: (t) => (t.includes('large') || t.includes('xl') || t.includes('extra-large') || t.includes('extra large')) && t.includes('selection box') },
+            { id: 'c10', topic: 'Selection box bundles', text: "Pick up presents for all the family with Christmas selection box bundles from Cadbury Gifts. Get everyone's gifts in one go with bulk chocolate selection boxes.",
+              test: (t) => t.includes('bundle') && (t.includes('selection box') || t.includes('bulk')) },
+            { id: 'c2', topic: 'Selection boxes', text: "Discover the full range of festive-favourite Christmas selection boxes at Cadbury Gifts. Shop chocolate selection boxes to delight kids and adults alike.",
+              test: (t) => t.includes('selection box') },
+            { id: 'c17', topic: 'Bundles', text: "Stock up in time for the big day with Christmas chocolate bundles from Cadbury Gifts. Shop Christmas bundles of festive favourites, sweet treats and more.",
+              test: (t) => t.includes('bundle') },
+            { id: 'c11', topic: 'Stocking fillers', text: "Explore Christmas chocolate stocking fillers at Cadbury Gifts. Discover mini chocolate bars and small festive favourites for kids and adults alike.",
+              test: (t) => t.includes('stocking') },
+            { id: 'c27', topic: 'Small/mini gifts', text: "Shop bite-sized treats with our selection of small Christmas chocolate gifts. Choose from mini chocolate gifts and sweets from Cadbury Gifts.",
+              test: (t) => t.includes('mini') || t.includes('bite-sized') || t.includes('bite sized') || t.includes('small') },
+            { id: 'c24', topic: 'Gift boxes', text: "Discover Christmas chocolate boxes filled with festive favourites from Cadbury Gifts. Shop Christmas gift boxes and chocolate selections for seasonal gifting.",
+              test: (t) => t.includes('gift box') },
+            { id: 'c22', topic: 'Chocolate bags', text: "Share the love this festive season with our Christmas chocolate bags from Cadbury Gifts. Shop Christmas chocolate gift bags including Dairy Milk tree baubles.",
+              test: (t) => t.includes('bag') || t.includes('bauble') },
+            { id: 'c15', topic: 'Grandparents', text: "Shop Christmas gifts for grandparents at Cadbury Gifts. Explore personalised gifts for your gran and granddad including hampers, chocolates and festive treats.",
+              test: (t) => t.includes('grandparent') || t.includes('gran') || t.includes('granddad') || t.includes('grandma') || t.includes('grandad') },
+            { id: 'c12', topic: 'Teens', text: "Find presents for the pickiest recipients with our chocolate Christmas gifts for teens. Shop personalised Christmas gifts for teenagers at Cadbury Gifts.",
+              test: (t) => t.includes('teen') },
+            { id: 'c13', topic: 'Boyfriend', text: "Discover thoughtful Christmas chocolate gifts for your boyfriend at Cadbury Gifts. Explore luxury chocolate hampers, gift boxes and other festive treats here.",
+              test: (t) => t.includes('boyfriend') },
+            { id: 'c14', topic: 'Husband', text: "Delight him with festive favourites from our Christmas chocolate gifts for husbands range at Cadbury Gifts. Explore chocolate hampers, gift boxes and much more.",
+              test: (t) => t.includes('husband') },
+            { id: 'c9', topic: 'Dad', text: "Shop delicious Christmas gifts for Dad at Cadbury Gifts. Explore personalised chocolate bars, selection boxes and luxury hampers filled with all his favourites.",
+              test: (t) => t.includes('dad') || t.includes('father') },
+            { id: 'c8', topic: 'Brothers', text: "Find thoughtful Christmas gifts for brothers at Cadbury Gifts. Shop Christmas chocolates for your sibling or brother-in-law, including hampers and gift boxes.",
+              test: (t) => t.includes('brother') },
+            { id: 'c5', topic: 'Friends', text: "Shop thoughtful Christmas gifts for friends at Cadbury Gifts. Explore personalised gifts for friends this Christmas, including selection boxes and hampers.",
+              test: (t) => t.includes('friend') },
+            { id: 'c6', topic: 'Deals/offers', text: "Discover Christmas chocolate deals and save on festive favourites today at Cadbury Gifts. Shop Christmas chocolate offers on hampers, gift boxes and more.",
+              test: (t) => t.includes('deal') || t.includes('offer') || t.includes('sale') || t.includes('discount') },
+            { id: 'c7', topic: 'For her', text: "Discover delightful Christmas chocolate gifts for her at Cadbury Gifts. Choose from luxury hampers, festive selection boxes, XL chocolate bars and more.",
+              test: (t, info) => t.includes('for her') || info.recipient === 'her' },
+            { id: 'c4', topic: 'For him', text: "Explore Christmas chocolate gifts for him at Cadbury Gifts. Choose from selection boxes, hampers and chocolate bars for your husband, Dad, brother and more.",
+              test: (t, info) => t.includes('for him') || info.recipient === 'him' },
+            { id: 'c3', topic: 'Hampers', text: "Delight family and friends with our luxury Christmas chocolate hampers from Cadbury Gifts. Shop Christmas gift hampers filled with festive sweets and treats.",
+              test: (t) => t.includes('hamper') },
+            { id: 'c1', topic: 'General Christmas chocolate', text: "Shop Christmas chocolate including festive favourites, seasonal classics and limited-edition chocolates. Explore Christmas products at Cadbury Gifts today.",
+              test: () => true }
+        ];
+
+        // A product only gets matched against the Christmas list if it's actually
+        // a Christmas product - stops "right season" mismatches (e.g. an Easter
+        // bag getting a Christmas description just because a word overlaps).
+        function isChristmasContext(fullText, info) {
+            return fullText.includes('christmas') || fullText.includes('xmas') ||
+                   fullText.includes('santa') || fullText.includes('advent') ||
+                   fullText.includes('festive') || info.occasion === 'Christmas';
+        }
+
+        // Try the current recommended Christmas templates first. Returns null if
+        // the product isn't a Christmas product at all - callers fall back to the
+        // classic template library in that case.
+        function findChristmasTemplate(productName, info) {
+            const fullText = productName.toLowerCase();
+            if (!isChristmasContext(fullText, info)) return null;
+
+            for (const tpl of christmasTemplates) {
+                if (tpl.test(fullText, info)) {
+                    return {
+                        text: tpl.text,
+                        charCount: tpl.text.length,
+                        tone: 'festive',
+                        source: 'recommended',
+                        topic: tpl.topic
+                    };
+                }
+            }
+            return null;
+        }
+
         // IMPROVED category detection - includes "bag" as standard
         function detectCategoryFromName(productName) {
             const name = productName.toLowerCase();
@@ -339,13 +445,14 @@
                     selected = {
                         text: description,
                         charCount: length,
-                        tone: template.tone
+                        tone: template.tone,
+                        source: 'legacy'
                     };
                 }
-                
+
                 attempts++;
             }
-            
+
             // Fallback if no perfect match found
             if (!selected) {
                 const template = shuffled[0];
@@ -357,15 +464,32 @@
                     .replace(/\{weight\}/g, info.weight)
                     .replace(/\{contents\}/g, info.contents)
                     .replace(/\{productType\}/g, info.productType);
-                    
+
                 selected = {
                     text: description,
                     charCount: description.length,
-                    tone: template.tone
+                    tone: template.tone,
+                    source: 'legacy'
                 };
             }
-            
+
             return [selected];
+        }
+
+        // Picks a description for productName. Tries the current recommended
+        // Christmas templates first; only falls back to the classic library if
+        // nothing in the Christmas list fits (wrong season/topic), or if the
+        // caller explicitly wants an alternative (regenerate).
+        function pickDescription(productName, { skipRecommended = false } = {}) {
+            const category = detectCategoryFromName(productName);
+            const info = extractProductInfo(productName, category);
+
+            if (!skipRecommended) {
+                const recommended = findChristmasTemplate(productName, info);
+                if (recommended) return recommended;
+            }
+
+            return generateVariations(info, category)[0];
         }
 
         // Generate descriptions
@@ -386,26 +510,29 @@
             resultsDiv.innerHTML = '<div class="loading"><div class="spinner"></div><p>Creating your meta description...</p></div>';
 
             setTimeout(() => {
-                const category = detectCategoryFromName(productName);
-                const info = extractProductInfo(productName, category);
-                const descriptions = generateVariations(info, category);
-                
-                displayResults(descriptions, productName);
-                
+                const desc = pickDescription(productName);
+                displayResults(desc, productName);
+
                 btn.disabled = false;
                 btn.textContent = '✨ Generate Meta Description';
             }, 400);
         }
 
-        // Display results - only show error if over 150
-        function displayResults(descriptions, productName) {
+        // Display results - only show error if over the limit for that tier
+        function displayResults(desc, productName) {
             const resultsDiv = document.getElementById('results');
-            const desc = descriptions[0];
-            const charStatus = desc.charCount > 150 ? 'error' : '';
-            const charMessage = desc.charCount > 150 ? '(TOO LONG - must be 150 max)' : '(perfect length)';
-            
+            const isRecommended = desc.source === 'recommended';
+            const maxChars = isRecommended ? 160 : 150;
+            const charStatus = desc.charCount > maxChars ? 'error' : '';
+            const charMessage = desc.charCount > maxChars ? `(TOO LONG - must be ${maxChars} max)` : '(perfect length)';
+
+            const badge = isRecommended
+                ? `<span class="source-badge recommended">🎄 Recommended (Current Christmas List) — ${desc.topic}</span>`
+                : `<span class="source-badge legacy">📋 Classic Template (fallback)</span>`;
+
             const html = `
                 <div class="result-item" id="result-0">
+                    ${badge}
                     <div class="result-text">${desc.text}</div>
                     <div class="result-meta">
                         <span class="char-count ${charStatus}">
@@ -428,13 +555,12 @@
             resultsDiv.innerHTML = html;
         }
 
-        // Regenerate
+        // Regenerate - always offers an alternative from the classic library,
+        // since the recommended tier has a single canonical description per topic
         function regenerateDescription() {
             const productName = document.getElementById('productName').value.trim();
-            const category = detectCategoryFromName(productName);
-            const info = extractProductInfo(productName, category);
-            const descriptions = generateVariations(info, category);
-            displayResults(descriptions, productName);
+            const desc = pickDescription(productName, { skipRecommended: true });
+            displayResults(desc, productName);
         }
 
         // Copy to clipboard
