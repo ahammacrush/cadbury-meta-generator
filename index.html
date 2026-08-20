@@ -141,28 +141,28 @@
             {id: 20, pattern: "Make their day with the Cadbury \"{message}\" Chocolate Bar and Envelope. Perfect gift for any occasion, next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "making"},
             
             // BAG/STANDARD TEMPLATES (25) - Safe, no sharing assumptions
-            {id: 21, pattern: "Treat yourself to the {name}. Delicious Cadbury {itemNoun}, delivered next day when you order by 4pm from Cadbury Gifts.", categories: ["standard"], tone: "self"},
+            {id: 21, pattern: "Treat yourself to the {name}. Delicious {itemNoun}, delivered next day when you order by 4pm from Cadbury Gifts.", categories: ["standard"], tone: "self"},
             {id: 22, pattern: "Enjoy the {name} from Cadbury Gifts. {contents} Perfect for any occasion, delivered next day when you order by 4pm.", categories: ["standard"], tone: "enjoying"},
             {id: 23, pattern: "Discover the {name} at Cadbury Gifts. Delicious {itemAdj} treats, delivered next day when you order by 4pm today.", categories: ["standard"], tone: "discovering"},
             {id: 24, pattern: "Get the {name} delivered next day from Cadbury Gifts. {contents} Perfect for any occasion, order by 4pm.", categories: ["standard"], tone: "getting"},
-            {id: 25, pattern: "Love the {name}? Delicious Cadbury {itemNoun} delivered next day when you order by 4pm from Cadbury Gifts.", categories: ["standard"], tone: "loving"},
+            {id: 25, pattern: "Love the {name}? Delicious {itemNoun} delivered next day when you order by 4pm from Cadbury Gifts.", categories: ["standard"], tone: "loving"},
             {id: 26, pattern: "Indulge in the {name} from Cadbury Gifts. {contents} Perfect {itemAdj} treat, next-day delivery when you order by 4pm.", categories: ["standard"], tone: "indulging"},
-            {id: 27, pattern: "Treat them to the {name}. Delicious Cadbury favourites, delivered next day when you order by 4pm from Cadbury Gifts.", categories: ["standard"], tone: "treating"},
+            {id: 27, pattern: "Treat them to the {name}. Delicious favourites, delivered next day when you order by 4pm from Cadbury Gifts.", categories: ["standard"], tone: "treating"},
             {id: 28, pattern: "Gift the {name} from Cadbury Gifts. {contents} Perfect for any occasion, next-day delivery when you order by 4pm.", categories: ["standard"], tone: "gifting"},
             {id: 29, pattern: "Send the {name} to {recipient}. Delicious {itemNoun} from Cadbury Gifts, delivered next day when you order by 4pm.", categories: ["standard"], tone: "sending"},
-            {id: 30, pattern: "Enjoy the {name} - delicious Cadbury {itemNoun}. Perfect for any occasion, next-day delivery from Cadbury Gifts when you order by 4pm.", categories: ["standard"], tone: "enjoy2"},
+            {id: 30, pattern: "Enjoy the {name} - delicious {itemNoun}. Perfect for any occasion, next-day delivery from Cadbury Gifts when you order by 4pm.", categories: ["standard"], tone: "enjoy2"},
             {id: 31, pattern: "Discover the {name} at Cadbury Gifts. {contents} Perfect {itemAdj} treat, delivered next day when you order by 4pm.", categories: ["standard"], tone: "discover2"},
             {id: 32, pattern: "Treat yourself to the {name} from Cadbury Gifts. Delicious {itemNoun}, next-day delivery available when you order by 4pm.", categories: ["standard"], tone: "self2"},
             {id: 33, pattern: "Get the {name} delivered to your door. {contents} Perfect from Cadbury Gifts, next-day delivery when you order by 4pm.", categories: ["standard"], tone: "door"},
-            {id: 34, pattern: "Love the {name} from Cadbury Gifts. Delicious Cadbury {itemNoun}, delivered next day when you order by 4pm today.", categories: ["standard"], tone: "love2"},
+            {id: 34, pattern: "Love the {name} from Cadbury Gifts. Delicious {itemNoun}, delivered next day when you order by 4pm today.", categories: ["standard"], tone: "love2"},
             {id: 35, pattern: "Delight in the {name}. {contents} Perfect for any occasion, next-day delivery from Cadbury Gifts when you order by 4pm.", categories: ["standard"], tone: "delight"},
             {id: 36, pattern: "Savour the {name} from Cadbury Gifts. Delicious {itemAdj} treats, delivered next day when you order by 4pm.", categories: ["standard"], tone: "savour"},
             {id: 37, pattern: "Experience the {name}. {contents} Perfect from Cadbury Gifts, next-day delivery when you order by 4pm today.", categories: ["standard"], tone: "experience"},
-            {id: 38, pattern: "Gift them the {name} from Cadbury Gifts. Delicious Cadbury {itemNoun}, next-day delivery when you order by 4pm.", categories: ["standard"], tone: "gift2"},
+            {id: 38, pattern: "Gift them the {name} from Cadbury Gifts. Delicious {itemNoun}, next-day delivery when you order by 4pm.", categories: ["standard"], tone: "gift2"},
             {id: 39, pattern: "Send the {name} from Cadbury Gifts. {contents} Perfect for any occasion, delivered next day when you order by 4pm.", categories: ["standard"], tone: "send2"},
             {id: 40, pattern: "Treat {recipient} to the {name}. Delicious {itemNoun} from Cadbury Gifts, next-day delivery when you order by 4pm.", categories: ["standard"], tone: "treat2"},
             {id: 41, pattern: "Enjoy the delicious {name} from Cadbury Gifts. {contents} Next-day delivery when you order by 4pm today.", categories: ["standard"], tone: "enjoy3"},
-            {id: 42, pattern: "Discover the {name}. Delicious Cadbury {itemAdj} treats, next-day delivery from Cadbury Gifts when you order by 4pm.", categories: ["standard"], tone: "discover3"},
+            {id: 42, pattern: "Discover the {name}. Delicious {itemAdj} treats, next-day delivery from Cadbury Gifts when you order by 4pm.", categories: ["standard"], tone: "discover3"},
             {id: 43, pattern: "Get the {name} from Cadbury Gifts today. {contents} Perfect for any occasion, next-day delivery when you order by 4pm.", categories: ["standard"], tone: "today"},
             {id: 44, pattern: "Indulge in the delicious {name}. {contents} Perfect from Cadbury Gifts, next-day delivery when you order by 4pm.", categories: ["standard"], tone: "indulge2"},
             {id: 45, pattern: "Love the {name}? {contents} Perfect for any occasion, next-day delivery from Cadbury Gifts when you order by 4pm.", categories: ["standard"], tone: "love3"},
@@ -425,11 +425,11 @@
             const kind = detectProductKind(fullText);
             let itemNoun, itemAdj, contents;
             if (kind === 'sweets') {
-                itemNoun = 'sweets'; itemAdj = 'sweet'; contents = 'Delicious Cadbury sweets.';
+                itemNoun = 'sweets'; itemAdj = 'sweet'; contents = 'Delicious sweets from Cadbury Gifts.';
             } else if (kind === 'mixed') {
-                itemNoun = 'treats'; itemAdj = 'sweet'; contents = 'A delicious mix of Cadbury chocolate and sweets.';
+                itemNoun = 'treats'; itemAdj = 'sweet'; contents = 'A delicious mix of chocolate and sweets from Cadbury Gifts.';
             } else {
-                itemNoun = 'chocolate'; itemAdj = 'chocolate'; contents = 'Delicious Cadbury chocolate.';
+                itemNoun = 'chocolate'; itemAdj = 'chocolate'; contents = 'Delicious chocolate from Cadbury Gifts.';
             }
 
             const info = {
@@ -492,9 +492,9 @@
             
             // Better contents for hampers
             if (category === 'hamper' && fullText.includes('sharing')) {
-                info.contents = 'Filled with delicious Cadbury favourites.';
+                info.contents = 'Filled with delicious favourites from Cadbury Gifts.';
             } else if (category === 'hamper') {
-                info.contents = 'Packed with Cadbury treats.';
+                info.contents = 'Packed with treats from Cadbury Gifts.';
             }
             
             return info;
