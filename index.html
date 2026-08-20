@@ -219,7 +219,15 @@
             {id: 87, pattern: "Treat them to the {name}. {contents} Perfect luxury gift for celebrations, next-day delivery from Cadbury Gifts when you order by 4pm.", categories: ["luxury"], tone: "luxurytreat"},
             {id: 88, pattern: "Celebrate in style with the {name}. {contents} Perfect luxury hamper from Cadbury Gifts, next-day delivery when you order by 4pm.", categories: ["luxury"], tone: "style"},
             {id: 89, pattern: "Spoil them with the {name} premium hamper. {contents} Perfect for celebrations, next-day delivery from Cadbury Gifts when you order by 4pm.", categories: ["luxury"], tone: "spoil"},
-            {id: 90, pattern: "Gift the {name} luxury hamper. {contents} Perfect for special occasions, next-day delivery from Cadbury Gifts when you order by 4pm.", categories: ["luxury"], tone: "luxurygifting"}
+            {id: 90, pattern: "Gift the {name} luxury hamper. {contents} Perfect for special occasions, next-day delivery from Cadbury Gifts when you order by 4pm.", categories: ["luxury"], tone: "luxurygifting"},
+
+            // MERCH/NON-FOOD TEMPLATES (5) - mugs, toys, gift cards etc. -
+            // deliberately no chocolate/sweets wording
+            {id: 91, pattern: "Add the {name} to your order from Cadbury Gifts, the perfect finishing touch when you order by 4pm.", categories: ["merch"], tone: "merch1"},
+            {id: 92, pattern: "Discover the {name} at Cadbury Gifts. The perfect extra gift, next-day delivery when you order by 4pm.", categories: ["merch"], tone: "merch2"},
+            {id: 93, pattern: "Treat them to the {name} from Cadbury Gifts, a lovely gift on its own, next-day delivery available.", categories: ["merch"], tone: "merch3"},
+            {id: 94, pattern: "Send the {name} to {recipient} from Cadbury Gifts, delivered next day when you order by 4pm.", categories: ["merch"], tone: "merch4"},
+            {id: 95, pattern: "Gift the {name} from Cadbury Gifts - the perfect finishing touch, next-day delivery when you order by 4pm.", categories: ["merch"], tone: "merch5"}
         ];
 
         // CURRENT RECOMMENDED CHRISTMAS TEMPLATES (30)
@@ -331,19 +339,58 @@
 
         // Not everything Cadbury Gifts sells is chocolate - sweets brands
         // (Sour Patch Kids, Maynards, wine gums etc.) need different wording.
+        // Checked in priority order because generic ingredient/format words
+        // (fudge, jelly, candy, toffee) can appear as a flavour or filling
+        // *inside* a chocolate product - e.g. "Dairy Milk Jelly Popping Candy
+        // Bar" and "Cadbury Fudge Chocolate Bar" are both chocolate, not
+        // sweets, despite matching sweets-sounding words.
         function detectProductKind(fullText) {
+            // Brands that are exclusively sweets - never chocolate
+            const sweetsBrands = ['maynards', 'bassetts', 'sour patch', 'trebor', 'haribo', "rowntree", 'swizzels'];
+            if (sweetsBrands.some(b => fullText.includes(b))) return 'sweets';
+
+            // Genuine mixed assortments of chocolate AND sweets together -
+            // not worth forcing into either bucket
+            if (fullText.includes('pick n mix') || fullText.includes("pick 'n' mix") || fullText.includes('pick and mix')) return 'mixed';
+
+            // An explicit "chocolate" word, or a known chocolate brand/line,
+            // always wins over generic ingredient words checked below
+            if (fullText.includes('chocolate')) return 'chocolate';
+            const chocolateBrands = [
+                'dairy milk', 'bournville', 'wispa', 'twirl', 'crunchie', 'heroes', 'roses',
+                'milk tray', 'toblerone', 'green & black', 'g&b', 'freddo', 'chomp', 'starbar',
+                'picnic', "fry's", 'frys', 'highlights', 'daim', 'creme egg', 'buttons',
+                'cocoa', 'butterscotch', 'eclairs'
+            ];
+            if (chocolateBrands.some(b => fullText.includes(b))) return 'chocolate';
+
+            // Generic sweets ingredient/format words - fallback only, since
+            // any chocolate-branded match above already would have returned
             const sweetsKeywords = [
                 'sweet', 'candy', 'candies', 'gummy', 'gummies', 'jelly', 'jellies',
-                'sour patch', 'wine gum', 'liquorice', 'licorice', 'fizzy', 'chew',
+                'wine gum', 'liquorice', 'licorice', 'fizzy', 'chew',
                 'lolly', 'lollies', 'lollipop', 'fudge', 'marshmallow', 'toffee',
                 'sherbet', 'bonbon', 'humbug'
             ];
-            return sweetsKeywords.some(k => fullText.includes(k)) ? 'sweets' : 'chocolate';
+            if (sweetsKeywords.some(k => fullText.includes(k))) return 'sweets';
+
+            return 'chocolate';
+        }
+
+        // Merchandise / non-food items (mugs, toys, gift cards) shouldn't get
+        // "delicious chocolate" wording at all.
+        function isMerchProduct(fullText) {
+            return /\b(mug|toy|beanie|plush|keyring|teddy|ceramic)\b/.test(fullText) ||
+                   fullText.includes('gift card') || fullText.includes('e-gift');
         }
 
         // IMPROVED category detection - includes "bag" as standard
         function detectCategoryFromName(productName) {
             const name = productName.toLowerCase();
+
+            // Merchandise/non-food items - checked first since they're not
+            // confectionery at all, regardless of any other word in the name
+            if (isMerchProduct(name)) return 'merch';
 
             // Bulk/institutional orders - checked first since a "Box of 10" bag
             // would otherwise be caught by the plain "bag" rule below
@@ -362,7 +409,7 @@
             if (name.includes('easter') || name.includes('christmas') || name.includes('valentine')) return 'seasonal';
 
             // Luxury
-            if (name.includes('luxury') || name.includes('premium') || name.includes('ultimate') || name.includes('wine')) return 'luxury';
+            if (name.includes('luxury') || name.includes('premium') || name.includes('ultimate') || (name.includes('wine') && !name.includes('wine gum'))) return 'luxury';
 
             // Default to standard for single products
             return 'standard';
@@ -371,8 +418,19 @@
         // Extract information from product name
         function extractProductInfo(productName, category) {
             const fullText = productName.toLowerCase();
-            const itemNoun = detectProductKind(fullText); // "chocolate" or "sweets"
-            const itemAdj = itemNoun === 'sweets' ? 'sweet' : 'chocolate';
+
+            // detectProductKind() classifies as 'chocolate' | 'sweets' | 'mixed'.
+            // itemNoun/itemAdj are the actual words substituted into templates -
+            // kept separate so "mixed" doesn't get read literally into copy.
+            const kind = detectProductKind(fullText);
+            let itemNoun, itemAdj, contents;
+            if (kind === 'sweets') {
+                itemNoun = 'sweets'; itemAdj = 'sweet'; contents = 'Delicious Cadbury sweets.';
+            } else if (kind === 'mixed') {
+                itemNoun = 'treats'; itemAdj = 'sweet'; contents = 'A delicious mix of Cadbury chocolate and sweets.';
+            } else {
+                itemNoun = 'chocolate'; itemAdj = 'chocolate'; contents = 'Delicious Cadbury chocolate.';
+            }
 
             const info = {
                 name: productName,
@@ -380,7 +438,7 @@
                 occasion: 'any occasion',
                 message: '',
                 weight: '110g',
-                contents: `Delicious Cadbury ${itemNoun}.`,
+                contents,
                 productType: category,
                 itemNoun,
                 itemAdj
