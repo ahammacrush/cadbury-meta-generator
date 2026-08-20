@@ -74,6 +74,37 @@
         .tips h4 { color: #856404; margin-bottom: 10px; }
         .tips ul { margin-left: 20px; color: #856404; }
         .tips li { margin-bottom: 5px; }
+
+        .feedback-card h4 { color: #5e3a8e; margin-bottom: 10px; }
+        .feedback-intro { color: #666; font-size: 0.95em; margin-bottom: 15px; line-height: 1.5; }
+        .feedback-context {
+            background: #f3eefc; border: 1px solid #d9c9f0; color: #5e3a8e;
+            font-size: 0.85em; padding: 8px 12px; border-radius: 8px; margin-bottom: 12px;
+            display: flex; justify-content: space-between; align-items: center; gap: 10px;
+        }
+        .feedback-context button { background: none; border: none; color: #5e3a8e; cursor: pointer; font-weight: 700; font-size: 1em; }
+        textarea.feedback-input {
+            width: 100%; min-height: 80px; padding: 12px; border: 2px solid #e0e0e0;
+            border-radius: 8px; font-size: 0.95em; font-family: inherit; resize: vertical;
+            transition: border-color 0.3s;
+        }
+        textarea.feedback-input:focus { outline: none; border-color: #5e3a8e; }
+        .feedback-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; flex-wrap: wrap; gap: 10px; }
+        .feedback-save-btn {
+            background: #5e3a8e; color: white; border: none; padding: 10px 22px;
+            border-radius: 8px; font-weight: 600; cursor: pointer; transition: background 0.2s;
+        }
+        .feedback-save-btn:hover { background: #4a2d70; }
+        .feedback-save-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+        .feedback-status { font-size: 0.85em; color: #28a745; font-weight: 600; }
+        .feedback-status.error { color: #dc3545; }
+        .notes-toggle { background: none; border: none; color: #5e3a8e; font-weight: 600; cursor: pointer; font-size: 0.9em; padding: 0; }
+        .notes-list { margin-top: 15px; max-height: 320px; overflow-y: auto; }
+        .note-item { border-left: 3px solid #d9c9f0; background: #faf8fd; padding: 10px 14px; border-radius: 6px; margin-bottom: 10px; }
+        .note-item .note-meta { font-size: 0.75em; color: #888; margin-bottom: 4px; }
+        .note-item .note-product { font-weight: 600; color: #5e3a8e; }
+        .note-item .note-text { font-size: 0.9em; color: #333; line-height: 1.4; white-space: pre-wrap; }
+        .notes-empty { color: #888; font-size: 0.9em; font-style: italic; }
     </style>
 </head>
 <body>
@@ -112,6 +143,28 @@
             </button>
 
             <div id="results" class="results" style="display: none;"></div>
+        </div>
+
+        <div class="card feedback-card">
+            <h4>💬 Feedback &amp; Improvement Notes</h4>
+            <p class="feedback-intro">There are thousands of products on this site, so the generator won't get everything right first time. Spotted a mistake, or have an idea to improve it? Leave a note below - it's saved for whoever checks in next, so we can keep improving it together.</p>
+
+            <div id="feedbackContext" class="feedback-context" style="display: none;">
+                <span id="feedbackContextText"></span>
+                <button type="button" onclick="clearFeedbackContext()" title="Remove context">✕</button>
+            </div>
+
+            <textarea id="feedbackNote" class="feedback-input" placeholder="e.g. &quot;Wispa Gold Box of 48 got tagged as sweets, should be chocolate&quot; or a general idea for improving the generator"></textarea>
+
+            <div class="feedback-actions">
+                <button type="button" class="feedback-save-btn" id="feedbackSaveBtn" onclick="submitFeedbackNote()">Save Note</button>
+                <span id="feedbackStatus" class="feedback-status"></span>
+            </div>
+
+            <div style="margin-top: 18px; border-top: 1px solid #eee; padding-top: 12px;">
+                <button type="button" class="notes-toggle" id="notesToggleBtn" onclick="toggleNotesList()">📝 View past notes</button>
+                <div id="notesList" class="notes-list" style="display: none;"></div>
+            </div>
         </div>
     </div>
 
@@ -206,13 +259,15 @@
             {id: 79, pattern: "Surprise them with the {name} for {occasion}. {contents} Perfect from Cadbury Gifts, next-day delivery when you order by 4pm.", categories: ["seasonal"], tone: "surprise"},
             {id: 80, pattern: "Indulge in the {name} this {occasion}. {contents} Perfect from Cadbury Gifts, next-day delivery when you order by 4pm.", categories: ["seasonal"], tone: "indulge"},
             
-            // CORPORATE/BULK TEMPLATES (5) - institutional orders (schools, offices,
-            // parties, resellers), not single-recipient gifting
-            {id: 81, pattern: "Stock up on the {name} for schools, offices and parties, delivered next day from Cadbury Gifts when you order by 4pm.", categories: ["corporate"], tone: "bulk"},
-            {id: 82, pattern: "Perfect for schools and offices - the {name}, delivered next day from Cadbury Gifts when you order by 4pm.", categories: ["corporate"], tone: "bulk2"},
-            {id: 83, pattern: "Order the {name} in bulk from Cadbury Gifts, ideal for schools, offices and parties, next-day delivery available.", categories: ["corporate"], tone: "bulk3"},
-            {id: 84, pattern: "Treat a crowd with the {name}, great for schools, offices and events, next-day delivery from Cadbury Gifts.", categories: ["corporate"], tone: "bulk4"},
-            {id: 85, pattern: "Send the {name} to your school, office or team, with bulk orders delivered next day from Cadbury Gifts.", categories: ["corporate"], tone: "bulk5"},
+            // BULK TEMPLATES (5) - multi-unit orders (Box of 10, Pack of 24 etc).
+            // Deliberately doesn't guess who's buying or why - could be a
+            // school, an office, a party, a reseller, or just someone stocking
+            // up - so the wording stays neutral rather than naming a use case.
+            {id: 81, pattern: "Stock up on the {name} from Cadbury Gifts, perfect for sharing or bulk orders, next-day delivery when you order by 4pm.", categories: ["corporate"], tone: "bulk"},
+            {id: 82, pattern: "Buying in bulk? The {name} is available from Cadbury Gifts, next-day delivery when you order by 4pm.", categories: ["corporate"], tone: "bulk2"},
+            {id: 83, pattern: "Order the {name} in bulk from Cadbury Gifts, next-day delivery available when you order by 4pm.", categories: ["corporate"], tone: "bulk3"},
+            {id: 84, pattern: "Stock up on plenty of the {name} from Cadbury Gifts, next-day delivery available when you order by 4pm.", categories: ["corporate"], tone: "bulk4"},
+            {id: 85, pattern: "Get the {name} in bulk from Cadbury Gifts, delivered next day when you order by 4pm.", categories: ["corporate"], tone: "bulk5"},
             
             // LUXURY TEMPLATES (5)
             {id: 86, pattern: "Indulge in the {name} luxury hamper. {contents} Perfect for special occasions, next-day delivery from Cadbury Gifts when you order by 4pm.", categories: ["luxury"], tone: "luxury"},
@@ -642,6 +697,7 @@
             `;
 
             resultsDiv.innerHTML = html;
+            setFeedbackContext(productName, desc.text);
         }
 
         // Regenerate - always offers an alternative from the classic library,
@@ -664,6 +720,112 @@
                     btn.classList.remove('copied');
                 }, 2000);
             });
+        }
+
+        // ----- Feedback notes -----
+        // Notes are persisted server-side (see api/notes.js), committed to
+        // this repo's feedback-notes.json, so anyone opening the tool sees
+        // the same running list.
+        let lastGeneration = null; // { productName, generatedText } or null for a general note
+        let notesListVisible = false;
+
+        function setFeedbackContext(productName, generatedText) {
+            lastGeneration = { productName, generatedText };
+            document.getElementById('feedbackContextText').textContent = `About: "${productName}"`;
+            document.getElementById('feedbackContext').style.display = 'flex';
+        }
+
+        function clearFeedbackContext() {
+            lastGeneration = null;
+            document.getElementById('feedbackContext').style.display = 'none';
+        }
+
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        async function submitFeedbackNote() {
+            const textarea = document.getElementById('feedbackNote');
+            const note = textarea.value.trim();
+            const statusEl = document.getElementById('feedbackStatus');
+            const btn = document.getElementById('feedbackSaveBtn');
+
+            statusEl.classList.remove('error');
+
+            if (!note) {
+                statusEl.classList.add('error');
+                statusEl.textContent = 'Write a note first.';
+                return;
+            }
+
+            btn.disabled = true;
+            statusEl.textContent = 'Saving...';
+
+            try {
+                const res = await fetch('/api/notes', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        note,
+                        productName: lastGeneration ? lastGeneration.productName : '',
+                        generatedText: lastGeneration ? lastGeneration.generatedText : ''
+                    })
+                });
+
+                if (!res.ok) throw new Error('Save failed');
+
+                textarea.value = '';
+                statusEl.textContent = '✓ Saved - thank you!';
+                setTimeout(() => { statusEl.textContent = ''; }, 3000);
+
+                if (notesListVisible) await loadNotesList();
+            } catch (e) {
+                statusEl.classList.add('error');
+                statusEl.textContent = 'Could not save right now - please try again shortly.';
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        async function toggleNotesList() {
+            const listEl = document.getElementById('notesList');
+            const btn = document.getElementById('notesToggleBtn');
+            notesListVisible = !notesListVisible;
+
+            if (!notesListVisible) {
+                listEl.style.display = 'none';
+                btn.textContent = '📝 View past notes';
+                return;
+            }
+
+            btn.textContent = '📝 Hide past notes';
+            listEl.style.display = 'block';
+            await loadNotesList();
+        }
+
+        async function loadNotesList() {
+            const listEl = document.getElementById('notesList');
+            listEl.innerHTML = '<p class="notes-empty">Loading...</p>';
+            try {
+                const res = await fetch('/api/notes');
+                if (!res.ok) throw new Error('Failed to load');
+                const notes = await res.json();
+
+                if (!notes.length) {
+                    listEl.innerHTML = '<p class="notes-empty">No notes yet - be the first to leave one.</p>';
+                    return;
+                }
+
+                listEl.innerHTML = notes.map(n => {
+                    const date = new Date(n.timestamp).toLocaleString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+                    const product = n.productName ? `<span class="note-product">${escapeHtml(n.productName)}</span> &middot; ` : '';
+                    return `<div class="note-item"><div class="note-meta">${product}${date}</div><div class="note-text">${escapeHtml(n.note)}</div></div>`;
+                }).join('');
+            } catch (e) {
+                listEl.innerHTML = '<p class="notes-empty">Couldn\'t load notes right now.</p>';
+            }
         }
     </script>
 </body>
