@@ -827,6 +827,19 @@
                 listEl.innerHTML = '<p class="notes-empty">Couldn\'t load notes right now.</p>';
             }
         }
+
+        // Lets another tool (the site auditor) link straight in with the
+        // product name already filled — e.g. ?product=Wispa%20Gold%20Box.
+        // No auto-generate: Mum still presses the button herself, so she
+        // always sees the "Generating..." state and can re-roll if she
+        // doesn't like the first result.
+        (function prefillFromQueryString() {
+            const productName = new URLSearchParams(window.location.search).get('product');
+            if (!productName) return;
+            const input = document.getElementById('productName');
+            input.value = productName;
+            input.focus();
+        })();
     </script>
 </body>
 </html>
