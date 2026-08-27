@@ -172,26 +172,26 @@
         // 90 NATURAL LANGUAGE TEMPLATES - Strict 145-150 chars, no "Shop/Buy/Order"
         const templates = [
             // ENVELOPE TEMPLATES (20) - Message in quotes only
-            {id: 1, pattern: "Treat {recipient} to the Cadbury \"{message}\" Dairy Milk Bar with Envelope. Perfect for {occasion}, delivered next day from Cadbury Gifts.", categories: ["envelope"], tone: "warm"},
-            {id: 2, pattern: "Send the Cadbury \"{message}\" Chocolate Bar with Gift Envelope to {recipient}. Perfect gift for {occasion}, next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "gifting"},
-            {id: 3, pattern: "Surprise {recipient} with the Cadbury \"{message}\" Dairy Milk Bar and Envelope. Perfect for celebrations, next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "surprising"},
-            {id: 4, pattern: "Gift them the Cadbury \"{message}\" Chocolate Bar with Envelope. Perfect for any occasion, delivered next day from Cadbury Gifts.", categories: ["envelope"], tone: "thoughtful"},
-            {id: 5, pattern: "Spoil {recipient} with the Cadbury \"{message}\" Dairy Milk Bar and Gift Envelope. Perfect for celebrations, next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "indulgent"},
-            {id: 6, pattern: "Celebrate {occasion} with the Cadbury \"{message}\" Chocolate Bar and Envelope. Perfect thoughtful gift, next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "celebratory"},
-            {id: 7, pattern: "Treat {recipient} to the Cadbury {weight} \"{message}\" Chocolate Bar with Envelope. Perfect for any occasion, next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "specific"},
-            {id: 8, pattern: "Send a sweet message with the Cadbury \"{message}\" Dairy Milk Bar and Envelope. Perfect for any occasion, delivered next day from Cadbury Gifts.", categories: ["envelope"], tone: "messaging"},
-            {id: 9, pattern: "Gift the Cadbury \"{message}\" Dairy Milk Bar with Gift Sleeve to {recipient}. Perfect chocolate gift, next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "classic"},
-            {id: 10, pattern: "Surprise them with the Cadbury \"{message}\" Chocolate Bar and Envelope. Perfect for {occasion}, next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "surprise"},
-            {id: 11, pattern: "Treat them to the Cadbury \"{message}\" Dairy Milk Bar and Gift Envelope. Perfect for celebrations, next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "treat"},
-            {id: 12, pattern: "Send the Cadbury \"{message}\" Chocolate Bar with Gift Sleeve to {recipient}. Perfect for any occasion, next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "sending"},
-            {id: 13, pattern: "Delight {recipient} with the Cadbury \"{message}\" Dairy Milk Bar and Envelope. Perfect for {occasion}, next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "delighting"},
-            {id: 14, pattern: "Present {recipient} with the Cadbury \"{message}\" Chocolate Bar and Envelope. Perfect gift for any occasion, delivered next day from Cadbury Gifts.", categories: ["envelope"], tone: "presenting"},
-            {id: 15, pattern: "Love the Cadbury \"{message}\" Dairy Milk Bar with Gift Envelope. Perfect for {occasion}, next-day delivery available from Cadbury Gifts.", categories: ["envelope"], tone: "loving"},
-            {id: 16, pattern: "Enjoy the Cadbury \"{message}\" Chocolate Bar with Envelope. Perfect thoughtful gift for any occasion, next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "enjoying"},
-            {id: 17, pattern: "Discover the Cadbury \"{message}\" Dairy Milk Bar and Gift Envelope. Perfect for celebrations, delivered next day from Cadbury Gifts.", categories: ["envelope"], tone: "discovering"},
-            {id: 18, pattern: "Get the Cadbury \"{message}\" Chocolate Bar with Gift Sleeve for {recipient}. Perfect for any occasion, next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "getting"},
-            {id: 19, pattern: "Indulge {recipient} with the Cadbury \"{message}\" Dairy Milk Bar and Envelope. Perfect for {occasion}, next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "indulging"},
-            {id: 20, pattern: "Make their day with the Cadbury \"{message}\" Chocolate Bar and Envelope. Perfect gift for any occasion, next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "making"},
+            {id: 1, pattern: "Treat {recipient} to the Cadbury \"{message}\" Dairy Milk Bar with {wrapper}. Perfect for {occasion}, delivered next day from Cadbury Gifts.", categories: ["envelope"], tone: "warm"},
+            {id: 2, pattern: "Send the Cadbury \"{message}\" Chocolate Bar with Gift {wrapper} to {recipient}. Perfect gift for {occasion}, next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "gifting"},
+            {id: 3, pattern: "Surprise {recipient} with the Cadbury \"{message}\" Dairy Milk Bar and {wrapper}. Perfect for celebrations, next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "surprising"},
+            {id: 4, pattern: "Gift them the Cadbury \"{message}\" Chocolate Bar with {wrapper}. Perfect for any occasion, delivered next day from Cadbury Gifts.", categories: ["envelope"], tone: "thoughtful"},
+            {id: 5, pattern: "Spoil {recipient} with the Cadbury \"{message}\" Dairy Milk Bar and Gift {wrapper}. Perfect for celebrations, next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "indulgent"},
+            {id: 6, pattern: "Celebrate {occasion} with the Cadbury \"{message}\" Chocolate Bar and {wrapper}. Perfect thoughtful gift, next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "celebratory"},
+            {id: 7, pattern: "Treat {recipient} to the Cadbury {weight} \"{message}\" Chocolate Bar with {wrapper}. Perfect for any occasion, next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "specific"},
+            {id: 8, pattern: "Send a sweet message with the Cadbury \"{message}\" Dairy Milk Bar and {wrapper}. Perfect for any occasion, delivered next day from Cadbury Gifts.", categories: ["envelope"], tone: "messaging"},
+            {id: 9, pattern: "Gift the Cadbury \"{message}\" Dairy Milk Bar with Gift {wrapper} to {recipient}. Perfect chocolate gift, next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "classic"},
+            {id: 10, pattern: "Surprise them with the Cadbury \"{message}\" Chocolate Bar and {wrapper}. Perfect for {occasion}, next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "surprise"},
+            {id: 11, pattern: "Treat them to the Cadbury \"{message}\" Dairy Milk Bar and Gift {wrapper}. Perfect for celebrations, next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "treat"},
+            {id: 12, pattern: "Send the Cadbury \"{message}\" Chocolate Bar with Gift {wrapper} to {recipient}. Perfect for any occasion, next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "sending"},
+            {id: 13, pattern: "Delight {recipient} with the Cadbury \"{message}\" Dairy Milk Bar and {wrapper}. Perfect for {occasion}, next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "delighting"},
+            {id: 14, pattern: "Present {recipient} with the Cadbury \"{message}\" Chocolate Bar and {wrapper}. Perfect gift for any occasion, delivered next day from Cadbury Gifts.", categories: ["envelope"], tone: "presenting"},
+            {id: 15, pattern: "Love the Cadbury \"{message}\" Dairy Milk Bar with Gift {wrapper}. Perfect for {occasion}, next-day delivery available from Cadbury Gifts.", categories: ["envelope"], tone: "loving"},
+            {id: 16, pattern: "Enjoy the Cadbury \"{message}\" Chocolate Bar with {wrapper}. Perfect thoughtful gift for any occasion, next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "enjoying"},
+            {id: 17, pattern: "Discover the Cadbury \"{message}\" Dairy Milk Bar and Gift {wrapper}. Perfect for celebrations, delivered next day from Cadbury Gifts.", categories: ["envelope"], tone: "discovering"},
+            {id: 18, pattern: "Get the Cadbury \"{message}\" Chocolate Bar with Gift {wrapper} for {recipient}. Perfect for any occasion, next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "getting"},
+            {id: 19, pattern: "Indulge {recipient} with the Cadbury \"{message}\" Dairy Milk Bar and {wrapper}. Perfect for {occasion}, next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "indulging"},
+            {id: 20, pattern: "Make their day with the Cadbury \"{message}\" Chocolate Bar and {wrapper}. Perfect gift for any occasion, next-day delivery from Cadbury Gifts.", categories: ["envelope"], tone: "making"},
             
             // BAG/STANDARD TEMPLATES (25) - Safe, no sharing assumptions
             {id: 21, pattern: "Treat yourself to the {name}. Delicious {itemNoun}, delivered next day when you order by 4pm from Cadbury Gifts.", categories: ["standard"], tone: "self"},
@@ -282,7 +282,20 @@
             {id: 92, pattern: "Discover the {name} at Cadbury Gifts. The perfect extra gift, next-day delivery when you order by 4pm.", categories: ["merch"], tone: "merch2"},
             {id: 93, pattern: "Treat them to the {name} from Cadbury Gifts, a lovely gift on its own, next-day delivery available.", categories: ["merch"], tone: "merch3"},
             {id: 94, pattern: "Send the {name} to {recipient} from Cadbury Gifts, delivered next day when you order by 4pm.", categories: ["merch"], tone: "merch4"},
-            {id: 95, pattern: "Gift the {name} from Cadbury Gifts - the perfect finishing touch, next-day delivery when you order by 4pm.", categories: ["merch"], tone: "merch5"}
+            {id: 95, pattern: "Gift the {name} from Cadbury Gifts - the perfect finishing touch, next-day delivery when you order by 4pm.", categories: ["merch"], tone: "merch5"},
+
+            // NAME-GIFT TEMPLATES (9) - a personalised first name in quotes
+            // (e.g. "Alex"), not a message phrase like "Best Mum" - copy leans
+            // on the personalisation itself rather than an occasion/message
+            {id: 96, pattern: "Personalise the Cadbury \"{message}\" Dairy Milk Bar with {wrapper} for {recipient}. A chocolate gift made just for them, next-day delivery from Cadbury Gifts.", categories: ["namegift"], tone: "personalise"},
+            {id: 97, pattern: "Surprise {recipient} with a Dairy Milk Bar made just for them - the Cadbury \"{message}\" edition with {wrapper}. Next-day delivery from Cadbury Gifts.", categories: ["namegift"], tone: "surprise2"},
+            {id: 98, pattern: "Give {recipient} a chocolate bar with their own name on it - the Cadbury \"{message}\" Bar with {wrapper}, delivered next day from Cadbury Gifts.", categories: ["namegift"], tone: "giveown"},
+            {id: 99, pattern: "Treat {recipient} to their very own Cadbury \"{message}\" Dairy Milk Bar with {wrapper}. A personal touch, next-day delivery from Cadbury Gifts.", categories: ["namegift"], tone: "treatown"},
+            {id: 100, pattern: "The Cadbury \"{message}\" Chocolate Bar with {wrapper} makes any gift personal. Next-day delivery from Cadbury Gifts when you order by 4pm.", categories: ["namegift"], tone: "makespersonal"},
+            {id: 101, pattern: "Add a personal touch with the Cadbury \"{message}\" Dairy Milk Bar and {wrapper}, made just for {recipient}. Next-day delivery from Cadbury Gifts.", categories: ["namegift"], tone: "addtouch"},
+            {id: 102, pattern: "Nothing beats a gift with their name on it - the Cadbury \"{message}\" Bar with {wrapper}. Next-day delivery from Cadbury Gifts when you order by 4pm.", categories: ["namegift"], tone: "nameonit"},
+            {id: 103, pattern: "Send {recipient} something made just for them: the personalised Cadbury \"{message}\" Chocolate Bar with {wrapper}. Next-day delivery from Cadbury Gifts.", categories: ["namegift"], tone: "sendown"},
+            {id: 104, pattern: "Celebrate {recipient} with their own named Cadbury \"{message}\" Dairy Milk Bar and {wrapper}. Next-day delivery from Cadbury Gifts when you order by 4pm.", categories: ["namegift"], tone: "celebrateown"}
         ];
 
         // CURRENT RECOMMENDED CHRISTMAS TEMPLATES (30)
@@ -452,7 +465,7 @@
             if (isBulkProduct(name) || name.includes('corporate') || name.includes('employee') || name.includes('team')) return 'corporate';
 
             // Bags are standard products (single item type)
-            if (name.includes('bag') || name.includes(' bar') && !name.includes('envelope')) return 'standard';
+            if (name.includes('bag') || (name.includes(' bar') && !name.includes('envelope') && !name.includes('sleeve'))) return 'standard';
 
             // Envelopes have message cards
             if (name.includes('envelope') || name.includes('sleeve')) return 'envelope';
@@ -493,10 +506,12 @@
                 occasion: 'any occasion',
                 message: '',
                 weight: '110g',
+                wrapper: fullText.includes('sleeve') ? 'Sleeve' : 'Envelope',
                 contents,
                 productType: category,
                 itemNoun,
-                itemAdj
+                itemAdj,
+                isNameGift: false
             };
 
             // Extract recipient
@@ -518,24 +533,54 @@
             else if (fullText.includes('mother') && fullText.includes('day')) info.occasion = "Mother's Day";
             else if (fullText.includes('father') && fullText.includes('day')) info.occasion = "Father's Day";
             
-            // Extract message for envelopes
+            // Extract message/name for envelope & sleeve products
             if (category === 'envelope') {
                 const messagePatterns = [
                     'best mum', 'best dad', 'best grandad', 'best grandma', 'best friend',
                     'i love you', 'love you', 'thank you', 'well done', 'congratulations',
-                    'great job', 'happy birthday', 'special wife', 'special husband', 
+                    'great job', 'happy birthday', 'special wife', 'special husband',
                     "you're amazing", 'happy easter', 'merry christmas'
                 ];
-                
-                for (const pattern of messagePatterns) {
-                    if (fullText.includes(pattern)) {
-                        info.message = pattern.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-                        break;
+
+                // The real product title usually quotes the personalised text
+                // directly, e.g. Cadbury "Alex" ... or Cadbury "Best Mum" ...
+                // Pull that out first so we never dump the whole product name
+                // into the quotes (which used to happen for names like "Alex"
+                // that don't match any of the known message phrases below).
+                const quotedMatch = productName.match(/"([^"]+)"/);
+                const quotedText = quotedMatch ? quotedMatch[1].trim() : '';
+                const quotedLower = quotedText.toLowerCase();
+                const isKnownMessage = messagePatterns.some(p => quotedLower.includes(p));
+
+                // A personalised name is a short quoted string (1-2 words,
+                // letters only) that isn't one of the known message phrases -
+                // e.g. "Alex", "Grace" - as opposed to a message like "Best Mum".
+                const looksLikeName = quotedText &&
+                    !isKnownMessage &&
+                    quotedText.split(/\s+/).length <= 2 &&
+                    /^[A-Za-z''-]+(\s[A-Za-z''-]+)?$/.test(quotedText);
+
+                if (looksLikeName) {
+                    info.isNameGift = true;
+                    info.message = quotedText;
+                } else if (quotedText) {
+                    for (const pattern of messagePatterns) {
+                        if (quotedLower.includes(pattern)) {
+                            info.message = pattern.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+                            break;
+                        }
                     }
-                }
-                
-                if (!info.message) {
-                    info.message = productName;
+                    if (!info.message) info.message = quotedText;
+                } else {
+                    // No quoted text in the product name - fall back to
+                    // scanning the full text for a known phrase
+                    for (const pattern of messagePatterns) {
+                        if (fullText.includes(pattern)) {
+                            info.message = pattern.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+                            break;
+                        }
+                    }
+                    if (!info.message) info.message = productName;
                 }
             }
             
@@ -555,76 +600,94 @@
             return info;
         }
 
-        // Generate variations - strict 145-150 char check
-        function generateVariations(info, category) {
-            const relevantTemplates = templates.filter(t => t.categories.includes(category));
-            const shuffled = [...relevantTemplates].sort(() => Math.random() - 0.5);
-            
-            let attempts = 0;
-            let selected = null;
-            
-            // Try up to 10 templates (or fewer if the category has fewer) to find one that's 145-150 chars
-            while (attempts < Math.min(10, shuffled.length) && !selected) {
-                const template = shuffled[attempts];
-                let description = template.pattern;
+        // The "good length" target the picker aims for. Descriptions outside
+        // this get shortened (see shortenToFit) or, failing that, the closest
+        // available option is used rather than an arbitrary one.
+        const TARGET_MIN = 145;
+        const TARGET_MAX = 150;
+        // Looser bounds used only for the on-screen warning - a result a few
+        // characters under the ideal target (common for short names/products)
+        // is still a perfectly good description and shouldn't be flagged.
+        const DISPLAY_MIN = 105;
 
-                // Replace placeholders
-                description = description
-                    .replace(/\{name\}/g, info.name)
-                    .replace(/\{recipient\}/g, info.recipient)
-                    .replace(/\{message\}/g, info.message)
-                    .replace(/\{occasion\}/g, info.occasion)
-                    .replace(/\{weight\}/g, info.weight)
-                    .replace(/\{contents\}/g, info.contents)
-                    .replace(/\{itemNoun\}/g, info.itemNoun)
-                    .replace(/\{itemAdj\}/g, info.itemAdj)
-                    .replace(/\{productType\}/g, info.productType);
+        // Boilerplate clauses that are safe to drop when a description runs
+        // long - each always sits right before the final period in every
+        // template that uses it, so removing one never touches the product
+        // name and never leaves broken punctuation. Tried longest-first.
+        const DROPPABLE_PHRASES = [
+            ' when you order by 4pm today',
+            ' when you order by 4pm',
+            ' today'
+        ];
 
-                const length = description.length;
-                
-                // Only accept if 145-150 chars
-                if (length >= 145 && length <= 150) {
-                    selected = {
-                        text: description,
-                        charCount: length,
-                        tone: template.tone,
-                        source: 'legacy'
-                    };
-                }
+        function fillTemplate(pattern, info) {
+            return pattern
+                .replace(/\{name\}/g, info.name)
+                .replace(/\{recipient\}/g, info.recipient)
+                .replace(/\{message\}/g, info.message)
+                .replace(/\{occasion\}/g, info.occasion)
+                .replace(/\{weight\}/g, info.weight)
+                .replace(/\{wrapper\}/g, info.wrapper)
+                .replace(/\{contents\}/g, info.contents)
+                .replace(/\{itemNoun\}/g, info.itemNoun)
+                .replace(/\{itemAdj\}/g, info.itemAdj)
+                .replace(/\{productType\}/g, info.productType);
+        }
 
-                attempts++;
+        // Drops safe filler clauses, one at a time, until the text fits under
+        // maxLen or there's nothing left to drop - so a long product name
+        // still gets a good-length description without ever being truncated.
+        // extraPhrase (the template's {contents} sentence, e.g. "Delicious
+        // chocolate from Cadbury Gifts.") is tried last, as a bigger cut for
+        // genuinely long names - it's often redundant anyway, since several
+        // templates already mention "Cadbury Gifts" elsewhere in the sentence.
+        function shortenToFit(text, maxLen, extraPhrase) {
+            const phrases = extraPhrase ? [...DROPPABLE_PHRASES, extraPhrase] : DROPPABLE_PHRASES;
+            for (const phrase of phrases) {
+                if (text.length <= maxLen) break;
+                if (text.includes(phrase)) text = text.replace(phrase, '');
             }
+            return text.replace(/\s{2,}/g, ' ').trim();
+        }
 
-            // Fallback if no perfect match found
-            if (!selected) {
-                const template = shuffled[0];
-                let description = template.pattern
-                    .replace(/\{name\}/g, info.name)
-                    .replace(/\{recipient\}/g, info.recipient)
-                    .replace(/\{message\}/g, info.message)
-                    .replace(/\{occasion\}/g, info.occasion)
-                    .replace(/\{weight\}/g, info.weight)
-                    .replace(/\{contents\}/g, info.contents)
-                    .replace(/\{itemNoun\}/g, info.itemNoun)
-                    .replace(/\{itemAdj\}/g, info.itemAdj)
-                    .replace(/\{productType\}/g, info.productType);
+        function distanceFromTarget(length) {
+            if (length < TARGET_MIN) return TARGET_MIN - length;
+            if (length > TARGET_MAX) return length - TARGET_MAX;
+            return 0;
+        }
 
-                selected = {
+        // Builds every candidate description for a category (not just a
+        // random subset), shortening any that run long, and returns them
+        // sorted by how close they land to the 145-150 target - so the best
+        // available fit is always known, even when nothing hits it exactly.
+        function generateVariations(info, category, { excludeIds = [] } = {}) {
+            const pool = templates.filter(t => t.categories.includes(category) && !excludeIds.includes(t.id));
+            const relevantTemplates = pool.length ? pool : templates.filter(t => t.categories.includes(category));
+
+            const candidates = relevantTemplates.map(template => {
+                let description = fillTemplate(template.pattern, info);
+                description = shortenToFit(description, TARGET_MAX, info.contents);
+                return {
+                    id: template.id,
                     text: description,
                     charCount: description.length,
                     tone: template.tone,
-                    source: 'legacy'
+                    source: 'legacy',
+                    distance: distanceFromTarget(description.length)
                 };
-            }
+            });
 
-            return [selected];
+            candidates.sort((a, b) => a.distance - b.distance);
+            return candidates;
         }
 
         // Picks a description for productName. Tries the current recommended
         // Christmas templates first; only falls back to the classic library if
         // nothing in the Christmas list fits (wrong season/topic), or if the
-        // caller explicitly wants an alternative (regenerate).
-        function pickDescription(productName, { skipRecommended = false } = {}) {
+        // caller explicitly wants an alternative (regenerate). Personalised
+        // name products (e.g. Cadbury "Alex" ... with Sleeve) use their own
+        // dedicated template set rather than the generic message templates.
+        function pickDescription(productName, { skipRecommended = false, excludeIds = [] } = {}) {
             const category = detectCategoryFromName(productName);
             const info = extractProductInfo(productName, category);
 
@@ -633,7 +696,18 @@
                 if (recommended) return recommended;
             }
 
-            return generateVariations(info, category)[0];
+            const effectiveCategory = (category === 'envelope' && info.isNameGift) ? 'namegift' : category;
+            const candidates = generateVariations(info, effectiveCategory, { excludeIds });
+
+            if (excludeIds.length) {
+                // Regenerate: vary the result while staying close to the ideal
+                // length - pick randomly among the closest few, not just the
+                // single best, so "different option" actually looks different.
+                const nearBest = candidates.filter(c => c.distance <= candidates[0].distance + 5);
+                return nearBest[Math.floor(Math.random() * nearBest.length)];
+            }
+
+            return candidates[0];
         }
 
         // Generate descriptions
@@ -662,13 +736,26 @@
             }, 400);
         }
 
-        // Display results - only show error if over the limit for that tier
+        // Tracks the template id(s) just shown, per product name, so
+        // "Generate Different Option" doesn't repeat the same one and so a
+        // fresh call to Generate resets the history.
+        let lastShownIds = [];
+
+        // Display results - flags both too-long and (meaningfully) too-short
         function displayResults(desc, productName) {
             const resultsDiv = document.getElementById('results');
             const isRecommended = desc.source === 'recommended';
-            const maxChars = isRecommended ? 160 : 150;
-            const charStatus = desc.charCount > maxChars ? 'error' : '';
-            const charMessage = desc.charCount > maxChars ? `(TOO LONG - must be ${maxChars} max)` : '(perfect length)';
+            const maxChars = isRecommended ? 160 : TARGET_MAX;
+            const minChars = isRecommended ? 0 : DISPLAY_MIN;
+            let charStatus = '';
+            let charMessage = '(perfect length)';
+            if (desc.charCount > maxChars) {
+                charStatus = 'error';
+                charMessage = `(TOO LONG - must be ${maxChars} max)`;
+            } else if (desc.charCount < minChars) {
+                charStatus = 'error';
+                charMessage = `(TOO SHORT - aim for ${minChars}+ characters)`;
+            }
 
             const badge = isRecommended
                 ? `<span class="source-badge recommended">🎄 Recommended (Current Christmas List) — ${desc.topic}</span>`
@@ -683,7 +770,7 @@
                             ${desc.charCount} characters ${charMessage} • ${desc.tone} tone
                         </span>
                         <div class="actions">
-                            <button class="btn btn-copy" onclick="copyToClipboard('${desc.text.replace(/'/g, "\\'")}')">
+                            <button class="btn btn-copy" onclick="copyToClipboard()">
                                 📋 Copy
                             </button>
                         </div>
@@ -697,19 +784,25 @@
             `;
 
             resultsDiv.innerHTML = html;
+            lastShownIds = typeof desc.id === 'number' ? [desc.id] : [];
             setFeedbackContext(productName, desc.text);
         }
 
-        // Regenerate - always offers an alternative from the classic library,
-        // since the recommended tier has a single canonical description per topic
+        // Regenerate - always offers an alternative from the classic library
+        // (the recommended tier has a single canonical description per topic),
+        // excluding whichever template was just shown so it actually varies.
         function regenerateDescription() {
             const productName = document.getElementById('productName').value.trim();
-            const desc = pickDescription(productName, { skipRecommended: true });
+            const desc = pickDescription(productName, { skipRecommended: true, excludeIds: lastShownIds });
             displayResults(desc, productName);
         }
 
-        // Copy to clipboard
-        function copyToClipboard(text) {
+        // Copy to clipboard - reads straight from the rendered result text
+        // rather than being handed it as an inline onclick argument, since
+        // descriptions can contain literal double quotes (e.g. a
+        // personalised "Alex" name) that would otherwise break the attribute.
+        function copyToClipboard() {
+            const text = document.querySelector('.result-text').textContent;
             navigator.clipboard.writeText(text).then(() => {
                 const btn = event.target;
                 const originalText = btn.textContent;
