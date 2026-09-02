@@ -225,14 +225,14 @@
             {id: 47, pattern: "Send the {name} to {recipient}. {contents} Perfect gift for any occasion, next-day delivery from Cadbury Gifts.", categories: ["hamper"], tone: "sending"},
             {id: 48, pattern: "Surprise them with the {name}. {contents} Perfect for celebrations, next-day delivery from Cadbury Gifts when you order by 4pm.", categories: ["hamper"], tone: "surprising"},
             {id: 49, pattern: "Gift the {name} from Cadbury Gifts. {contents} Perfect for any occasion, delivered next day when you order by 4pm.", categories: ["hamper"], tone: "gifting"},
-            {id: 50, pattern: "Treat {recipient} to the {name} {itemAdj} hamper. {contents} Perfect for celebrations, next-day delivery from Cadbury Gifts.", categories: ["hamper"], tone: "treating"},
+            {id: 50, pattern: "Treat {recipient} to the {name}. {contents} Perfect for celebrations, next-day delivery from Cadbury Gifts.", categories: ["hamper"], tone: "treating"},
             {id: 51, pattern: "Send the {name} from Cadbury Gifts. {contents} Perfect for any occasion, delivered next day when you order by 4pm.", categories: ["hamper"], tone: "delivery"},
             {id: 52, pattern: "Spoil them with the {name}. {contents} Perfect for celebrations, next-day delivery from Cadbury Gifts when you order by 4pm.", categories: ["hamper"], tone: "indulgent"},
             {id: 53, pattern: "Delight {recipient} with the {name}. {contents} Perfect for any occasion, next-day delivery from Cadbury Gifts.", categories: ["hamper"], tone: "delightful"},
-            {id: 54, pattern: "Surprise {recipient} with the {name} {itemAdj} hamper. {contents} Perfect for {occasion}, next-day delivery from Cadbury Gifts.", categories: ["hamper"], tone: "surprise"},
+            {id: 54, pattern: "Surprise {recipient} with the {name}. {contents} Perfect for {occasion}, next-day delivery from Cadbury Gifts.", categories: ["hamper"], tone: "surprise"},
             {id: 55, pattern: "Gift them the {name} from Cadbury Gifts. {contents} Perfect for any occasion, delivered next day when you order by 4pm.", categories: ["hamper"], tone: "giving"},
             {id: 56, pattern: "Treat {recipient} to the {name} at Cadbury Gifts. {contents} Perfect for celebrations, next-day delivery when you order by 4pm.", categories: ["hamper"], tone: "celebratory"},
-            {id: 57, pattern: "Send the {name} {itemAdj} hamper to {recipient}. {contents} Perfect for {occasion}, next-day delivery from Cadbury Gifts.", categories: ["hamper"], tone: "recipient"},
+            {id: 57, pattern: "Send the {name} to {recipient}. {contents} Perfect for {occasion}, next-day delivery from Cadbury Gifts.", categories: ["hamper"], tone: "recipient"},
             {id: 58, pattern: "Enjoy the {name} from Cadbury Gifts. {contents} Perfect for any occasion, next-day delivery when you order by 4pm.", categories: ["hamper"], tone: "enjoying"},
             {id: 59, pattern: "Discover the {name} at Cadbury Gifts. {contents} Perfect for celebrations, delivered next day when you order by 4pm.", categories: ["hamper"], tone: "discovering"},
             {id: 60, pattern: "Get the {name} delivered next day. {contents} Perfect from Cadbury Gifts, order by 4pm today.", categories: ["hamper"], tone: "getting"},
@@ -432,6 +432,15 @@
             ];
             if (chocolateBrands.some(b => fullText.includes(b))) return 'chocolate';
 
+            // Biscuit products that aren't chocolate-coated - Oreo is a
+            // Mondelez cookie brand, not a Cadbury chocolate line. Checked
+            // here (not as a top-tier override like sweetsBrands) because
+            // Oreo also appears *inside* genuine Dairy Milk products (e.g.
+            // "Dairy Milk Oreo Chocolate Bar"), which the chocolate checks
+            // above already catch correctly before we get here.
+            const biscuitBrands = ['oreo'];
+            if (biscuitBrands.some(b => fullText.includes(b))) return 'biscuits';
+
             // Generic sweets ingredient/format words - fallback only, since
             // any chocolate-branded match above already would have returned
             const sweetsKeywords = [
@@ -441,6 +450,9 @@
                 'sherbet', 'bonbon', 'humbug'
             ];
             if (sweetsKeywords.some(k => fullText.includes(k))) return 'sweets';
+
+            // A bare "biscuit(s)" with nothing more specific matched above
+            if (fullText.includes('biscuit')) return 'biscuits';
 
             return 'chocolate';
         }
@@ -487,7 +499,7 @@
         function extractProductInfo(productName, category) {
             const fullText = productName.toLowerCase();
 
-            // detectProductKind() classifies as 'chocolate' | 'sweets' | 'mixed'.
+            // detectProductKind() classifies as 'chocolate' | 'sweets' | 'mixed' | 'biscuits'.
             // itemNoun/itemAdj are the actual words substituted into templates -
             // kept separate so "mixed" doesn't get read literally into copy.
             const kind = detectProductKind(fullText);
@@ -496,8 +508,28 @@
                 itemNoun = 'sweets'; itemAdj = 'sweet'; contents = 'Delicious sweets from Cadbury Gifts.';
             } else if (kind === 'mixed') {
                 itemNoun = 'treats'; itemAdj = 'sweet'; contents = 'A delicious mix of chocolate and sweets from Cadbury Gifts.';
+            } else if (kind === 'biscuits') {
+                itemNoun = 'biscuits'; itemAdj = 'biscuit'; contents = 'Delicious biscuits from Cadbury Gifts.';
             } else {
                 itemNoun = 'chocolate'; itemAdj = 'chocolate'; contents = 'Delicious chocolate from Cadbury Gifts.';
+            }
+
+            // Hampers (and luxury/premium hampers) are multi-item assortments -
+            // a single chocolate/sweets label guessed from any matching word
+            // anywhere in the name is often wrong (a "Prosecco Hamper" might
+            // be all chocolate, a "Christmas Hamper" might be mixed). Only
+            // trust an explicit "chocolate hamper"/"sweet(s) hamper" naming;
+            // otherwise stay neutral rather than guessing.
+            if (category === 'hamper' || category === 'luxury') {
+                if (fullText.includes('chocolate hamper') || fullText.includes('chocolate basket')) {
+                    itemNoun = 'chocolate'; itemAdj = 'chocolate';
+                } else if (fullText.includes('sweet hamper') || fullText.includes('sweets hamper') ||
+                           fullText.includes('sweet basket') || fullText.includes('sweets basket') ||
+                           fullText.includes('sweetshop') || fullText.includes('sweet shop')) {
+                    itemNoun = 'sweets'; itemAdj = 'sweet';
+                } else {
+                    itemNoun = 'treats'; itemAdj = 'gift';
+                }
             }
 
             const info = {
