@@ -694,7 +694,17 @@
         // available fit is always known, even when nothing hits it exactly.
         function generateVariations(info, category, { excludeIds = [] } = {}) {
             const pool = templates.filter(t => t.categories.includes(category) && !excludeIds.includes(t.id));
-            const relevantTemplates = pool.length ? pool : templates.filter(t => t.categories.includes(category));
+            let relevantTemplates = pool.length ? pool : templates.filter(t => t.categories.includes(category));
+
+            // When the product name tells us a specific occasion (e.g. a
+            // "Happy Birthday" hamper), prefer templates that actually say
+            // so over ones that hardcode "any occasion" - claiming a
+            // birthday-specific gift is "perfect for any occasion" reads as
+            // wrong, even if that template happens to fit the length best.
+            if (info.occasion !== 'any occasion') {
+                const occasionAware = relevantTemplates.filter(t => !t.pattern.includes('any occasion'));
+                if (occasionAware.length) relevantTemplates = occasionAware;
+            }
 
             const candidates = relevantTemplates.map(template => {
                 let description = fillTemplate(template.pattern, info);
@@ -899,7 +909,10 @@
                     })
                 });
 
-                if (!res.ok) throw new Error('Save failed');
+                if (!res.ok) {
+                    const body = await res.json().catch(() => ({}));
+                    throw new Error(body.detail || body.error || 'Save failed');
+                }
 
                 textarea.value = '';
                 statusEl.textContent = '✓ Saved - thank you!';
@@ -908,7 +921,7 @@
                 if (notesListVisible) await loadNotesList();
             } catch (e) {
                 statusEl.classList.add('error');
-                statusEl.textContent = 'Could not save right now - please try again shortly.';
+                statusEl.textContent = `Could not save: ${e.message}`;
             } finally {
                 btn.disabled = false;
             }

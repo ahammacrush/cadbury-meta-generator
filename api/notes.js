@@ -29,7 +29,7 @@ function contentsUrl() {
 async function readNotes() {
     const res = await fetch(`${contentsUrl()}?ref=${BRANCH}`, { headers: githubHeaders() });
     if (res.status === 404) return { notes: [], sha: undefined };
-    if (!res.ok) throw new Error(`GitHub read failed: ${res.status}`);
+    if (!res.ok) throw new Error(`GitHub read failed: ${res.status} ${await res.text()}`);
     const data = await res.json();
     const notes = JSON.parse(Buffer.from(data.content, 'base64').toString('utf-8'));
     return { notes, sha: data.sha };
@@ -56,7 +56,9 @@ async function appendNote(entry) {
 
         if (putRes.ok) return;
         if (putRes.status !== 409 && putRes.status !== 422) {
-            throw new Error(`GitHub write failed: ${putRes.status} ${await putRes.text()}`);
+            const bodyText = await putRes.text();
+            console.error(`GitHub write failed: ${putRes.status} ${bodyText}`);
+            throw new Error(`GitHub write failed: ${putRes.status} ${bodyText}`);
         }
         // 409/422 usually means the sha moved under us - loop and retry
     }
@@ -75,7 +77,8 @@ module.exports = async function handler(req, res) {
             notes.sort((a, b) => (b.timestamp || '').localeCompare(a.timestamp || ''));
             res.status(200).json(notes);
         } catch (e) {
-            res.status(502).json({ error: 'Failed to load notes.' });
+            console.error('Failed to load notes:', e);
+            res.status(502).json({ error: 'Failed to load notes.', detail: e.message });
         }
         return;
     }
@@ -97,7 +100,8 @@ module.exports = async function handler(req, res) {
             await appendNote(entry);
             res.status(200).json(entry);
         } catch (e) {
-            res.status(502).json({ error: 'Failed to save note.' });
+            console.error('Failed to save note:', e);
+            res.status(502).json({ error: 'Failed to save note.', detail: e.message });
         }
         return;
     }
