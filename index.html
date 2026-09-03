@@ -295,7 +295,34 @@
             {id: 101, pattern: "Add a personal touch with the Cadbury \"{message}\" Dairy Milk Bar and {wrapper}, made just for {recipient}. Next-day delivery from Cadbury Gifts.", categories: ["namegift"], tone: "addtouch"},
             {id: 102, pattern: "Nothing beats a gift with their name on it - the Cadbury \"{message}\" Bar with {wrapper}. Next-day delivery from Cadbury Gifts when you order by 4pm.", categories: ["namegift"], tone: "nameonit"},
             {id: 103, pattern: "Send {recipient} something made just for them: the personalised Cadbury \"{message}\" Chocolate Bar with {wrapper}. Next-day delivery from Cadbury Gifts.", categories: ["namegift"], tone: "sendown"},
-            {id: 104, pattern: "Celebrate {recipient} with their own named Cadbury \"{message}\" Dairy Milk Bar and {wrapper}. Next-day delivery from Cadbury Gifts when you order by 4pm.", categories: ["namegift"], tone: "celebrateown"}
+            {id: 104, pattern: "Celebrate {recipient} with their own named Cadbury \"{message}\" Dairy Milk Bar and {wrapper}. Next-day delivery from Cadbury Gifts when you order by 4pm.", categories: ["namegift"], tone: "celebrateown"},
+
+            // PERSONALISE TEMPLATES (15) - real "Personalised Chocolate"
+            // catalog products (sleeved bars/eggs, personalised tubs,
+            // personalised eggs). Unlike the envelope/namegift templates
+            // above, these product titles never quote the actual message or
+            // name - that's added by the customer at checkout - so these
+            // avoid {message} entirely and talk about personalising the
+            // item instead. Occasion-flavoured ones (Christmas/Easter/
+            // Mother's/Father's Day sleeves) use {occasion}; the rest stay
+            // occasion-neutral, including "Love" sleeves - those suit
+            // anniversaries and everyday romance as much as Valentine's, so
+            // they're deliberately not pinned to one date.
+            {id: 105, pattern: "Personalise the {name} with your own message. {contents} Next-day delivery from Cadbury Gifts when you order by 4pm.", categories: ["personalise"], tone: "personalise1"},
+            {id: 106, pattern: "Add a personal touch to the {name} with a message of your own. {contents} Next-day delivery from Cadbury Gifts.", categories: ["personalise"], tone: "personalise2"},
+            {id: 107, pattern: "Make the {name} their own - personalise it with your own words. {contents} Next-day delivery from Cadbury Gifts.", categories: ["personalise"], tone: "personalise3"},
+            {id: 108, pattern: "Send the {name} with a message just for them. {contents} Personalise it yourself, next-day delivery from Cadbury Gifts when you order by 4pm.", categories: ["personalise"], tone: "personalise4"},
+            {id: 109, pattern: "Give the {name} a personal touch at checkout. {contents} Next-day delivery from Cadbury Gifts when you order by 4pm.", categories: ["personalise"], tone: "personalise5"},
+            {id: 110, pattern: "Treat {recipient} to the {name}, personalised with your own words. {contents} Next-day delivery from Cadbury Gifts.", categories: ["personalise"], tone: "personalise6"},
+            {id: 111, pattern: "Surprise {recipient} with the {name} and add a message that's just for them. {contents} Next-day delivery from Cadbury Gifts.", categories: ["personalise"], tone: "personalise7"},
+            {id: 112, pattern: "Get the {name} and make it personal with your own message. {contents} Next-day delivery from Cadbury Gifts when you order by 4pm.", categories: ["personalise"], tone: "personalise8"},
+            {id: 113, pattern: "The {name} makes a thoughtful personalised gift. {contents} Add your own message, next-day delivery from Cadbury Gifts.", categories: ["personalise"], tone: "personalise9"},
+            {id: 114, pattern: "Delight {recipient} with the {name}, personalised just how you like. {contents} Next-day delivery from Cadbury Gifts.", categories: ["personalise"], tone: "personalise10"},
+            {id: 115, pattern: "Celebrate {occasion} with the {name}, personalised with your own message. {contents} Next-day delivery from Cadbury Gifts.", categories: ["personalise"], tone: "personaliseocc1"},
+            {id: 116, pattern: "Make {occasion} extra special with the {name} - add a personal message at checkout. {contents} Next-day delivery when you order by 4pm.", categories: ["personalise"], tone: "personaliseocc2"},
+            {id: 117, pattern: "Treat them this {occasion} with the {name}, personalised just for them. {contents} Next-day delivery from Cadbury Gifts.", categories: ["personalise"], tone: "personaliseocc3"},
+            {id: 118, pattern: "Get the {name} ready for {occasion} and personalise it with your own words. {contents} Next-day delivery from Cadbury Gifts when you order by 4pm.", categories: ["personalise"], tone: "personaliseocc4"},
+            {id: 119, pattern: "Send the {name} this {occasion}, personalised with a message from the heart. {contents} Next-day delivery from Cadbury Gifts.", categories: ["personalise"], tone: "personaliseocc5"}
         ];
 
         // CURRENT RECOMMENDED CHRISTMAS TEMPLATES (30)
@@ -477,10 +504,12 @@
             if (isBulkProduct(name) || name.includes('corporate') || name.includes('employee') || name.includes('team')) return 'corporate';
 
             // Bags are standard products (single item type)
-            if (name.includes('bag') || (name.includes(' bar') && !name.includes('envelope') && !name.includes('sleeve'))) return 'standard';
+            if (name.includes('bag') || (name.includes(' bar') && !name.includes('envelope') && !name.includes('sleeve') && !name.includes('personalised') && !name.includes('personalized'))) return 'standard';
 
-            // Envelopes have message cards
-            if (name.includes('envelope') || name.includes('sleeve')) return 'envelope';
+            // Envelopes/sleeves have message cards; "personalised"/"personalized"
+            // catches the rest of the real personalised-chocolate catalog that
+            // doesn't say "sleeve" (personalised tubs, personalised eggs)
+            if (name.includes('envelope') || name.includes('sleeve') || name.includes('personalised') || name.includes('personalized')) return 'envelope';
 
             // Hampers are mixed collections
             if (name.includes('hamper') || name.includes('basket') || name.includes('gift box')) return 'hamper';
@@ -543,7 +572,8 @@
                 productType: category,
                 itemNoun,
                 itemAdj,
-                isNameGift: false
+                isNameGift: false,
+                isPersonalise: false
             };
 
             // Extract recipient
@@ -612,7 +642,13 @@
                             break;
                         }
                     }
-                    if (!info.message) info.message = productName;
+                    // Real catalog listings (personalised sleeves, tubs,
+                    // eggs) never carry the actual message/name in the
+                    // title at all - it's added by the customer at
+                    // checkout. Route these to the personalise templates
+                    // instead of dumping the raw product name into a fake
+                    // quote (which used to produce garbled, duplicated text).
+                    if (!info.message) info.isPersonalise = true;
                 }
             }
             
@@ -694,19 +730,9 @@
         // available fit is always known, even when nothing hits it exactly.
         function generateVariations(info, category, { excludeIds = [] } = {}) {
             const pool = templates.filter(t => t.categories.includes(category) && !excludeIds.includes(t.id));
-            let relevantTemplates = pool.length ? pool : templates.filter(t => t.categories.includes(category));
+            const relevantTemplates = pool.length ? pool : templates.filter(t => t.categories.includes(category));
 
-            // When the product name tells us a specific occasion (e.g. a
-            // "Happy Birthday" hamper), prefer templates that actually say
-            // so over ones that hardcode "any occasion" - claiming a
-            // birthday-specific gift is "perfect for any occasion" reads as
-            // wrong, even if that template happens to fit the length best.
-            if (info.occasion !== 'any occasion') {
-                const occasionAware = relevantTemplates.filter(t => !t.pattern.includes('any occasion'));
-                if (occasionAware.length) relevantTemplates = occasionAware;
-            }
-
-            const candidates = relevantTemplates.map(template => {
+            let candidates = relevantTemplates.map(template => {
                 let description = fillTemplate(template.pattern, info);
                 description = shortenToFit(description, TARGET_MAX, info.contents);
                 return {
@@ -718,6 +744,18 @@
                     distance: distanceFromTarget(description.length)
                 };
             });
+
+            // "Perfect for any occasion" reads wrong whenever the product
+            // itself is clearly for something specific - a known occasion
+            // (Christmas, birthdays...) or a specific message ("Well Done",
+            // "Best Mum") that isn't really "any occasion" either. Checked
+            // on the filled text (not the raw pattern) since {occasion}
+            // itself defaults to the literal string "any occasion" when
+            // nothing specific was detected - so this also naturally
+            // prefers a non-generic template whenever one fits about as
+            // well, without needing to know why up front.
+            const specific = candidates.filter(c => !c.text.includes('any occasion'));
+            if (specific.length) candidates = specific;
 
             candidates.sort((a, b) => a.distance - b.distance);
             return candidates;
@@ -738,7 +776,9 @@
                 if (recommended) return recommended;
             }
 
-            const effectiveCategory = (category === 'envelope' && info.isNameGift) ? 'namegift' : category;
+            let effectiveCategory = category;
+            if (info.isNameGift) effectiveCategory = 'namegift';
+            else if (info.isPersonalise) effectiveCategory = 'personalise';
             const candidates = generateVariations(info, effectiveCategory, { excludeIds });
 
             if (excludeIds.length) {
