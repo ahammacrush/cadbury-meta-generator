@@ -12,5 +12,12 @@
     "productName": "Christmas Selection Box with Sleeve XX Large",
     "generatedText": "Send the Christmas Selection Box with Sleeve XX Large with a message just for them. Personalise it yourself, next-day delivery from Cadbury Gifts.",
     "note": "This one generates the current recommended christmas list, but that christmas list doesn't have any that are both christmas and include the personalised context"
+  },
+  {
+    "id": "mtlfwfa8ra8q2m",
+    "timestamp": "2026-09-03T11:26:34.592Z",
+    "productName": "Milk Tray 445g with Christmas sleeve",
+    "generatedText": "Send the Milk Tray 445g with Christmas sleeve this Christmas, personalised with a message from the heart. Next-day delivery from Cadbury Gifts.",
+    "note": "I think \"Send the Milk Tray 445g with Christmas sleeve this Christmas, personalised with a message from the heart. Next-day delivery from Cadbury Gifts.\" should only trigger when the product name has some reference to love or a special someone in the product title. Christmas isn't really from the heart. It could be, but it might not be."
   }
 ]
