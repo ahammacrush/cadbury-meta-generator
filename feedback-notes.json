@@ -5,11 +5,11 @@
     "productName": "",
     "generatedText": "",
     "note": "Perfect for any occasion still sometimes inappropriate, things like \"well done\" and \"congratulations\" and \"best mum\" don't really fit: perfect for any occasion.",
-    "status": "approved",
+    "status": "implemented",
     "approvedAt": "2026-09-04T16:49:22.136Z",
-    "implementedAt": null,
-    "implementedCommit": null,
-    "implementationSummary": null
+    "implementedAt": "2026-09-05T01:30:00.000Z",
+    "implementedCommit": "ded6328",
+    "implementationSummary": "buildCandidates excludes any candidate whose filled text contains \"any occasion\" when the product has a genuine specific occasion or message (calendar occasion, or a known message phrase like well done/congratulations/best mum) — see ProductInfo.hasSpecificOccasion in lib/metaGenerator/generate.ts and its regression tests in tests/metaGenerator/generate.test.ts."
   },
   {
     "id": "mtleys2brrh07w",
