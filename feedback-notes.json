@@ -16,13 +16,23 @@
     "timestamp": "2026-09-03T11:00:24.851Z",
     "productName": "Christmas Selection Box with Sleeve XX Large",
     "generatedText": "Send the Christmas Selection Box with Sleeve XX Large with a message just for them. Personalise it yourself, next-day delivery from Cadbury Gifts.",
-    "note": "This one generates the current recommended christmas list, but that christmas list doesn't have any that are both christmas and include the personalised context"
+    "note": "This one generates the current recommended christmas list, but that christmas list doesn't have any that are both christmas and include the personalised context",
+    "status": "implemented",
+    "approvedAt": "2026-09-05T23:10:00.000Z",
+    "implementedAt": "2026-09-05T23:10:00.000Z",
+    "implementedCommit": "1768abb",
+    "implementationSummary": "buildCandidates now prefers a candidate that actually names the product's genuine calendar occasion when one exists and at least one such candidate is available, for personalisation-carrier categories specifically — a Christmas personalisation-carrier product no longer lands on generic personalise copy with no Christmas mention at all. See lib/metaGenerator/generate.ts and its regression tests in tests/metaGenerator/generate.test.ts. Live in production as of commit 1768abb."
   },
   {
     "id": "mtlfwfa8ra8q2m",
     "timestamp": "2026-09-03T11:26:34.592Z",
     "productName": "Milk Tray 445g with Christmas sleeve",
     "generatedText": "Send the Milk Tray 445g with Christmas sleeve this Christmas, personalised with a message from the heart. Next-day delivery from Cadbury Gifts.",
-    "note": "I think \"Send the Milk Tray 445g with Christmas sleeve this Christmas, personalised with a message from the heart. Next-day delivery from Cadbury Gifts.\" should only trigger when the product name has some reference to love or a special someone in the product title. Christmas isn't really from the heart. It could be, but it might not be."
+    "note": "I think \"Send the Milk Tray 445g with Christmas sleeve this Christmas, personalised with a message from the heart. Next-day delivery from Cadbury Gifts.\" should only trigger when the product name has some reference to love or a special someone in the product title. Christmas isn't really from the heart. It could be, but it might not be.",
+    "status": "implemented",
+    "approvedAt": "2026-09-05T23:10:00.000Z",
+    "implementedAt": "2026-09-05T23:10:00.000Z",
+    "implementedCommit": "1768abb",
+    "implementationSummary": "The \"message from the heart\" template is now gated on a genuine romantic signal (partner recipient, Valentine's/anniversary occasion, or explicit love/heart/romance wording in the product's own name) — no longer reachable for any personalised Christmas product by default. See lib/metaGenerator/generate.ts and its regression tests in tests/metaGenerator/generate.test.ts. Live in production as of commit 1768abb."
   }
 ]
