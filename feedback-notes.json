@@ -9,7 +9,7 @@
     "approvedAt": "2026-09-04T16:49:22.136Z",
     "implementedAt": "2026-09-05T01:30:00.000Z",
     "implementedCommit": "ded6328",
-    "implementationSummary": "buildCandidates excludes any candidate whose filled text contains \"any occasion\" when the product has a genuine specific occasion or message (calendar occasion, or a known message phrase like well done/congratulations/best mum) — see ProductInfo.hasSpecificOccasion in lib/metaGenerator/generate.ts and its regression tests in tests/metaGenerator/generate.test.ts."
+    "implementationSummary": "Fixed \u2014 generated meta descriptions no longer say \"Perfect for any occasion\" for a product with a specific occasion or message, like Well Done, Congratulations or Best Mum."
   },
   {
     "id": "mtleys2brrh07w",
@@ -21,7 +21,7 @@
     "approvedAt": "2026-09-05T23:10:00.000Z",
     "implementedAt": "2026-09-05T23:10:00.000Z",
     "implementedCommit": "1768abb",
-    "implementationSummary": "buildCandidates now prefers a candidate that actually names the product's genuine calendar occasion when one exists and at least one such candidate is available, for personalisation-carrier categories specifically — a Christmas personalisation-carrier product no longer lands on generic personalise copy with no Christmas mention at all. See lib/metaGenerator/generate.ts and its regression tests in tests/metaGenerator/generate.test.ts. Live in production as of commit 1768abb."
+    "implementationSummary": "Fixed \u2014 a Christmas product that's also personalised (like a personalised Christmas Selection Box) now gets a description that mentions Christmas, instead of generic personalisation wording with no Christmas mention."
   },
   {
     "id": "mtlfwfa8ra8q2m",
@@ -33,6 +33,6 @@
     "approvedAt": "2026-09-05T23:10:00.000Z",
     "implementedAt": "2026-09-05T23:10:00.000Z",
     "implementedCommit": "1768abb",
-    "implementationSummary": "The \"message from the heart\" template is now gated on a genuine romantic signal (partner recipient, Valentine's/anniversary occasion, or explicit love/heart/romance wording in the product's own name) — no longer reachable for any personalised Christmas product by default. See lib/metaGenerator/generate.ts and its regression tests in tests/metaGenerator/generate.test.ts. Live in production as of commit 1768abb."
+    "implementationSummary": "Fixed \u2014 the romantic \"message from the heart\" wording only appears when the product itself is genuinely romantic (for a partner, or for Valentine's Day/an anniversary), not just because it's a personalised Christmas product."
   }
 ]
